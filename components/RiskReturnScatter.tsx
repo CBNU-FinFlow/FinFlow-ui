@@ -18,9 +18,9 @@ export default function RiskReturnScatter({ data }: RiskReturnScatterProps) {
 	};
 
 	return (
-		<div className="bg-white rounded-lg border border-gray-200 p-4">
+		<div className="bg-card border border-border rounded-lg p-4">
 			<div className="flex items-center space-x-2 mb-4">
-				<h4 className="text-lg font-semibold text-gray-900">리스크-수익률 분포</h4>
+				<h4 className="text-lg font-semibold text-foreground">리스크-수익률 분포</h4>
 				<HelpTooltip
 					title="리스크-수익률 분포"
 					description="각 종목의 예상 수익률(세로축)과 리스크(가로축)를 점으로 표현한 산점도다. 원의 크기는 포트폴리오에서의 비중을 나타내며, 오른쪽 위(높은 수익률, 높은 리스크)에 위치할수록 공격적인 투자, 왼쪽 아래에 위치할수록 보수적인 투자를 의미한다."
@@ -29,9 +29,23 @@ export default function RiskReturnScatter({ data }: RiskReturnScatterProps) {
 			<div style={{ height: 300 }}>
 				<ResponsiveContainer width="100%" height="100%">
 					<ScatterChart margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
-						<CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
-						<XAxis type="number" dataKey="risk" name="리스크" tick={{ fontSize: 12 }} label={{ value: "리스크 (%)", position: "insideBottom", offset: -10, style: { fontSize: "12px" } }} />
-						<YAxis type="number" dataKey="return_rate" name="수익률" tick={{ fontSize: 12 }} label={{ value: "수익률 (%)", angle: -90, position: "insideLeft", style: { fontSize: "12px" } }} />
+						<CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" opacity={0.3} />
+						<XAxis
+							type="number"
+							dataKey="risk"
+							name="변동성 (%)"
+							tick={{ fontSize: 12, fill: "#e5e7eb" }}
+							tickFormatter={(value) => `${value}%`}
+							label={{ value: "리스크 (%)", position: "insideBottom", offset: -10, style: { fontSize: "12px", fill: "#e5e7eb" } }}
+						/>
+						<YAxis
+							type="number"
+							dataKey="return_rate"
+							name="수익률 (%)"
+							tick={{ fontSize: 12, fill: "#e5e7eb" }}
+							tickFormatter={(value) => `${value}%`}
+							label={{ value: "수익률 (%)", angle: -90, position: "insideLeft", style: { fontSize: "12px", fill: "#e5e7eb" } }}
+						/>
 						<Tooltip
 							formatter={(value: any, name: any, props: any) => {
 								if (name === "리스크") return [`${Number(value).toFixed(2)}%`, "리스크"];
@@ -43,11 +57,11 @@ export default function RiskReturnScatter({ data }: RiskReturnScatterProps) {
 								if (active && payload && payload.length) {
 									const data = payload[0].payload;
 									return (
-										<div className="bg-white p-3 border border-gray-200 rounded-lg shadow-lg">
-											<p className="font-semibold text-gray-900">{data.symbol}</p>
-											<p className="text-sm text-gray-600">수익률: {data.return_rate.toFixed(2)}%</p>
-											<p className="text-sm text-gray-600">리스크: {data.risk.toFixed(2)}%</p>
-											<p className="text-sm text-gray-600">비중: {data.allocation.toFixed(1)}%</p>
+										<div className="bg-card border border-border rounded-lg shadow-lg p-3">
+											<p className="font-semibold text-foreground">{data.symbol}</p>
+											<p className="text-sm text-muted-foreground">수익률: {data.return_rate.toFixed(2)}%</p>
+											<p className="text-sm text-muted-foreground">리스크: {data.risk.toFixed(2)}%</p>
+											<p className="text-sm text-muted-foreground">비중: {data.allocation.toFixed(1)}%</p>
 										</div>
 									);
 								}
@@ -62,7 +76,7 @@ export default function RiskReturnScatter({ data }: RiskReturnScatterProps) {
 					</ScatterChart>
 				</ResponsiveContainer>
 			</div>
-			<div className="mt-3 flex items-center justify-center space-x-4 text-xs text-gray-600">
+			<div className="mt-3 flex items-center justify-center space-x-4 text-xs text-muted-foreground">
 				<div className="flex items-center space-x-1">
 					<div className="w-3 h-3 bg-red-500 rounded-full"></div>
 					<span>높은 비중 (20%+)</span>

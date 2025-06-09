@@ -31,9 +31,9 @@ export default function CorrelationHeatmap({ data, stocks }: CorrelationHeatmapP
 	};
 
 	return (
-		<div className="bg-white rounded-lg border border-gray-200 p-4">
+		<div className="bg-card border border-border rounded-lg p-4">
 			<div className="flex items-center space-x-2 mb-4">
-				<h4 className="text-lg font-semibold text-gray-900">종목 간 상관관계</h4>
+				<h4 className="text-lg font-semibold text-foreground">종목 간 상관관계</h4>
 				<HelpTooltip
 					title="종목 간 상관관계"
 					description="포트폴리오 내 종목들이 서로 얼마나 비슷하게 움직이는지 보여주는 히트맵이다. 빨간색은 같은 방향으로 움직이는 양의 상관관계, 파란색은 반대 방향으로 움직이는 음의 상관관계를 나타낸다. 숫자가 1에 가까울수록 강한 상관관계를 의미한다."
@@ -45,7 +45,7 @@ export default function CorrelationHeatmap({ data, stocks }: CorrelationHeatmapP
 						<tr>
 							<th className="w-16"></th>
 							{stocks.map((stock) => (
-								<th key={stock} className="text-xs font-medium text-gray-600 p-1 text-center min-w-[60px]">
+								<th key={stock} className="text-xs font-medium text-foreground p-1 text-center min-w-[60px]">
 									{stock}
 								</th>
 							))}
@@ -54,10 +54,10 @@ export default function CorrelationHeatmap({ data, stocks }: CorrelationHeatmapP
 					<tbody>
 						{stocks.map((stock, i) => (
 							<tr key={stock}>
-								<td className="text-xs font-medium text-gray-600 p-1 text-right pr-2">{stock}</td>
+								<td className="text-xs font-medium text-foreground p-1 text-right pr-2">{stock}</td>
 								{matrix[i].map((value, j) => (
-									<td key={j} className="p-1 text-center border border-gray-100" style={{ backgroundColor: getColor(value) }}>
-										<span className="text-xs font-medium text-gray-900">{value.toFixed(2)}</span>
+									<td key={j} className="p-1 text-center border border-border" style={{ backgroundColor: getColor(value) }}>
+										<span className="text-xs font-medium text-white drop-shadow-sm">{value.toFixed(2)}</span>
 									</td>
 								))}
 							</tr>
@@ -65,7 +65,7 @@ export default function CorrelationHeatmap({ data, stocks }: CorrelationHeatmapP
 					</tbody>
 				</table>
 			</div>
-			<div className="mt-3 flex items-center justify-center space-x-4 text-xs text-gray-600">
+			<div className="mt-3 flex items-center justify-center space-x-4 text-xs text-muted-foreground">
 				<div className="flex items-center space-x-1">
 					<div className="w-3 h-3 bg-red-500 rounded"></div>
 					<span>양의 상관관계</span>

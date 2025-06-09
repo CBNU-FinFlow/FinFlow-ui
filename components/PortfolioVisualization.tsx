@@ -122,9 +122,9 @@ export default function PortfolioVisualization({ portfolioAllocation, performanc
 
 	if (!showResults) {
 		return (
-			<div className="bg-gray-50 rounded-lg p-6 flex items-center justify-center h-64">
-				<div className="text-gray-400 text-center">
-					<div className="w-16 h-16 mx-auto mb-3 bg-gray-200 rounded-full flex items-center justify-center">
+			<div className="bg-muted/30 dark:bg-gray-800/30 rounded-lg p-6 flex items-center justify-center h-64">
+				<div className="text-muted-foreground text-center">
+					<div className="w-16 h-16 mx-auto mb-3 bg-muted dark:bg-gray-700 rounded-full flex items-center justify-center">
 						<svg className="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
 							<path
 								fillRule="evenodd"
@@ -143,12 +143,12 @@ export default function PortfolioVisualization({ portfolioAllocation, performanc
 	// 로딩 상태 표시
 	if (loading) {
 		return (
-			<div className="bg-white rounded-lg border border-gray-200 p-6">
+			<div className="bg-card border border-border rounded-lg p-6">
 				<div className="flex items-center justify-center h-64">
 					<div className="text-center">
 						<div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-						<p className="text-gray-600">실제 시장 데이터를 불러오는 중...</p>
-						<p className="text-sm text-gray-400 mt-1">백테스트 및 상관관계 분석 진행 중</p>
+						<p className="text-foreground">실제 시장 데이터를 불러오는 중...</p>
+						<p className="text-sm text-muted-foreground mt-1">백테스트 및 상관관계 분석 진행 중</p>
 					</div>
 				</div>
 			</div>
@@ -164,9 +164,9 @@ export default function PortfolioVisualization({ portfolioAllocation, performanc
 				<StockChart data={performanceHistory} title="누적 수익률 비교 (실제 백테스트)" height={280} />
 
 				{/* 간소화된 포트폴리오 배분 */}
-				<div className="bg-white rounded-lg border border-gray-200 p-4">
+				<div className="bg-card border border-border rounded-lg p-4">
 					<div className="flex items-center space-x-2 mb-4">
-						<h4 className="text-lg font-semibold text-gray-900">포트폴리오 배분</h4>
+						<h4 className="text-lg font-semibold text-foreground">포트폴리오 배분</h4>
 						<HelpTooltip
 							title="포트폴리오 배분"
 							description="AI가 추천한 최적 투자 비중을 원형 차트로 표현한다. 각 종목의 색상과 크기는 전체 포트폴리오에서 차지하는 비중을 나타내며, 분산 투자를 통해 리스크를 관리하면서 수익을 극대화하는 구성이다. 마우스를 올리면 상세 정보가 표시된다."
@@ -176,7 +176,7 @@ export default function PortfolioVisualization({ portfolioAllocation, performanc
 						<div className="relative transition-transform duration-300 group-hover:scale-110">
 							<ResponsiveContainer width={300} height={300}>
 								<PieChart>
-									<Pie data={pieData} cx="50%" cy="50%" outerRadius={120} fill="#8884d8" dataKey="value" stroke="#fff" strokeWidth={2}>
+									<Pie data={pieData} cx="50%" cy="50%" outerRadius={120} fill="#8884d8" dataKey="value" stroke="hsl(var(--card))" strokeWidth={2}>
 										{pieData.map((entry, index) => (
 											<Cell key={`cell-${index}`} fill={entry.color} />
 										))}
@@ -184,28 +184,29 @@ export default function PortfolioVisualization({ portfolioAllocation, performanc
 									<Tooltip
 										formatter={(value: any, name: any, props: any) => [`${value}%`, name]}
 										contentStyle={{
-											backgroundColor: "#fff",
-											border: "1px solid #e2e8f0",
+											backgroundColor: "hsl(var(--card))",
+											border: "1px solid hsl(var(--border))",
 											borderRadius: "8px",
 											fontSize: "14px",
 											padding: "16px",
 											boxShadow: "0 10px 25px rgba(0, 0, 0, 0.1)",
+											color: "hsl(var(--foreground))",
 										}}
 										content={({ active, payload }) => {
 											if (active && payload && payload.length) {
 												const data = payload[0].payload;
 												return (
-													<div className="bg-white p-4 border border-gray-200 rounded-lg shadow-xl">
-														<p className="font-bold text-lg text-gray-900 mb-2">{data.name}</p>
+													<div className="bg-card border border-border rounded-lg shadow-xl p-4">
+														<p className="font-bold text-lg text-foreground mb-2">{data.name}</p>
 														<div className="space-y-2">
-															<p className="text-sm text-gray-600">
+															<p className="text-sm text-muted-foreground">
 																비중: <span className="font-semibold text-blue-600">{data.value}%</span>
 															</p>
-															<p className="text-sm text-gray-600">
+															<p className="text-sm text-muted-foreground">
 																투자금액: <span className="font-semibold text-green-600">{data.amount.toLocaleString()}원</span>
 															</p>
-															<p className="text-sm text-gray-600">
-																종목 유형: <span className="font-medium text-gray-800">{data.name === "현금" ? "안전자산" : "성장주"}</span>
+															<p className="text-sm text-muted-foreground">
+																종목 유형: <span className="font-medium text-foreground">{data.name === "현금" ? "안전자산" : "성장주"}</span>
 															</p>
 														</div>
 													</div>
@@ -228,9 +229,9 @@ export default function PortfolioVisualization({ portfolioAllocation, performanc
 			</div>
 
 			{/* 세 번째 행: 성과 비교 테이블 (간소화) */}
-			<div className="bg-white rounded-lg border border-gray-200 p-4">
+			<div className="bg-card border border-border rounded-lg p-4">
 				<div className="flex items-center space-x-2 mb-4">
-					<h4 className="text-lg font-semibold text-gray-900">주요 성과 지표</h4>
+					<h4 className="text-lg font-semibold text-foreground">주요 성과 지표</h4>
 					<HelpTooltip
 						title="주요 성과 지표"
 						description="AI 포트폴리오와 주요 벤치마크들의 핵심 성과 지표를 비교한 표다. 연간 수익률, 샤프 비율, 최대 낙폭 등을 통해 위험 대비 수익률과 안정성을 평가할 수 있다. 파란색으로 표시된 값은 AI 포트폴리오의 성과다."
@@ -239,20 +240,20 @@ export default function PortfolioVisualization({ portfolioAllocation, performanc
 				<div className="overflow-x-auto">
 					<table className="w-full text-sm">
 						<thead>
-							<tr className="border-b border-gray-200">
-								<th className="text-left py-2 font-semibold text-gray-700">지표</th>
+							<tr className="border-b border-border">
+								<th className="text-left py-2 font-semibold text-muted-foreground">지표</th>
 								<th className="text-center py-2 font-semibold text-blue-600">AI 포트폴리오</th>
-								<th className="text-center py-2 font-semibold text-gray-500">S&P 500</th>
-								<th className="text-center py-2 font-semibold text-gray-500">NASDAQ</th>
+								<th className="text-center py-2 font-semibold text-muted-foreground">S&P 500</th>
+								<th className="text-center py-2 font-semibold text-muted-foreground">NASDAQ</th>
 							</tr>
 						</thead>
 						<tbody>
 							{performanceMetrics.slice(0, 4).map((metric, index) => (
-								<tr key={index} className="border-b border-gray-100">
-									<td className="py-2 font-medium text-gray-900">{metric.label}</td>
+								<tr key={index} className="border-b border-border/50">
+									<td className="py-2 font-medium text-foreground">{metric.label}</td>
 									<td className="py-2 text-center font-semibold text-blue-600">{metric.portfolio}</td>
-									<td className="py-2 text-center text-gray-600">{metric.spy}</td>
-									<td className="py-2 text-center text-gray-600">{metric.qqq}</td>
+									<td className="py-2 text-center text-muted-foreground">{metric.spy}</td>
+									<td className="py-2 text-center text-muted-foreground">{metric.qqq}</td>
 								</tr>
 							))}
 						</tbody>

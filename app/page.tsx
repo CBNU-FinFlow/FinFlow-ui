@@ -274,7 +274,7 @@ export default function FinFlowDemo() {
 			<NavBar />
 
 			{/* Hero Section - 간소화 */}
-			<section className="bg-white">
+			<section className="bg-background">
 				<div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 					<div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
 						<div className="space-y-8">
@@ -288,12 +288,12 @@ export default function FinFlowDemo() {
 										실시간 분석
 									</Badge>
 								</div>
-								<h1 className="text-4xl font-bold text-gray-900 leading-tight">
+								<h1 className="text-4xl font-bold text-foreground leading-tight">
 									AI가 만드는
 									<br />
 									<span className="text-blue-600">스마트 투자</span>
 								</h1>
-								<p className="text-lg text-gray-600 leading-relaxed">
+								<p className="text-lg text-muted-foreground leading-relaxed">
 									강화학습 알고리즘이 시장 데이터를 실시간으로 분석하여
 									<br />
 									<span className="text-blue-700 font-medium">개인 맞춤형 포트폴리오</span>를 제안합니다.
@@ -303,7 +303,7 @@ export default function FinFlowDemo() {
 							<div className="space-y-6">
 								{/* 투자 금액 */}
 								<div className="space-y-3">
-									<Label htmlFor="investment" className="text-base font-semibold text-gray-900 flex items-center">
+									<Label htmlFor="investment" className="text-base font-semibold text-foreground flex items-center">
 										<DollarSign className="w-4 h-4 text-blue-600 mr-2" />
 										투자 금액
 									</Label>
@@ -314,20 +314,20 @@ export default function FinFlowDemo() {
 											placeholder="10,000,000"
 											value={displayAmount}
 											onChange={handleAmountChange}
-											className="text-lg font-semibold h-12 pl-4 pr-12 border-2 border-gray-200 focus:border-blue-500 rounded-lg"
+											className="text-lg font-semibold h-12 pl-4 pr-12 border-2 border-border focus:border-blue-500 rounded-lg"
 										/>
-										<span className="absolute right-4 top-1/2 transform -translate-y-1/2 text-lg font-semibold text-gray-500">원</span>
+										<span className="absolute right-4 top-1/2 transform -translate-y-1/2 text-lg font-semibold text-muted-foreground">원</span>
 									</div>
 								</div>
 
 								{/* 리스크 성향 */}
 								<div className="space-y-3">
-									<Label className="text-base font-semibold text-gray-900 flex items-center">
+									<Label className="text-base font-semibold text-foreground flex items-center">
 										<PieChart className="w-4 h-4 text-green-600 mr-2" />
 										투자 성향
 									</Label>
 									<Select value={riskTolerance} onValueChange={setRiskTolerance}>
-										<SelectTrigger className="w-full h-12 border-2 border-gray-200 focus:border-blue-500 rounded-lg">
+										<SelectTrigger className="w-full h-12 border-2 border-border focus:border-blue-500 rounded-lg">
 											<SelectValue />
 										</SelectTrigger>
 										<SelectContent>
@@ -359,11 +359,11 @@ export default function FinFlowDemo() {
 
 								{/* 투자 기간 */}
 								<div className="space-y-3">
-									<Label className="text-base font-semibold text-gray-900 flex items-center">
+									<Label className="text-base font-semibold text-foreground flex items-center">
 										<Calendar className="w-4 h-4 text-purple-600 mr-2" />
 										투자 기간
 									</Label>
-									<div className="bg-white p-4 rounded-lg border-2 border-gray-200">
+									<div className="bg-card p-4 rounded-lg border-2 border-border">
 										<Slider
 											value={investmentHorizon}
 											onValueChange={setInvestmentHorizon}
@@ -376,7 +376,7 @@ export default function FinFlowDemo() {
 											<Badge variant="secondary" className="bg-gray-100 text-gray-700 font-medium">
 												{getHorizonLabel(investmentHorizon[0])}
 											</Badge>
-											<span className="text-sm text-gray-500 font-medium">
+											<span className="text-sm text-muted-foreground font-medium">
 												{Math.round(investmentHorizon[0] / 21)}
 												개월
 											</span>
@@ -410,15 +410,15 @@ export default function FinFlowDemo() {
 						</div>
 
 						{/* 오른쪽 영역 - 간소화 */}
-						<div className="bg-gray-50 rounded-lg p-8 border border-gray-200">
+						<div className="bg-muted/50 rounded-lg p-8 border border-border">
 							{isAnalyzing ? (
 								<div className="text-center space-y-6">
 									<div className="w-16 h-16 mx-auto bg-blue-100 rounded-lg flex items-center justify-center">
 										<Brain className="w-8 h-8 text-blue-600 animate-pulse" />
 									</div>
 									<div className="space-y-2">
-										<h3 className="text-xl font-bold text-gray-900">AI 분석 진행 중</h3>
-										<p className="text-gray-600">
+										<h3 className="text-xl font-bold text-foreground">AI 분석 진행 중</h3>
+										<p className="text-muted-foreground">
 											투자 성향: <span className="font-semibold text-blue-600">{getRiskLevel(riskTolerance).label}</span> · 투자 기간:{" "}
 											<span className="font-semibold text-purple-600">{getHorizonLabel(investmentHorizon[0])}</span>
 										</p>
@@ -427,7 +427,7 @@ export default function FinFlowDemo() {
 										<Progress value={analysisProgress} className="w-full h-2" />
 										<div className="space-y-1">
 											<p className="font-medium text-blue-600">{analysisStep}</p>
-											<p className="text-sm text-gray-500">예상 소요 시간: 약 5-7초</p>
+											<p className="text-sm text-muted-foreground">예상 소요 시간: 약 5-7초</p>
 										</div>
 									</div>
 								</div>
@@ -437,27 +437,27 @@ export default function FinFlowDemo() {
 										<CheckCircle className="w-8 h-8 text-green-600" />
 									</div>
 									<div className="space-y-2">
-										<h3 className="text-xl font-bold text-gray-900">분석 완료!</h3>
-										<p className="text-gray-600">맞춤형 포트폴리오가 준비되었습니다.</p>
+										<h3 className="text-xl font-bold text-foreground">분석 완료!</h3>
+										<p className="text-muted-foreground">맞춤형 포트폴리오가 준비되었습니다.</p>
 									</div>
 								</div>
 							) : (
 								<div className="text-center space-y-4">
-									<div className="w-16 h-16 mx-auto bg-gray-200 rounded-lg flex items-center justify-center">
-										<BarChart3 className="w-8 h-8 text-gray-400" />
+									<div className="w-16 h-16 mx-auto bg-muted rounded-lg flex items-center justify-center">
+										<BarChart3 className="w-8 h-8 text-muted-foreground" />
 									</div>
 									<div className="space-y-2">
-										<h3 className="text-xl font-bold text-gray-700">AI 포트폴리오 분석</h3>
-										<p className="text-gray-500">투자 정보를 입력하고 분석을 시작해주세요.</p>
+										<h3 className="text-xl font-bold text-foreground">AI 포트폴리오 분석</h3>
+										<p className="text-muted-foreground">투자 정보를 입력하고 분석을 시작해주세요.</p>
 									</div>
 									<div className="grid grid-cols-2 gap-4 mt-6">
-										<div className="bg-white p-4 rounded-lg border border-gray-200">
+										<div className="bg-card p-4 rounded-lg border border-border">
 											<div className="text-2xl font-bold text-blue-600 mb-1">10+</div>
-											<div className="text-sm text-gray-600">분석 종목</div>
+											<div className="text-sm text-muted-foreground">분석 종목</div>
 										</div>
-										<div className="bg-white p-4 rounded-lg border border-gray-200">
+										<div className="bg-card p-4 rounded-lg border border-border">
 											<div className="text-2xl font-bold text-green-600 mb-1">98.5%</div>
-											<div className="text-sm text-gray-600">만족도</div>
+											<div className="text-sm text-muted-foreground">만족도</div>
 										</div>
 									</div>
 								</div>
@@ -469,9 +469,9 @@ export default function FinFlowDemo() {
 
 			{/* 스크롤 버튼 */}
 			{showScrollButton && (
-				<div className="flex justify-center mt-12 flex-col items-center space-y-2 text-gray-600">
+				<div className="flex justify-center mt-12 flex-col items-center space-y-2 text-muted-foreground">
 					<span className="text-sm font-semibold">더 자세히 알아보기</span>
-					<button onClick={scrollToFeatures} className="p-0.5 bg-white text-slate-700 hover:bg-slate-100 transition-all duration-200 cursor-pointer rounded-full">
+					<button onClick={scrollToFeatures} className="p-0.5 bg-card text-foreground hover:bg-muted transition-all duration-200 cursor-pointer rounded-full">
 						<div className="flex items-center justify-center w-10 h-10 rounded-full">
 							<ArrowDown className="w-4 h-4 animate-bounce" />
 						</div>
@@ -498,16 +498,16 @@ export default function FinFlowDemo() {
 			{/* Features Section - 간소화 */}
 			<section
 				ref={featuresSectionRef}
-				className={`py-16 transition-all duration-1000 ease-out ${isFeaturesSectionVisible ? "opacity-100 transform translate-y-0" : "opacity-0 transform translate-y-10"}`}
+				className={`py-16 bg-muted/30 transition-all duration-1000 ease-out ${isFeaturesSectionVisible ? "opacity-100 transform translate-y-0" : "opacity-0 transform translate-y-10"}`}
 			>
 				<div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 					<div className="text-center mb-12">
-						<Badge className="bg-blue-100 text-blue-800 border-0 mb-4">
+						<Badge className="bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-400 border-0 mb-4">
 							<Activity className="w-3 h-3 mr-1" />
 							AI 기술
 						</Badge>
-						<h2 className="text-3xl font-bold text-gray-900 mb-4">어떻게 작동하나요?</h2>
-						<p className="text-lg text-gray-600 max-w-3xl mx-auto">
+						<h2 className="text-3xl font-bold text-foreground mb-4">어떻게 작동하나요?</h2>
+						<p className="text-lg text-muted-foreground max-w-3xl mx-auto">
 							최신 강화학습 알고리즘이 시장 데이터를 실시간으로 분석하여
 							<br />
 							<span className="text-blue-700 font-medium">개인 맞춤형 포트폴리오 전략</span>을 제안합니다.
@@ -519,8 +519,8 @@ export default function FinFlowDemo() {
 							<div className="w-16 h-16 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-4">
 								<BarChart3 className="h-8 w-8 text-blue-600" />
 							</div>
-							<h3 className="text-lg font-bold text-gray-900 mb-3">데이터 수집 & 분석</h3>
-							<p className="text-gray-600">
+							<h3 className="text-lg font-bold text-foreground mb-3">데이터 수집 & 분석</h3>
+							<p className="text-muted-foreground">
 								<span className="font-semibold text-blue-600">250개 이상</span>
 								의 종목 데이터와 기술적 지표를
 								<br />
@@ -532,8 +532,8 @@ export default function FinFlowDemo() {
 							<div className="w-16 h-16 bg-green-100 rounded-lg flex items-center justify-center mx-auto mb-4">
 								<Brain className="h-8 w-8 text-green-600" />
 							</div>
-							<h3 className="text-lg font-bold text-gray-900 mb-3">AI 학습 & 최적화</h3>
-							<p className="text-gray-600">
+							<h3 className="text-lg font-bold text-foreground mb-3">AI 학습 & 최적화</h3>
+							<p className="text-muted-foreground">
 								<span className="font-semibold text-green-600">PPO 강화학습</span> 알고리즘이 시장 환경에
 								<br />
 								적응하며 최적 전략을 학습합니다.
@@ -544,8 +544,8 @@ export default function FinFlowDemo() {
 							<div className="w-16 h-16 bg-purple-100 rounded-lg flex items-center justify-center mx-auto mb-4">
 								<Target className="h-8 w-8 text-purple-600" />
 							</div>
-							<h3 className="text-lg font-bold text-gray-900 mb-3">맞춤형 포트폴리오</h3>
-							<p className="text-gray-600">
+							<h3 className="text-lg font-bold text-foreground mb-3">맞춤형 포트폴리오</h3>
+							<p className="text-muted-foreground">
 								개인의 <span className="font-semibold text-purple-600">투자 성향과 목표</span>
 								에 맞는
 								<br />

@@ -10,9 +10,9 @@ interface StockChartProps {
 
 export default function StockChart({ data, title, height = 300 }: StockChartProps) {
 	return (
-		<div className="bg-white rounded-lg border border-gray-200 p-4">
+		<div className="bg-card border border-border rounded-lg p-4">
 			<div className="flex items-center space-x-2 mb-4">
-				<h4 className="text-lg font-semibold text-gray-900">{title}</h4>
+				<h4 className="text-lg font-semibold text-foreground">{title}</h4>
 				<HelpTooltip
 					title="누적 수익률 비교"
 					description="AI 포트폴리오와 주요 벤치마크(S&P 500, QQQ)의 1년간 누적 수익률을 비교한 차트다. 파란색 선이 AI 포트폴리오, 초록색이 S&P 500, 주황색이 QQQ ETF의 성과를 나타낸다. 위쪽에 위치할수록 더 높은 수익률을 의미한다."
@@ -35,17 +35,18 @@ export default function StockChart({ data, title, height = 300 }: StockChartProp
 								<stop offset="95%" stopColor="#F59E0B" stopOpacity={0} />
 							</linearGradient>
 						</defs>
-						<CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
-						<XAxis dataKey="date" tick={{ fontSize: 12 }} tickFormatter={(value) => new Date(value).toLocaleDateString("ko-KR", { month: "short", day: "numeric" })} />
-						<YAxis tick={{ fontSize: 12 }} />
+						<CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+						<XAxis dataKey="date" tick={{ fontSize: 12, fill: "#e5e7eb" }} tickFormatter={(value) => new Date(value).toLocaleDateString("ko-KR", { month: "short", day: "numeric" })} />
+						<YAxis tick={{ fontSize: 12, fill: "#e5e7eb" }} />
 						<Tooltip
 							formatter={(value: any, name: any) => [`${Number(value).toFixed(2)}%`, name === "portfolio" ? "AI 포트폴리오" : name.toUpperCase()]}
 							labelFormatter={(value) => new Date(value).toLocaleDateString("ko-KR")}
 							contentStyle={{
-								backgroundColor: "#fff",
-								border: "1px solid #e2e8f0",
+								backgroundColor: "hsl(var(--card))",
+								border: "1px solid hsl(var(--border))",
 								borderRadius: "6px",
 								fontSize: "12px",
+								color: "hsl(var(--foreground))",
 							}}
 						/>
 						<Area type="monotone" dataKey="portfolio" stroke="#3B82F6" strokeWidth={2} fill="url(#portfolioGradient)" />

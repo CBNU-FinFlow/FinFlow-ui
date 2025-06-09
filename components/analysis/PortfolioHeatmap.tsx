@@ -199,7 +199,7 @@ export default function PortfolioHeatmap({ portfolioAllocation }: PortfolioHeatm
 	};
 
 	return (
-		<Card className="border border-gray-200 bg-white relative overflow-visible">
+		<Card className="border border-border bg-card relative overflow-visible">
 			<CardHeader>
 				<div className="flex items-center space-x-2">
 					<div className="w-5 h-5 bg-gradient-to-br from-blue-500 to-purple-500 rounded"></div>
@@ -217,7 +217,10 @@ export default function PortfolioHeatmap({ portfolioAllocation }: PortfolioHeatm
 			</CardHeader>
 			<CardContent className="overflow-visible">
 				{/* 히트맵 컨테이너 */}
-				<div ref={containerRef} className="relative w-full min-h-[320px] bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg border-2 border-gray-200 p-3">
+				<div
+					ref={containerRef}
+					className="relative w-full min-h-[320px] bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 rounded-lg border-2 border-gray-200 dark:border-gray-700 p-3"
+				>
 					{/* Flexbox 기반 히트맵 레이아웃 */}
 					<div className="flex flex-wrap gap-2 h-full">
 						{heatmapCells.map((cell, index) => (
@@ -248,7 +251,7 @@ export default function PortfolioHeatmap({ portfolioAllocation }: PortfolioHeatm
 									<div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent"></div>
 
 									{/* 호버 효과 */}
-									<div className="absolute inset-0 bg-white/0 group-hover:bg-white/20 transition-all duration-300"></div>
+									<div className="absolute inset-0 bg-background/0 group-hover:bg-muted/20 transition-all duration-300"></div>
 								</div>
 
 								{/* 콘텐츠 */}
@@ -313,7 +316,7 @@ export default function PortfolioHeatmap({ portfolioAllocation }: PortfolioHeatm
 					{/* 실제 데이터 기반 툴팁 */}
 					{tooltip && tooltip.show && (
 						<div
-							className="absolute bg-gray-900 text-white text-sm rounded-lg shadow-2xl p-4 pointer-events-none z-50 min-w-[250px] border border-gray-700"
+							className="absolute bg-gray-900 dark:bg-gray-950 text-white text-sm rounded-lg shadow-2xl p-4 pointer-events-none z-50 min-w-[250px] border border-gray-700 dark:border-gray-600"
 							style={{
 								left: Math.min(Math.max(tooltip.x - 125, 10), containerRef.current ? containerRef.current.offsetWidth - 260 : 0),
 								top: Math.max(tooltip.y - 160, 10),
@@ -390,15 +393,15 @@ export default function PortfolioHeatmap({ portfolioAllocation }: PortfolioHeatm
 					<div className="flex items-center space-x-4">
 						<div className="flex items-center space-x-2">
 							<div className="w-4 h-4 bg-gradient-to-br from-green-500 to-green-600 rounded shadow-sm"></div>
-							<span className="text-sm text-gray-600">상승</span>
+							<span className="text-sm text-muted-foreground">상승</span>
 						</div>
 						<div className="flex items-center space-x-2">
 							<div className="w-4 h-4 bg-gradient-to-br from-red-500 to-red-600 rounded shadow-sm"></div>
-							<span className="text-sm text-gray-600">하락</span>
+							<span className="text-sm text-muted-foreground">하락</span>
 						</div>
 						<div className="flex items-center space-x-2">
 							<div className="w-4 h-4 bg-gradient-to-br from-gray-500 to-gray-600 rounded shadow-sm"></div>
-							<span className="text-sm text-gray-600">현금</span>
+							<span className="text-sm text-muted-foreground">현금</span>
 						</div>
 						{stockPerformances.length > 0 && (
 							<div className="flex items-center space-x-2">
@@ -407,7 +410,7 @@ export default function PortfolioHeatmap({ portfolioAllocation }: PortfolioHeatm
 							</div>
 						)}
 					</div>
-					<div className="text-sm text-gray-500 font-medium">크기 = 투자 비중 • 색상 = 실제 수익률</div>
+					<div className="text-sm text-muted-foreground font-medium">크기 = 투자 비중 • 색상 = 실제 수익률</div>
 				</div>
 			</CardContent>
 		</Card>

@@ -109,7 +109,7 @@ export default function PortfolioStatus({ investmentAmount, quickMetrics, portfo
 	const riskInfo = getRiskLevel(metrics.beta);
 
 	return (
-		<Card className="border border-gray-200 bg-white">
+		<Card className="border border-border bg-card">
 			<CardHeader className="pb-4">
 				<div className="flex items-center space-x-2">
 					<div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
@@ -124,9 +124,9 @@ export default function PortfolioStatus({ investmentAmount, quickMetrics, portfo
 			<CardContent className="pt-0">
 				<div className="space-y-4">
 					{/* 총 자산 */}
-					<div className="bg-gradient-to-r from-blue-50 to-purple-50 p-4 rounded-lg border border-blue-100">
-						<div className="text-sm text-gray-600 mb-1">총 자산 가치</div>
-						<div className="text-2xl font-bold text-gray-900">{formatAmount(investmentAmount)}원</div>
+					<div className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-950/20 dark:to-purple-950/20 p-4 rounded-lg border border-blue-100 dark:border-blue-800/30">
+						<div className="text-sm text-muted-foreground mb-1">총 자산 가치</div>
+						<div className="text-2xl font-bold text-foreground">{formatAmount(investmentAmount)}원</div>
 						<div className="flex items-center space-x-2 mt-2">
 							<div className="text-sm text-green-600 font-medium">+{quickMetrics.annualReturn} (1년 예상)</div>
 							<div className={`text-sm font-medium ${realTimeData.dailyChange >= 0 ? "text-green-600" : "text-red-600"}`}>
@@ -139,19 +139,19 @@ export default function PortfolioStatus({ investmentAmount, quickMetrics, portfo
 					{/* 포지션 요약 */}
 					<div className="space-y-3">
 						<div className="flex justify-between items-center text-sm">
-							<span className="text-gray-600">활성 포지션</span>
-							<span className="font-medium text-gray-900">{metrics.activePositions}개</span>
+							<span className="text-muted-foreground">활성 포지션</span>
+							<span className="font-medium text-foreground">{metrics.activePositions}개</span>
 						</div>
 						<div className="flex justify-between items-center text-sm">
-							<span className="text-gray-600">현금 비중</span>
-							<span className="font-medium text-gray-900">{metrics.cashPercentage.toFixed(1)}%</span>
+							<span className="text-muted-foreground">현금 비중</span>
+							<span className="font-medium text-foreground">{metrics.cashPercentage.toFixed(1)}%</span>
 						</div>
 						<div className="flex justify-between items-center text-sm">
-							<span className="text-gray-600">베타</span>
+							<span className="text-muted-foreground">베타</span>
 							<span className="font-medium text-blue-600">{metrics.beta.toFixed(2)}</span>
 						</div>
 						<div className="flex justify-between items-center text-sm">
-							<span className="text-gray-600">알파</span>
+							<span className="text-muted-foreground">알파</span>
 							<span className={`font-medium ${metrics.alpha >= 0 ? "text-green-600" : "text-red-600"}`}>
 								{metrics.alpha >= 0 ? "+" : ""}
 								{metrics.alpha.toFixed(1)}%
@@ -162,14 +162,14 @@ export default function PortfolioStatus({ investmentAmount, quickMetrics, portfo
 					{/* 리스크 게이지 */}
 					<div className="mt-4">
 						<div className="flex justify-between items-center mb-2">
-							<span className="text-sm text-gray-600">리스크 레벨</span>
+							<span className="text-sm text-muted-foreground">리스크 레벨</span>
 							<span className={`text-sm font-medium ${riskInfo.color}`}>{riskInfo.level}</span>
 						</div>
-						<div className="w-full bg-gray-200 rounded-full h-2 relative">
+						<div className="w-full bg-muted dark:bg-gray-700 rounded-full h-2 relative">
 							<div className="bg-gradient-to-r from-green-500 via-yellow-500 to-red-500 h-2 rounded-full"></div>
-							<div className="absolute top-0 w-3 h-3 bg-white border-2 border-gray-700 rounded-full transform -translate-x-1/2 -translate-y-0.5" style={{ left: riskInfo.position }}></div>
+							<div className="absolute top-0 w-3 h-3 bg-background border-2 border-foreground rounded-full transform -translate-x-1/2 -translate-y-0.5" style={{ left: riskInfo.position }}></div>
 						</div>
-						<div className="flex justify-between text-xs text-gray-500 mt-1">
+						<div className="flex justify-between text-xs text-muted-foreground mt-1">
 							<span>낮음</span>
 							<span>중간</span>
 							<span>높음</span>

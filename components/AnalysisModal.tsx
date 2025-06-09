@@ -95,7 +95,7 @@ export default function AnalysisModal({
 	};
 
 	const getModalClassName = () => {
-		const baseClasses = "bg-white rounded-lg shadow-lg";
+		const baseClasses = "bg-background rounded-lg shadow-lg";
 		if (isFullScreen) {
 			return `${baseClasses} dialog-fullscreen-max`;
 		}
@@ -106,30 +106,30 @@ export default function AnalysisModal({
 		<Dialog open={isOpen} onOpenChange={onClose}>
 			<DialogContent className={getModalClassName()}>
 				<DialogTitle className="sr-only">AI 포트폴리오 분석 결과</DialogTitle>
-				<div className="flex flex-col h-full bg-white">
+				<div className="flex flex-col h-full bg-background">
 					{/* 헤더 */}
-					<div className="flex items-center justify-between p-4 border-b border-gray-200 bg-white flex-shrink-0">
+					<div className="flex items-center justify-between p-4 border-b border-border bg-background flex-shrink-0">
 						<div className="flex items-center space-x-4">
 							<div className="flex items-center space-x-2">
 								<div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
 									<Activity className="w-4 h-4 text-white" />
 								</div>
-								<h2 className="text-xl font-bold text-gray-900">AI 포트폴리오 분석 결과</h2>
+								<h2 className="text-xl font-bold text-foreground">AI 포트폴리오 분석 결과</h2>
 								<Badge className="bg-green-100 text-green-700 border-0">분석 완료</Badge>
 							</div>
 						</div>
 						<div className="flex items-center space-x-2">
-							<Button variant="ghost" size="sm" onClick={toggleFullScreen} className="text-gray-600 hover:text-gray-900">
+							<Button variant="ghost" size="sm" onClick={toggleFullScreen} className="text-muted-foreground hover:text-foreground">
 								{isFullScreen ? <Minimize className="h-4 w-4" /> : <Maximize className="h-4 w-4" />}
 							</Button>
-							<Button variant="ghost" size="sm" onClick={onClose} className="text-gray-600 hover:text-gray-900">
+							<Button variant="ghost" size="sm" onClick={onClose} className="text-muted-foreground hover:text-foreground">
 								<X className="h-4 w-4" />
 							</Button>
 						</div>
 					</div>
 
 					{/* 메인 콘텐츠 */}
-					<div className="flex-1 overflow-y-auto bg-gray-50" style={{ maxHeight: "calc(100% - 80px)" }}>
+					<div className="flex-1 overflow-y-auto bg-muted/30" style={{ maxHeight: "calc(100% - 80px)" }}>
 						<div className="p-6 space-y-6">
 							{/* 실시간 시장 상황 헤더 */}
 							<MarketStatusHeader />
@@ -154,89 +154,89 @@ export default function AnalysisModal({
 
 							{/* 고급 분석 메트릭 */}
 							<div className="grid grid-cols-2 xl:grid-cols-4 gap-4">
-								<Card className="border border-gray-200 bg-white">
+								<Card className="border border-border bg-card">
 									<CardContent className="p-4">
 										<div className="flex items-center justify-between mb-3">
 											<div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center">
 												<TrendingUp className="h-5 w-5 text-white" />
 											</div>
-											<div className="text-xs text-gray-500">vs 벤치마크</div>
+											<div className="text-xs text-muted-foreground">vs 벤치마크</div>
 										</div>
 										<div className="space-y-1">
 											<div className="flex items-center space-x-1">
-												<div className="text-sm text-gray-600">정보 비율</div>
+												<div className="text-sm text-muted-foreground">정보 비율</div>
 												<HelpTooltip
 													title="정보 비율 (Information Ratio)"
 													description="포트폴리오가 벤치마크를 얼마나 효율적으로 초과 수익을 달성하는지 측정하는 지표다. 초과 수익을 변동성으로 나눈 값으로, 높을수록 위험 대비 초과 수익이 우수하다는 의미다."
 												/>
 											</div>
-											<div className="text-xl font-bold text-gray-900">0.45</div>
+											<div className="text-xl font-bold text-foreground">0.45</div>
 											<div className="text-xs text-green-600">+0.12 vs S&P500</div>
 										</div>
 									</CardContent>
 								</Card>
 
-								<Card className="border border-gray-200 bg-white">
+								<Card className="border border-border bg-card">
 									<CardContent className="p-4">
 										<div className="flex items-center justify-between mb-3">
 											<div className="w-10 h-10 bg-gradient-to-br from-green-500 to-green-600 rounded-lg flex items-center justify-center">
 												<Target className="h-5 w-5 text-white" />
 											</div>
-											<div className="text-xs text-gray-500">리스크 조정</div>
+											<div className="text-xs text-muted-foreground">리스크 조정</div>
 										</div>
 										<div className="space-y-1">
 											<div className="flex items-center space-x-1">
-												<div className="text-sm text-gray-600">트레이너 비율</div>
+												<div className="text-sm text-muted-foreground">트레이너 비율</div>
 												<HelpTooltip
 													title="트레이너 비율 (Treynor Ratio)"
 													description="포트폴리오의 초과 수익을 시장 위험(베타)으로 나눈 지표다. 시장 위험 대비 얼마나 효과적으로 수익을 창출하는지 보여주며, 높을수록 시장 위험 대비 수익률이 우수하다."
 												/>
 											</div>
-											<div className="text-xl font-bold text-gray-900">1.23</div>
+											<div className="text-xl font-bold text-foreground">1.23</div>
 											<div className="text-xs text-blue-600">우수</div>
 										</div>
 									</CardContent>
 								</Card>
 
-								<Card className="border border-gray-200 bg-white">
+								<Card className="border border-border bg-card">
 									<CardContent className="p-4">
 										<div className="flex items-center justify-between mb-3">
 											<div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-purple-600 rounded-lg flex items-center justify-center">
 												<BarChart3 className="h-5 w-5 text-white" />
 											</div>
-											<div className="text-xs text-gray-500">분산도</div>
+											<div className="text-xs text-muted-foreground">분산도</div>
 										</div>
 										<div className="space-y-1">
 											<div className="flex items-center space-x-1">
-												<div className="text-sm text-gray-600">상관계수</div>
+												<div className="text-sm text-muted-foreground">상관계수</div>
 												<HelpTooltip
 													title="상관계수 (Correlation Coefficient)"
 													description="포트폴리오 내 자산들이 서로 얼마나 비슷하게 움직이는지 나타내는 지표다. 0에 가까울수록 독립적이고, 1에 가까울수록 동조화된다. 적절한 분산을 위해서는 낮은 상관관계가 유리하다."
 												/>
 											</div>
-											<div className="text-xl font-bold text-gray-900">0.78</div>
+											<div className="text-xl font-bold text-foreground">0.78</div>
 											<div className="text-xs text-orange-600">적정</div>
 										</div>
 									</CardContent>
 								</Card>
 
-								<Card className="border border-gray-200 bg-white">
+								<Card className="border border-border bg-card">
 									<CardContent className="p-4">
 										<div className="flex items-center justify-between mb-3">
 											<div className="w-10 h-10 bg-gradient-to-br from-red-500 to-red-600 rounded-lg flex items-center justify-center">
 												<AlertTriangle className="h-5 w-5 text-white" />
 											</div>
-											<div className="text-xs text-gray-500">95% 신뢰구간</div>
+											<div className="text-xs text-muted-foreground">95% 신뢰구간</div>
 										</div>
 										<div className="space-y-1">
 											<div className="flex items-center space-x-1">
-												<div className="text-sm text-gray-600">VaR (1일)</div>
+												<div className="text-sm text-muted-foreground">VaR (1일)</div>
 												<HelpTooltip
 													title="VaR (Value at Risk)"
 													description="95% 확률로 하루 동안 발생할 수 있는 최대 손실 금액을 나타낸다. 예를 들어 VaR이 -2.3%라면 95% 확률로 하루 손실이 2.3%를 넘지 않는다는 의미다. 리스크 관리의 핵심 지표다."
 												/>
 											</div>
-											<div className="text-xl font-bold text-gray-900">-2.3%</div>
+											<div className="text-xl font-bold text-foreground">-2.3%</div>
 											<div className="text-xs text-red-600">-{(Number(investmentAmount) * 0.023).toLocaleString()}원</div>
 										</div>
 									</CardContent>
@@ -263,7 +263,7 @@ export default function AnalysisModal({
 								{/* 포트폴리오 개요 */}
 								<TabsContent value="overview" className="space-y-6 mt-6">
 									{/* 투자 전략 요약 */}
-									<Card className="border border-gray-200 bg-white">
+									<Card className="border border-border bg-card">
 										<CardHeader>
 											<CardTitle className="flex items-center space-x-2">
 												<Target className="h-5 w-5 text-blue-600" />
@@ -274,45 +274,45 @@ export default function AnalysisModal({
 										<CardContent>
 											<div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
 												<div className="space-y-4">
-													<div className="bg-blue-50 p-4 rounded-lg border border-blue-100">
+													<div className="bg-blue-50 dark:bg-blue-950/20 p-4 rounded-lg border border-blue-100 dark:border-blue-800/30">
 														<div className="flex items-center space-x-2 mb-2">
 															<DollarSign className="h-4 w-4 text-blue-600" />
 															<span className="text-sm font-medium text-blue-900">투자 정보</span>
 														</div>
 														<div className="space-y-2 text-sm">
 															<div className="flex justify-between">
-																<span className="text-gray-600">투자 금액</span>
-																<span className="font-medium text-gray-900">{formatAmount(investmentAmount)}원</span>
+																<span className="text-muted-foreground">투자 금액</span>
+																<span className="font-medium text-foreground">{formatAmount(investmentAmount)}원</span>
 															</div>
 															<div className="flex justify-between">
-																<span className="text-gray-600">투자 성향</span>
-																<span className="font-medium text-gray-900">{getRiskLabel(riskTolerance)}</span>
+																<span className="text-muted-foreground">투자 성향</span>
+																<span className="font-medium text-foreground">{getRiskLabel(riskTolerance)}</span>
 															</div>
 															<div className="flex justify-between">
-																<span className="text-gray-600">투자 기간</span>
-																<span className="font-medium text-gray-900">{getHorizonLabel(investmentHorizon[0])}</span>
+																<span className="text-muted-foreground">투자 기간</span>
+																<span className="font-medium text-foreground">{getHorizonLabel(investmentHorizon[0])}</span>
 															</div>
 														</div>
 													</div>
 												</div>
 
 												<div className="space-y-4">
-													<div className="bg-green-50 p-4 rounded-lg border border-green-100">
+													<div className="bg-green-50 dark:bg-green-950/20 p-4 rounded-lg border border-green-100 dark:border-green-800/30">
 														<div className="flex items-center space-x-2 mb-2">
 															<TrendingUp className="h-4 w-4 text-green-600" />
 															<span className="text-sm font-medium text-green-900">예상 성과</span>
 														</div>
 														<div className="space-y-2 text-sm">
 															<div className="flex justify-between">
-																<span className="text-gray-600">연간 수익률</span>
+																<span className="text-muted-foreground">연간 수익률</span>
 																<span className="font-medium text-green-600">{quickMetrics.annualReturn}</span>
 															</div>
 															<div className="flex justify-between">
-																<span className="text-gray-600">예상 수익금</span>
+																<span className="text-muted-foreground">예상 수익금</span>
 																<span className="font-medium text-green-600">+{(Number(investmentAmount) * (parseFloat(quickMetrics.annualReturn.replace("%", "")) / 100)).toLocaleString()}원</span>
 															</div>
 															<div className="flex justify-between">
-																<span className="text-gray-600">승률</span>
+																<span className="text-muted-foreground">승률</span>
 																<span className="font-medium text-green-600">{performanceMetrics.find((m) => m.label === "승률")?.portfolio || "72.3%"}</span>
 															</div>
 														</div>
@@ -320,22 +320,22 @@ export default function AnalysisModal({
 												</div>
 
 												<div className="space-y-4">
-													<div className="bg-purple-50 p-4 rounded-lg border border-purple-100">
+													<div className="bg-purple-50 dark:bg-purple-950/20 p-4 rounded-lg border border-purple-100 dark:border-purple-800/30">
 														<div className="flex items-center space-x-2 mb-2">
 															<Shield className="h-4 w-4 text-purple-600" />
 															<span className="text-sm font-medium text-purple-900">리스크 관리</span>
 														</div>
 														<div className="space-y-2 text-sm">
 															<div className="flex justify-between">
-																<span className="text-gray-600">최대 낙폭</span>
+																<span className="text-muted-foreground">최대 낙폭</span>
 																<span className="font-medium text-red-600">{quickMetrics.maxDrawdown}</span>
 															</div>
 															<div className="flex justify-between">
-																<span className="text-gray-600">변동성</span>
+																<span className="text-muted-foreground">변동성</span>
 																<span className="font-medium text-orange-600">{quickMetrics.volatility}</span>
 															</div>
 															<div className="flex justify-between">
-																<span className="text-gray-600">샤프 비율</span>
+																<span className="text-muted-foreground">샤프 비율</span>
 																<span className="font-medium text-blue-600">{quickMetrics.sharpeRatio}</span>
 															</div>
 														</div>
@@ -347,7 +347,7 @@ export default function AnalysisModal({
 
 									{/* 섹터 및 지역 분산 */}
 									<div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-										<Card className="border border-gray-200 bg-white">
+										<Card className="border border-border bg-card">
 											<CardHeader>
 												<CardTitle className="flex items-center space-x-2">
 													<PieChart className="h-5 w-5 text-blue-600" />
@@ -394,7 +394,7 @@ export default function AnalysisModal({
 																	background: `conic-gradient(transparent 0deg ${(65.2 + 18.4 + 12.1) * 3.6}deg, #F59E0B ${(65.2 + 18.4 + 12.1) * 3.6}deg 360deg)`,
 																}}
 															></div>
-															<div className="absolute inset-3 bg-white rounded-full flex items-center justify-center">
+															<div className="absolute inset-3 bg-background rounded-full flex items-center justify-center">
 																<div className="text-center">
 																	<div className="text-lg font-bold text-gray-900">{portfolioAllocation.length}</div>
 																	<div className="text-xs text-gray-600">종목</div>
@@ -404,40 +404,40 @@ export default function AnalysisModal({
 													</div>
 
 													<div className="space-y-3">
-														<div className="flex justify-between items-center p-3 bg-blue-50 rounded-lg">
+														<div className="flex justify-between items-center p-3 bg-blue-50 dark:bg-blue-950/20 rounded-lg border dark:border-blue-800/30">
 															<div className="flex items-center space-x-2">
 																<div className="w-3 h-3 bg-blue-500 rounded-full"></div>
-																<span className="text-sm font-medium text-gray-700">기술주</span>
+																<span className="text-sm font-medium text-foreground dark:text-foreground">기술주</span>
 															</div>
 															<div className="text-right">
 																<div className="font-bold text-gray-900">65.2%</div>
 																<div className="text-xs text-gray-500">고성장</div>
 															</div>
 														</div>
-														<div className="flex justify-between items-center p-3 bg-green-50 rounded-lg">
+														<div className="flex justify-between items-center p-3 bg-green-50 dark:bg-green-950/20 rounded-lg border dark:border-green-800/30">
 															<div className="flex items-center space-x-2">
 																<div className="w-3 h-3 bg-green-500 rounded-full"></div>
-																<span className="text-sm font-medium text-gray-700">소비재</span>
+																<span className="text-sm font-medium text-foreground dark:text-foreground">소비재</span>
 															</div>
 															<div className="text-right">
 																<div className="font-bold text-gray-900">18.4%</div>
 																<div className="text-xs text-gray-500">안정성</div>
 															</div>
 														</div>
-														<div className="flex justify-between items-center p-3 bg-purple-50 rounded-lg">
+														<div className="flex justify-between items-center p-3 bg-purple-50 dark:bg-purple-950/20 rounded-lg border dark:border-purple-800/30">
 															<div className="flex items-center space-x-2">
 																<div className="w-3 h-3 bg-purple-500 rounded-full"></div>
-																<span className="text-sm font-medium text-gray-700">헬스케어</span>
+																<span className="text-sm font-medium text-foreground dark:text-foreground">헬스케어</span>
 															</div>
 															<div className="text-right">
 																<div className="font-bold text-gray-900">12.1%</div>
 																<div className="text-xs text-gray-500">방어적</div>
 															</div>
 														</div>
-														<div className="flex justify-between items-center p-3 bg-orange-50 rounded-lg">
+														<div className="flex justify-between items-center p-3 bg-orange-50 dark:bg-orange-950/20 rounded-lg border dark:border-orange-800/30">
 															<div className="flex items-center space-x-2">
 																<div className="w-3 h-3 bg-orange-500 rounded-full"></div>
-																<span className="text-sm font-medium text-gray-700">기타</span>
+																<span className="text-sm font-medium text-foreground dark:text-foreground">기타</span>
 															</div>
 															<div className="text-right">
 																<div className="font-bold text-gray-900">4.3%</div>
@@ -449,7 +449,7 @@ export default function AnalysisModal({
 											</CardContent>
 										</Card>
 
-										<Card className="border border-gray-200 bg-white">
+										<Card className="border border-border bg-card">
 											<CardHeader>
 												<CardTitle className="flex items-center space-x-2">
 													<Globe className="h-5 w-5 text-green-600" />
@@ -464,30 +464,30 @@ export default function AnalysisModal({
 											<CardContent>
 												<div className="space-y-4">
 													<div className="space-y-3">
-														<div className="flex justify-between items-center p-3 bg-blue-50 rounded-lg">
+														<div className="flex justify-between items-center p-3 bg-blue-50 dark:bg-blue-950/20 rounded-lg border dark:border-blue-800/30">
 															<div className="flex items-center space-x-2">
 																<div className="w-6 h-4 bg-blue-600 rounded-sm flex items-center justify-center text-white text-xs font-bold">US</div>
-																<span className="text-sm font-medium text-gray-700">미국</span>
+																<span className="text-sm font-medium text-foreground dark:text-foreground">미국</span>
 															</div>
 															<div className="text-right">
 																<div className="font-bold text-gray-900">78.5%</div>
 																<div className="text-xs text-gray-500">USD</div>
 															</div>
 														</div>
-														<div className="flex justify-between items-center p-3 bg-red-50 rounded-lg">
+														<div className="flex justify-between items-center p-3 bg-red-50 dark:bg-red-950/20 rounded-lg border dark:border-red-800/30">
 															<div className="flex items-center space-x-2">
 																<div className="w-6 h-4 bg-red-600 rounded-sm flex items-center justify-center text-white text-xs font-bold">KR</div>
-																<span className="text-sm font-medium text-gray-700">한국</span>
+																<span className="text-sm font-medium text-foreground dark:text-foreground">한국</span>
 															</div>
 															<div className="text-right">
 																<div className="font-bold text-gray-900">15.2%</div>
 																<div className="text-xs text-gray-500">KRW</div>
 															</div>
 														</div>
-														<div className="flex justify-between items-center p-3 bg-green-50 rounded-lg">
+														<div className="flex justify-between items-center p-3 bg-green-50 dark:bg-green-950/20 rounded-lg border dark:border-green-800/30">
 															<div className="flex items-center space-x-2">
 																<div className="w-6 h-4 bg-green-600 rounded-sm flex items-center justify-center text-white text-xs font-bold">EU</div>
-																<span className="text-sm font-medium text-gray-700">유럽</span>
+																<span className="text-sm font-medium text-foreground dark:text-foreground">유럽</span>
 															</div>
 															<div className="text-right">
 																<div className="font-bold text-gray-900">6.3%</div>
@@ -520,7 +520,7 @@ export default function AnalysisModal({
 									</div>
 
 									{/* 리스크 분석 상세 */}
-									<Card className="border border-gray-200 bg-white">
+									<Card className="border border-border bg-card">
 										<CardHeader>
 											<CardTitle className="flex items-center space-x-2">
 												<AlertTriangle className="h-5 w-5 text-red-600" />
@@ -596,7 +596,7 @@ export default function AnalysisModal({
 											</div>
 
 											{/* 리스크 요약 */}
-											<div className="mt-6 p-4 bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-lg">
+											<div className="mt-6 p-4 bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-950/20 dark:to-orange-950/20 border border-amber-200 dark:border-amber-800/30 rounded-lg">
 												<div className="flex items-start space-x-3">
 													<Info className="h-5 w-5 text-amber-600 mt-0.5" />
 													<div>
@@ -619,7 +619,7 @@ export default function AnalysisModal({
 									{/* 추가 분석 차트들 */}
 									<div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
 										{/* 수익률 분포 */}
-										<Card className="border border-gray-200 bg-white">
+										<Card className="border border-border bg-card">
 											<CardHeader>
 												<CardTitle className="flex items-center space-x-2">
 													<BarChart3 className="h-5 w-5 text-blue-600" />
@@ -632,7 +632,7 @@ export default function AnalysisModal({
 												<CardDescription>월별 예상 수익률 분포</CardDescription>
 											</CardHeader>
 											<CardContent>
-												<div className="h-56 bg-gray-50 rounded-lg p-4 relative">
+												<div className="h-56 bg-gray-50 dark:bg-gray-800 rounded-lg p-4 relative">
 													{/* 히스토그램 모의 */}
 													<div className="flex items-end justify-center h-full space-x-2">
 														{[-15, -10, -5, 0, 5, 10, 15, 20, 25].map((value, index) => {
@@ -646,7 +646,7 @@ export default function AnalysisModal({
 															);
 														})}
 													</div>
-													<div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-lg p-2 text-xs">
+													<div className="absolute top-4 right-4 bg-card/90 backdrop-blur-sm rounded-lg p-2 text-xs">
 														<div className="text-gray-600">평균: +8.2%</div>
 														<div className="text-gray-600">표준편차: 12.5%</div>
 													</div>
@@ -655,7 +655,7 @@ export default function AnalysisModal({
 										</Card>
 
 										{/* 드로우다운 분석 */}
-										<Card className="border border-gray-200 bg-white">
+										<Card className="border border-border bg-card">
 											<CardHeader>
 												<CardTitle className="flex items-center space-x-2">
 													<TrendingDown className="h-5 w-5 text-red-600" />
@@ -668,7 +668,7 @@ export default function AnalysisModal({
 												<CardDescription>최대 손실 구간 분석</CardDescription>
 											</CardHeader>
 											<CardContent>
-												<div className="h-56 bg-gray-50 rounded-lg p-4 relative">
+												<div className="h-56 bg-gray-50 dark:bg-gray-800 rounded-lg p-4 relative">
 													{/* 드로우다운 차트 모의 */}
 													<svg className="w-full h-full" viewBox="0 0 300 200">
 														<path d="M 20 20 L 50 25 L 80 30 L 110 45 L 140 60 L 170 40 L 200 35 L 230 25 L 260 20" stroke="#EF4444" strokeWidth="2" fill="none" />
@@ -684,7 +684,7 @@ export default function AnalysisModal({
 									</div>
 
 									{/* 성과 비교 테이블 확장 */}
-									<Card className="border border-gray-200 bg-white">
+									<Card className="border border-border bg-card">
 										<CardHeader>
 											<CardTitle className="flex items-center space-x-2">
 												<Activity className="h-5 w-5 text-green-600" />
@@ -718,7 +718,7 @@ export default function AnalysisModal({
 															{ label: "승률", portfolio: performanceMetrics.find((m) => m.label === "승률")?.portfolio || "72.3%", sp500: "68.5%", nasdaq: "71.2%", qqq: "72.8%", kospi: "64.1%" },
 															{ label: "정보 비율", portfolio: "0.45", sp500: "0.00", nasdaq: "0.15", qqq: "0.18", kospi: "-0.12" },
 														].map((metric, index) => (
-															<tr key={index} className="hover:bg-gray-50">
+															<tr key={index} className="hover:bg-gray-50 dark:hover:bg-gray-800">
 																<td className="py-3 px-4 font-medium text-gray-900">{metric.label}</td>
 																<td className="py-3 px-4 text-center font-bold text-blue-600">{metric.portfolio}</td>
 																<td className="py-3 px-4 text-center text-gray-600">{metric.sp500}</td>

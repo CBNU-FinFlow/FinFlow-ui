@@ -11,7 +11,7 @@ interface PositionDetailsProps {
 
 export default function PositionDetails({ portfolioAllocation }: PositionDetailsProps) {
 	return (
-		<Card className="border border-gray-200 bg-white">
+		<Card className="border border-border bg-card">
 			<CardHeader>
 				<div className="flex items-center space-x-2">
 					<PieChart className="h-5 w-5 text-blue-600" />
@@ -28,19 +28,19 @@ export default function PositionDetails({ portfolioAllocation }: PositionDetails
 					{portfolioAllocation.map((item, index) => {
 						const dailyChange = (Math.random() - 0.5) * 6; // 모의 일일 변동
 						const changeColor = dailyChange > 0 ? "text-green-600" : "text-red-600";
-						const bgColor = dailyChange > 0 ? "bg-green-50" : "bg-red-50";
+						const bgColor = dailyChange > 0 ? "bg-green-50 dark:bg-green-950/20" : "bg-red-50 dark:bg-red-950/20";
 
 						return (
 							<div key={index} className={`flex items-center justify-between p-4 ${bgColor} rounded-lg hover:shadow-md transition-all cursor-pointer`}>
 								<div className="flex items-center space-x-3">
 									<div className="w-5 h-5 rounded-full flex-shrink-0" style={{ backgroundColor: `hsl(${index * 45}, 70%, 50%)` }}></div>
 									<div>
-										<div className="font-medium text-gray-900">{item.stock}</div>
-										<div className="text-xs text-gray-500">기술주 • {item.percentage}% 비중</div>
+										<div className="font-medium text-foreground">{item.stock}</div>
+										<div className="text-xs text-muted-foreground">기술주 • {item.percentage}% 비중</div>
 									</div>
 								</div>
 								<div className="text-right">
-									<div className="font-bold text-gray-900">{item.amount.toLocaleString()}원</div>
+									<div className="font-bold text-foreground">{item.amount.toLocaleString()}원</div>
 									<div className={`text-sm font-medium ${changeColor}`}>
 										{dailyChange > 0 ? "+" : ""}
 										{dailyChange.toFixed(2)}%
@@ -52,15 +52,15 @@ export default function PositionDetails({ portfolioAllocation }: PositionDetails
 				</div>
 
 				{/* 포지션 요약 */}
-				<div className="mt-4 pt-4 border-t border-gray-200">
+				<div className="mt-4 pt-4 border-t border-border">
 					<div className="grid grid-cols-2 gap-4 text-sm">
-						<div className="text-center p-3 bg-blue-50 rounded-lg">
+						<div className="text-center p-3 bg-blue-50 dark:bg-blue-950/20 rounded-lg border border-blue-100 dark:border-blue-800/30">
 							<div className="font-bold text-blue-600">{portfolioAllocation.length}</div>
-							<div className="text-xs text-gray-600">총 종목 수</div>
+							<div className="text-xs text-muted-foreground">총 종목 수</div>
 						</div>
-						<div className="text-center p-3 bg-green-50 rounded-lg">
+						<div className="text-center p-3 bg-green-50 dark:bg-green-950/20 rounded-lg border border-green-100 dark:border-green-800/30">
 							<div className="font-bold text-green-600">{portfolioAllocation.reduce((sum, item) => sum + item.amount, 0).toLocaleString()}원</div>
-							<div className="text-xs text-gray-600">총 투자금액</div>
+							<div className="text-xs text-muted-foreground">총 투자금액</div>
 						</div>
 					</div>
 				</div>
