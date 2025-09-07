@@ -28,7 +28,7 @@ npm run build
 
 # 3. 압축
 echo "📦 압축 중..."
-tar -czf build.tar.gz .next public package.json package-lock.json next.config.ts
+tar -czf build.tar.gz .next public package.json package-lock.json next.config.mjs
 
 # 4. 업로드
 echo "📤 업로드 중..."
