@@ -2,26 +2,7 @@
 
 import React, { useEffect, useState, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { 
-	ArrowLeft, 
-	Brain, 
-	Activity, 
-	BarChart3, 
-	TrendingUp, 
-	Target, 
-	Shield, 
-	PieChart, 
-	CheckCircle, 
-	Info, 
-	AlertTriangle, 
-	Moon, 
-	Sun, 
-	RefreshCw,
-	Download,
-	Settings,
-	Zap,
-	Timer
-} from "lucide-react";
+import { ArrowLeft, Brain, Activity, BarChart3, TrendingUp, Target, Shield, PieChart, CheckCircle, Info, AlertTriangle, Moon, Sun, RefreshCw, Download, Settings, Zap, Timer } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -31,23 +12,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import Link from "next/link";
 import { useTheme } from "next-themes";
 import MarketStatusHeader from "@/components/analysis/MarketStatusHeader";
-import {
-	LineChart,
-	Line,
-	XAxis,
-	YAxis,
-	CartesianGrid,
-	Tooltip,
-	Legend,
-	ResponsiveContainer,
-	BarChart,
-	Bar,
-	ScatterChart,
-	Scatter,
-	Cell,
-	PieChart as RechartsPieChart,
-	Pie
-} from "recharts";
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, BarChart, Bar, ScatterChart, Scatter, Cell, PieChart as RechartsPieChart, Pie } from "recharts";
 
 // 타입 임포트
 import {
@@ -66,32 +31,29 @@ import {
 	CorrelationRequest,
 	ExplainRequest,
 	HistoricalPerformanceRequest,
-	RiskReturnRequest
+	RiskReturnRequest,
 } from "@/lib/types";
 import { apiCallWithRetry } from "@/lib/config";
 
 // 색상 팔레트
-const COLORS = [
-	'#3B82F6', '#10B981', '#8B5CF6', '#F59E0B', '#EF4444', 
-	'#06B6D4', '#84CC16', '#F97316', '#EC4899', '#6366F1'
-];
+const COLORS = ["#3B82F6", "#10B981", "#8B5CF6", "#F59E0B", "#EF4444", "#06B6D4", "#84CC16", "#F97316", "#EC4899", "#6366F1"];
 
 // 헬퍼 함수들
 const formatCurrency = (amount: number): string => {
-	return new Intl.NumberFormat('ko-KR', {
-		style: 'currency',
-		currency: 'KRW',
+	return new Intl.NumberFormat("ko-KR", {
+		style: "currency",
+		currency: "KRW",
 		minimumFractionDigits: 0,
 		maximumFractionDigits: 0,
 	}).format(amount);
 };
 
 const formatPercent = (value: number): string => {
-	return `${value >= 0 ? '+' : ''}${value.toFixed(2)}%`;
+	return `${value >= 0 ? "+" : ""}${value.toFixed(2)}%`;
 };
 
 const formatDate = (dateString: string): string => {
-	return new Date(dateString).toLocaleDateString('ko-KR');
+	return new Date(dateString).toLocaleDateString("ko-KR");
 };
 
 const getRiskLabel = (risk: string): string => {
@@ -124,11 +86,7 @@ const LoadingCard = ({ title, description }: { title: string; description: strin
 );
 
 // 에러 컴포넌트
-const ErrorCard = ({ title, error, onRetry }: { 
-	title: string; 
-	error: string; 
-	onRetry: () => void;
-}) => (
+const ErrorCard = ({ title, error, onRetry }: { title: string; error: string; onRetry: () => void }) => (
 	<Card className="backdrop-blur-sm bg-red-50/90 dark:bg-red-950/90 border border-red-200/50 dark:border-red-800/50 rounded-3xl">
 		<CardContent className="p-6">
 			<div className="flex items-start justify-between">
@@ -149,15 +107,7 @@ const ErrorCard = ({ title, error, onRetry }: {
 );
 
 // 포트폴리오 탭 컴포넌트
-const PortfolioTab = ({ 
-	allocation, 
-	metrics, 
-	quickMetrics 
-}: { 
-	allocation: PortfolioAllocation[]; 
-	metrics: PerformanceMetrics[]; 
-	quickMetrics: QuickMetrics;
-}) => (
+const PortfolioTab = ({ allocation, metrics, quickMetrics }: { allocation: PortfolioAllocation[]; metrics: PerformanceMetrics[]; quickMetrics: QuickMetrics }) => (
 	<div className="space-y-6">
 		{/* 퀵 메트릭 카드들 */}
 		<div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
@@ -174,7 +124,7 @@ const PortfolioTab = ({
 					</div>
 				</CardContent>
 			</Card>
-			
+
 			<Card className="backdrop-blur-sm bg-white/90 dark:bg-gray-900/90 border border-gray-200/50 dark:border-gray-700/50 rounded-3xl">
 				<CardContent className="p-4">
 					<div className="flex items-center space-x-2">
@@ -188,7 +138,7 @@ const PortfolioTab = ({
 					</div>
 				</CardContent>
 			</Card>
-			
+
 			<Card className="backdrop-blur-sm bg-white/90 dark:bg-gray-900/90 border border-gray-200/50 dark:border-gray-700/50 rounded-3xl">
 				<CardContent className="p-4">
 					<div className="flex items-center space-x-2">
@@ -202,7 +152,7 @@ const PortfolioTab = ({
 					</div>
 				</CardContent>
 			</Card>
-			
+
 			<Card className="backdrop-blur-sm bg-white/90 dark:bg-gray-900/90 border border-gray-200/50 dark:border-gray-700/50 rounded-3xl">
 				<CardContent className="p-4">
 					<div className="flex items-center space-x-2">
@@ -234,17 +184,12 @@ const PortfolioTab = ({
 						{allocation.map((asset, index) => (
 							<div key={asset.stock} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800/50 rounded-2xl">
 								<div className="flex items-center space-x-3">
-									<div 
-										className={`w-8 h-8 rounded-2xl flex items-center justify-center text-white font-bold text-sm`}
-										style={{ backgroundColor: COLORS[index % COLORS.length] }}
-									>
-										{asset.stock === '현금' ? '$' : asset.stock.charAt(0)}
+									<div className={`w-8 h-8 rounded-2xl flex items-center justify-center text-white font-bold text-sm`} style={{ backgroundColor: COLORS[index % COLORS.length] }}>
+										{asset.stock === "현금" ? "$" : asset.stock.charAt(0)}
 									</div>
 									<div>
 										<div className="font-semibold">{asset.stock}</div>
-										<div className="text-xs text-muted-foreground">
-											{formatCurrency(asset.amount)}
-										</div>
+										<div className="text-xs text-muted-foreground">{formatCurrency(asset.amount)}</div>
 									</div>
 								</div>
 								<div className="text-right">
@@ -254,7 +199,7 @@ const PortfolioTab = ({
 							</div>
 						))}
 					</div>
-					
+
 					{/* 파이 차트 */}
 					<div className="flex items-center justify-center">
 						<ResponsiveContainer width="100%" height={300}>
@@ -263,7 +208,7 @@ const PortfolioTab = ({
 									data={allocation.map((item, index) => ({
 										name: item.stock,
 										value: item.percentage,
-										amount: item.amount
+										amount: item.amount,
 									}))}
 									cx="50%"
 									cy="50%"
@@ -273,30 +218,19 @@ const PortfolioTab = ({
 									dataKey="value"
 								>
 									{allocation.map((_, index) => (
-										<Cell 
-											key={`cell-${index}`} 
-											fill={COLORS[index % COLORS.length]} 
-										/>
+										<Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
 									))}
 								</Pie>
-								<Tooltip 
-									formatter={(value, name, entry) => [
-										`${(value as number).toFixed(1)}%`, 
-										name,
-										`${formatCurrency(entry.payload?.amount || 0)}`
-									]}
-									contentStyle={{ 
-										backgroundColor: 'rgba(255, 255, 255, 0.95)',
-										border: 'none',
-										borderRadius: '12px',
-										boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)'
+								<Tooltip
+									formatter={(value, name, entry) => [`${(value as number).toFixed(1)}%`, name, `${formatCurrency(entry.payload?.amount || 0)}`]}
+									contentStyle={{
+										backgroundColor: "rgba(255, 255, 255, 0.95)",
+										border: "none",
+										borderRadius: "12px",
+										boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
 									}}
 								/>
-								<Legend 
-									verticalAlign="bottom" 
-									height={36}
-									formatter={(value, entry) => `${value} (${(entry.payload?.value || 0).toFixed(1)}%)`}
-								/>
+								<Legend verticalAlign="bottom" height={36} formatter={(value, entry) => `${value} (${(entry.payload?.value || 0).toFixed(1)}%)`} />
 							</RechartsPieChart>
 						</ResponsiveContainer>
 					</div>
@@ -328,15 +262,9 @@ const PortfolioTab = ({
 							{metrics.map((metric, index) => (
 								<tr key={index} className="border-b border-gray-100 dark:border-gray-800 last:border-b-0">
 									<td className="py-3 font-medium">{metric.label}</td>
-									<td className="text-center py-3 font-semibold text-blue-600">
-										{metric.portfolio}
-									</td>
-									<td className="text-center py-3 text-muted-foreground">
-										{metric.spy}
-									</td>
-									<td className="text-center py-3 text-muted-foreground">
-										{metric.qqq}
-									</td>
+									<td className="text-center py-3 font-semibold text-blue-600">{metric.portfolio}</td>
+									<td className="text-center py-3 text-muted-foreground">{metric.spy}</td>
+									<td className="text-center py-3 text-muted-foreground">{metric.qqq}</td>
 								</tr>
 							))}
 						</tbody>
@@ -349,15 +277,15 @@ const PortfolioTab = ({
 
 // 성과 차트 탭 컴포넌트
 const PerformanceTab = ({ history }: { history: PerformanceHistory[] }) => {
-	const chartData = history.map(item => ({
+	const chartData = history.map((item) => ({
 		date: formatDate(item.date),
 		포트폴리오: item.portfolio * 100,
-		'S&P 500': item.spy * 100,
+		"S&P 500": item.spy * 100,
 		NASDAQ: item.qqq * 100,
 	}));
 
 	// Y축 범위 계산
-	const allValues = chartData.flatMap(item => [item.포트폴리오, item['S&P 500'], item.NASDAQ]);
+	const allValues = chartData.flatMap((item) => [item.포트폴리오, item["S&P 500"], item.NASDAQ]);
 	const minValue = Math.min(...allValues);
 	const maxValue = Math.max(...allValues);
 	const padding = (maxValue - minValue) * 0.1; // 10% 패딩
@@ -377,61 +305,32 @@ const PerformanceTab = ({ history }: { history: PerformanceHistory[] }) => {
 				<CardContent>
 					<div className="h-[650px]">
 						<ResponsiveContainer width="100%" height="100%">
-							<LineChart 
-								data={chartData}
-								margin={{ top: 30, right: 40, left: 60, bottom: 80 }}
-							>
+							<LineChart data={chartData} margin={{ top: 30, right: 40, left: 60, bottom: 80 }}>
 								<CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-								<XAxis 
-									dataKey="date" 
+								<XAxis
+									dataKey="date"
 									stroke="#888"
 									fontSize={12}
 									angle={-45}
 									textAnchor="end"
 									height={60}
 									interval={Math.floor(chartData.length / 8)}
-									tickFormatter={(value) => value.split('.').slice(1).join('.')}
+									tickFormatter={(value) => value.split(".").slice(1).join(".")}
 								/>
-								<YAxis 
-									stroke="#888"
-									fontSize={12}
-									width={60}
-									domain={[yAxisMin, yAxisMax]}
-									tickFormatter={(value) => `${value.toFixed(1)}%`}
-								/>
-								<Tooltip 
-									contentStyle={{ 
-										backgroundColor: 'rgba(255, 255, 255, 0.95)',
-										border: 'none',
-										borderRadius: '12px',
-										boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)'
+								<YAxis stroke="#888" fontSize={12} width={60} domain={[yAxisMin, yAxisMax]} tickFormatter={(value) => `${value.toFixed(1)}%`} />
+								<Tooltip
+									contentStyle={{
+										backgroundColor: "rgba(255, 255, 255, 0.95)",
+										border: "none",
+										borderRadius: "12px",
+										boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
 									}}
 									formatter={(value, name) => [`${(value as number).toFixed(2)}%`, name]}
 								/>
-								<Legend wrapperStyle={{ paddingTop: '20px' }} />
-								<Line 
-									type="monotone" 
-									dataKey="포트폴리오" 
-									stroke="#3B82F6" 
-									strokeWidth={3}
-									dot={false}
-								/>
-								<Line 
-									type="monotone" 
-									dataKey="S&P 500" 
-									stroke="#10B981" 
-									strokeWidth={2}
-									dot={false}
-									strokeDasharray="5 5"
-								/>
-								<Line 
-									type="monotone" 
-									dataKey="NASDAQ" 
-									stroke="#8B5CF6" 
-									strokeWidth={2}
-									dot={false}
-									strokeDasharray="5 5"
-								/>
+								<Legend wrapperStyle={{ paddingTop: "20px" }} />
+								<Line type="monotone" dataKey="포트폴리오" stroke="#3B82F6" strokeWidth={3} dot={false} />
+								<Line type="monotone" dataKey="S&P 500" stroke="#10B981" strokeWidth={2} dot={false} strokeDasharray="5 5" />
+								<Line type="monotone" dataKey="NASDAQ" stroke="#8B5CF6" strokeWidth={2} dot={false} strokeDasharray="5 5" />
 							</LineChart>
 						</ResponsiveContainer>
 					</div>
@@ -442,26 +341,26 @@ const PerformanceTab = ({ history }: { history: PerformanceHistory[] }) => {
 };
 
 // XAI 탭 컴포넌트
-const XAITab = ({ 
-	xaiData, 
-	analysisMode, 
-	onModeChange, 
-	onRegenerate, 
-	isRegenerating 
-}: { 
+const XAITab = ({
+	xaiData,
+	analysisMode,
+	onModeChange,
+	onRegenerate,
+	isRegenerating,
+}: {
 	xaiData: XAIData;
 	analysisMode: AnalysisMode;
 	onModeChange: (mode: AnalysisMode) => void;
 	onRegenerate: () => void;
 	isRegenerating: boolean;
 }) => {
-	const featureChartData = (xaiData.feature_importance || []).slice(0, 10).map(item => ({
+	const featureChartData = (xaiData.feature_importance || []).slice(0, 10).map((item) => ({
 		name: `${item.asset_name}-${item.feature_name}`,
 		importance: item.importance_score,
 		asset: item.asset_name,
 		feature: item.feature_name,
 	}));
-	
+
 	const hasFeatureData = featureChartData.length > 0;
 
 	return (
@@ -474,9 +373,7 @@ const XAITab = ({
 							<Brain className="h-5 w-5 text-purple-600" />
 							<div>
 								<h3 className="font-semibold">AI 설명 모드</h3>
-								<p className="text-sm text-muted-foreground">
-									분석 방식을 선택하여 설명을 재생성할 수 있습니다
-								</p>
+								<p className="text-sm text-muted-foreground">분석 방식을 선택하여 설명을 재생성할 수 있습니다</p>
 							</div>
 						</div>
 						<div className="flex items-center space-x-3">
@@ -499,16 +396,8 @@ const XAITab = ({
 									</SelectItem>
 								</SelectContent>
 							</Select>
-							<Button 
-								onClick={onRegenerate} 
-								disabled={isRegenerating}
-								className="rounded-2xl"
-							>
-								{isRegenerating ? (
-									<RefreshCw className="h-4 w-4 mr-2 animate-spin" />
-								) : (
-									<RefreshCw className="h-4 w-4 mr-2" />
-								)}
+							<Button onClick={onRegenerate} disabled={isRegenerating} className="rounded-2xl">
+								{isRegenerating ? <RefreshCw className="h-4 w-4 mr-2 animate-spin" /> : <RefreshCw className="h-4 w-4 mr-2" />}
 								재생성
 							</Button>
 						</div>
@@ -529,38 +418,18 @@ const XAITab = ({
 					{hasFeatureData ? (
 						<div className="h-[500px]">
 							<ResponsiveContainer width="100%" height="100%">
-								<BarChart 
-									data={featureChartData} 
-									margin={{ top: 20, right: 30, left: 20, bottom: 120 }}
-								>
+								<BarChart data={featureChartData} margin={{ top: 20, right: 30, left: 20, bottom: 120 }}>
 									<CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-									<XAxis 
-										dataKey="name" 
-										stroke="#888" 
-										fontSize={10}
-										angle={-45}
-										textAnchor="end"
-										height={100}
-										interval={0}
-										tick={{ fontSize: 9 }}
-									/>
-									<YAxis 
-										stroke="#888" 
-										fontSize={12}
-										tickFormatter={(value) => value.toFixed(3)}
-										domain={[0, 'dataMax + 0.1']}
-									/>
-									<Tooltip 
-										contentStyle={{ 
-											backgroundColor: 'rgba(255, 255, 255, 0.95)',
-											border: 'none',
-											borderRadius: '12px',
-											boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)'
+									<XAxis dataKey="name" stroke="#888" fontSize={10} angle={-45} textAnchor="end" height={100} interval={0} tick={{ fontSize: 9 }} />
+									<YAxis stroke="#888" fontSize={12} tickFormatter={(value) => value.toFixed(3)} domain={[0, "dataMax + 0.1"]} />
+									<Tooltip
+										contentStyle={{
+											backgroundColor: "rgba(255, 255, 255, 0.95)",
+											border: "none",
+											borderRadius: "12px",
+											boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
 										}}
-										formatter={(value: any, name: any) => [
-											`${(value as number).toFixed(4)}`,
-											'중요도 점수'
-										]}
+										formatter={(value: any, name: any) => [`${(value as number).toFixed(4)}`, "중요도 점수"]}
 										labelFormatter={(label: any, payload: any) => {
 											if (payload && payload[0] && payload[0].payload) {
 												const data = payload[0].payload;
@@ -569,11 +438,7 @@ const XAITab = ({
 											return label;
 										}}
 									/>
-									<Bar 
-										dataKey="importance" 
-										fill="#8B5CF6" 
-										radius={[6, 6, 0, 0]}
-									/>
+									<Bar dataKey="importance" fill="#8B5CF6" radius={[6, 6, 0, 0]} />
 								</BarChart>
 							</ResponsiveContainer>
 						</div>
@@ -585,9 +450,7 @@ const XAITab = ({
 								</div>
 								<div>
 									<h3 className="font-medium text-muted-foreground">특성 데이터가 없습니다</h3>
-									<p className="text-sm text-muted-foreground mt-1">
-										AI 분석이 완료되면 특성 중요도 차트가 표시됩니다
-									</p>
+									<p className="text-sm text-muted-foreground mt-1">AI 분석이 완료되면 특성 중요도 차트가 표시됩니다</p>
 								</div>
 							</div>
 						</div>
@@ -602,16 +465,14 @@ const XAITab = ({
 						<Info className="h-5 w-5 text-purple-600" />
 						<span>AI 분석 설명</span>
 						<Badge variant="secondary" className="ml-2 rounded-2xl">
-							{analysisMode === 'fast' ? '빠른 모드' : '정밀 모드'}
+							{analysisMode === "fast" ? "빠른 모드" : "정밀 모드"}
 						</Badge>
 					</CardTitle>
 					<CardDescription>포트폴리오 구성 근거와 투자 전략 해설</CardDescription>
 				</CardHeader>
 				<CardContent>
 					<div className="p-4 bg-gradient-to-r from-purple-50 to-blue-50 dark:from-purple-950/20 dark:to-blue-950/20 rounded-2xl border border-purple-200 dark:border-purple-800/30">
-						<pre className="whitespace-pre-wrap text-sm leading-relaxed font-sans text-purple-900 dark:text-purple-100">
-							{xaiData.explanation_text}
-						</pre>
+						<pre className="whitespace-pre-wrap text-sm leading-relaxed font-sans text-purple-900 dark:text-purple-100">{xaiData.explanation_text}</pre>
 					</div>
 				</CardContent>
 			</Card>
@@ -622,22 +483,16 @@ const XAITab = ({
 // 상관관계 탭 컴포넌트
 const CorrelationTab = ({ correlationData }: { correlationData: CorrelationData[] }) => {
 	// 상관관계 매트릭스 데이터 구성
-	const stocks = Array.from(new Set([
-		...correlationData.map(d => d.stock1),
-		...correlationData.map(d => d.stock2)
-	]));
+	const stocks = Array.from(new Set([...correlationData.map((d) => d.stock1), ...correlationData.map((d) => d.stock2)]));
 
 	// 히트맵용 매트릭스 데이터 생성
-	const matrixData = stocks.map(stock1 => {
+	const matrixData = stocks.map((stock1) => {
 		const row: any = { name: stock1 };
-		stocks.forEach(stock2 => {
+		stocks.forEach((stock2) => {
 			if (stock1 === stock2) {
 				row[stock2] = 1.0; // 자기 자신과의 상관계수는 1
 			} else {
-				const correlation = correlationData.find(
-					d => (d.stock1 === stock1 && d.stock2 === stock2) || 
-						 (d.stock1 === stock2 && d.stock2 === stock1)
-				);
+				const correlation = correlationData.find((d) => (d.stock1 === stock1 && d.stock2 === stock2) || (d.stock1 === stock2 && d.stock2 === stock1));
 				row[stock2] = correlation ? correlation.correlation : 0;
 			}
 		});
@@ -655,9 +510,7 @@ const CorrelationTab = ({ correlationData }: { correlationData: CorrelationData[
 				stock1,
 				stock2,
 				correlation,
-				color: correlation >= 0.7 ? '#EF4444' : 
-					   correlation >= 0.4 ? '#F59E0B' : 
-					   correlation >= 0.1 ? '#10B981' : '#6B7280'
+				color: correlation >= 0.7 ? "#EF4444" : correlation >= 0.4 ? "#F59E0B" : correlation >= 0.1 ? "#10B981" : "#6B7280",
 			});
 		});
 	});
@@ -680,62 +533,64 @@ const CorrelationTab = ({ correlationData }: { correlationData: CorrelationData[
 								{/* 커스텀 히트맵 */}
 								<div className="mx-auto inline-block">
 									<div className="grid gap-1" style={{ gridTemplateColumns: `60px repeat(${stocks.length}, 60px)` }}>
-									{/* 헤더 행 */}
-									<div></div>
-									{stocks.map(stock => (
-										<div key={stock} className="text-center text-xs font-medium p-2 transform -rotate-45 h-16 flex items-end justify-center">
-											{stock}
-										</div>
-									))}
-									
-									{/* 데이터 행들 */}
-									{stocks.map((stock1, i) => (
-										<React.Fragment key={`row-${i}`}>
-											<div className="text-xs font-medium p-2 flex items-center">
-												{stock1}
+										{/* 헤더 행 */}
+										<div></div>
+										{stocks.map((stock) => (
+											<div key={stock} className="text-center text-xs font-medium p-2 transform -rotate-45 h-16 flex items-end justify-center">
+												{stock}
 											</div>
-											{stocks.map((stock2, j) => {
-												const correlation = matrixData[i][stock2] || 0;
-												const absCorr = Math.abs(correlation);
-												const intensity = absCorr;
-												const bgColor = correlation >= 0.7 ? `rgba(239, 68, 68, ${intensity})` : 
-																correlation >= 0.4 ? `rgba(245, 158, 11, ${intensity})` : 
-																correlation >= 0.1 ? `rgba(16, 185, 129, ${intensity})` : 
-																`rgba(107, 114, 128, ${intensity})`;
-												
-												return (
-													<div
-														key={`${i}-${j}`}
-														className="w-14 h-14 flex items-center justify-center text-xs font-mono border border-gray-200 dark:border-gray-700 rounded cursor-pointer hover:scale-105 transition-transform"
-														style={{ backgroundColor: bgColor }}
-														title={`${stock1} vs ${stock2}: ${correlation.toFixed(3)}`}
-													>
-														{correlation.toFixed(2)}
-													</div>
-												);
-											})}
-										</React.Fragment>
-									))}
+										))}
+
+										{/* 데이터 행들 */}
+										{stocks.map((stock1, i) => (
+											<React.Fragment key={`row-${i}`}>
+												<div className="text-xs font-medium p-2 flex items-center">{stock1}</div>
+												{stocks.map((stock2, j) => {
+													const correlation = matrixData[i][stock2] || 0;
+													const absCorr = Math.abs(correlation);
+													const intensity = absCorr;
+													const bgColor =
+														correlation >= 0.7
+															? `rgba(239, 68, 68, ${intensity})`
+															: correlation >= 0.4
+															? `rgba(245, 158, 11, ${intensity})`
+															: correlation >= 0.1
+															? `rgba(16, 185, 129, ${intensity})`
+															: `rgba(107, 114, 128, ${intensity})`;
+
+													return (
+														<div
+															key={`${i}-${j}`}
+															className="w-14 h-14 flex items-center justify-center text-xs font-mono border border-gray-200 dark:border-gray-700 rounded cursor-pointer hover:scale-105 transition-transform"
+															style={{ backgroundColor: bgColor }}
+															title={`${stock1} vs ${stock2}: ${correlation.toFixed(3)}`}
+														>
+															{correlation.toFixed(2)}
+														</div>
+													);
+												})}
+											</React.Fragment>
+										))}
 									</div>
-									
+
 									{/* 범례 */}
 									<div className="mt-6 flex flex-col items-center space-y-2 text-sm">
-									<div className="flex items-center space-x-2">
-										<div className="w-4 h-4 bg-red-500 rounded"></div>
-										<span>강한 상관관계 (≥0.7)</span>
-									</div>
-									<div className="flex items-center space-x-2">
-										<div className="w-4 h-4 bg-yellow-500 rounded"></div>
-										<span>보통 상관관계 (0.4-0.7)</span>
-									</div>
-									<div className="flex items-center space-x-2">
-										<div className="w-4 h-4 bg-green-500 rounded"></div>
-										<span>약한 상관관계 (0.1-0.4)</span>
-									</div>
-									<div className="flex items-center space-x-2">
-										<div className="w-4 h-4 bg-gray-500 rounded"></div>
-										<span>상관관계 없음 (&lt;0.1)</span>
-									</div>
+										<div className="flex items-center space-x-2">
+											<div className="w-4 h-4 bg-red-500 rounded"></div>
+											<span>강한 상관관계 (≥0.7)</span>
+										</div>
+										<div className="flex items-center space-x-2">
+											<div className="w-4 h-4 bg-yellow-500 rounded"></div>
+											<span>보통 상관관계 (0.4-0.7)</span>
+										</div>
+										<div className="flex items-center space-x-2">
+											<div className="w-4 h-4 bg-green-500 rounded"></div>
+											<span>약한 상관관계 (0.1-0.4)</span>
+										</div>
+										<div className="flex items-center space-x-2">
+											<div className="w-4 h-4 bg-gray-500 rounded"></div>
+											<span>상관관계 없음 (&lt;0.1)</span>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -748,16 +603,14 @@ const CorrelationTab = ({ correlationData }: { correlationData: CorrelationData[
 								</div>
 								<div>
 									<h3 className="font-medium text-muted-foreground">상관관계 데이터가 없습니다</h3>
-									<p className="text-sm text-muted-foreground mt-1">
-										포트폴리오 분석이 완료되면 상관관계 히트맵이 표시됩니다
-									</p>
+									<p className="text-sm text-muted-foreground mt-1">포트폴리오 분석이 완료되면 상관관계 히트맵이 표시됩니다</p>
 								</div>
 							</div>
 						</div>
 					)}
 				</CardContent>
 			</Card>
-			
+
 			{/* 상세 테이블 */}
 			<Card className="backdrop-blur-sm bg-white/90 dark:bg-gray-900/90 border border-gray-200/50 dark:border-gray-700/50 rounded-3xl">
 				<CardHeader>
@@ -781,21 +634,15 @@ const CorrelationTab = ({ correlationData }: { correlationData: CorrelationData[
 							<tbody>
 								{correlationData.map((item, index) => {
 									const absCorr = Math.abs(item.correlation);
-									const strength = absCorr > 0.7 ? '강함' : 
-													absCorr > 0.4 ? '보통' : '약함';
-									const strengthColor = absCorr > 0.7 ? 'text-red-600' :
-														absCorr > 0.4 ? 'text-yellow-600' : 'text-green-600';
-									
+									const strength = absCorr > 0.7 ? "강함" : absCorr > 0.4 ? "보통" : "약함";
+									const strengthColor = absCorr > 0.7 ? "text-red-600" : absCorr > 0.4 ? "text-yellow-600" : "text-green-600";
+
 									return (
 										<tr key={index} className="border-b border-gray-100 dark:border-gray-800 last:border-b-0">
 											<td className="p-3 font-semibold">{item.stock1}</td>
 											<td className="p-3 font-semibold">{item.stock2}</td>
-											<td className="text-center p-3 font-mono">
-												{item.correlation.toFixed(3)}
-											</td>
-											<td className={`text-center p-3 font-medium ${strengthColor}`}>
-												{strength}
-											</td>
+											<td className="text-center p-3 font-mono">{item.correlation.toFixed(3)}</td>
+											<td className={`text-center p-3 font-medium ${strengthColor}`}>{strength}</td>
 										</tr>
 									);
 								})}
@@ -810,7 +657,7 @@ const CorrelationTab = ({ correlationData }: { correlationData: CorrelationData[
 
 // 리스크 분석 탭 컴포넌트
 const RiskAnalysisTab = ({ riskReturnData }: { riskReturnData: RiskReturnData[] }) => {
-	const chartData = riskReturnData.map(item => ({
+	const chartData = riskReturnData.map((item) => ({
 		...item,
 		size: item.allocation * 10, // 원의 크기를 비중에 비례
 	}));
@@ -830,32 +677,18 @@ const RiskAnalysisTab = ({ riskReturnData }: { riskReturnData: RiskReturnData[] 
 						<ResponsiveContainer width="100%" height="100%">
 							<ScatterChart>
 								<CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-								<XAxis 
-									type="number" 
-									dataKey="risk" 
-									name="위험도"
-									stroke="#888"
-									fontSize={12}
-									tickFormatter={(value) => `${value}%`}
-								/>
-								<YAxis 
-									type="number" 
-									dataKey="return_rate" 
-									name="수익률"
-									stroke="#888"
-									fontSize={12}
-									tickFormatter={(value) => `${value}%`}
-								/>
-								<Tooltip 
-									contentStyle={{ 
-										backgroundColor: 'rgba(255, 255, 255, 0.95)',
-										border: 'none',
-										borderRadius: '12px',
-										boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)'
+								<XAxis type="number" dataKey="risk" name="위험도" stroke="#888" fontSize={12} tickFormatter={(value) => `${value}%`} />
+								<YAxis type="number" dataKey="return_rate" name="수익률" stroke="#888" fontSize={12} tickFormatter={(value) => `${value}%`} />
+								<Tooltip
+									contentStyle={{
+										backgroundColor: "rgba(255, 255, 255, 0.95)",
+										border: "none",
+										borderRadius: "12px",
+										boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
 									}}
 									formatter={(value, name) => {
-										if (name === 'risk') return [`${value}%`, '위험도'];
-										if (name === 'return_rate') return [`${value}%`, '수익률'];
+										if (name === "risk") return [`${value}%`, "위험도"];
+										if (name === "return_rate") return [`${value}%`, "수익률"];
 										return [value, name];
 									}}
 								/>
@@ -880,35 +713,26 @@ const RiskAnalysisTab = ({ riskReturnData }: { riskReturnData: RiskReturnData[] 
 						{riskReturnData
 							.sort((a, b) => b.return_rate - a.return_rate)
 							.map((item, index) => (
-							<div key={item.symbol} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800/50 rounded-2xl">
-								<div className="flex items-center space-x-3">
-									<div 
-										className="w-8 h-8 rounded-2xl flex items-center justify-center text-white font-bold text-sm"
-										style={{ backgroundColor: COLORS[index % COLORS.length] }}
-									>
-										{item.symbol.charAt(0)}
+								<div key={item.symbol} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800/50 rounded-2xl">
+									<div className="flex items-center space-x-3">
+										<div className="w-8 h-8 rounded-2xl flex items-center justify-center text-white font-bold text-sm" style={{ backgroundColor: COLORS[index % COLORS.length] }}>
+											{item.symbol.charAt(0)}
+										</div>
+										<div>
+											<div className="font-semibold">{item.symbol}</div>
+											<div className="text-sm text-muted-foreground">비중: {item.allocation.toFixed(1)}%</div>
+										</div>
 									</div>
-									<div>
-										<div className="font-semibold">{item.symbol}</div>
-										<div className="text-sm text-muted-foreground">
-											비중: {item.allocation.toFixed(1)}%
+									<div className="text-right space-y-1">
+										<div className="text-sm">
+											<span className="text-green-600 font-semibold">수익률: {formatPercent(item.return_rate)}</span>
+										</div>
+										<div className="text-sm">
+											<span className="text-red-600 font-semibold">위험도: {item.risk.toFixed(1)}%</span>
 										</div>
 									</div>
 								</div>
-								<div className="text-right space-y-1">
-									<div className="text-sm">
-										<span className="text-green-600 font-semibold">
-											수익률: {formatPercent(item.return_rate)}
-										</span>
-									</div>
-									<div className="text-sm">
-										<span className="text-red-600 font-semibold">
-											위험도: {item.risk.toFixed(1)}%
-										</span>
-									</div>
-								</div>
-							</div>
-						))}
+							))}
 					</div>
 				</CardContent>
 			</Card>
@@ -922,7 +746,7 @@ function AnalysisResultsContent() {
 	const router = useRouter();
 	const { theme, setTheme } = useTheme();
 	const [mounted, setMounted] = useState(false);
-	
+
 	// 상태 관리
 	const [tabsData, setTabsData] = useState<TabsData | null>(null);
 	const [loadingStates, setLoadingStates] = useState({
@@ -964,23 +788,23 @@ function AnalysisResultsContent() {
 			]);
 		})();
 
-		return () => { alive = false };
+		return () => {
+			alive = false;
+		};
 	}, []);
 
 	// portfolio 완료 후 의존 데이터 재로딩
 	useEffect(() => {
 		if (!tabsData?.portfolio?.allocation?.length) return;
-		
+
 		let alive = true;
 		(async () => {
-			await Promise.allSettled([
-				loadPerformanceData(alive),
-				loadCorrelationData(alive),
-				loadRiskReturnData(alive),
-			]);
+			await Promise.allSettled([loadPerformanceData(alive), loadCorrelationData(alive), loadRiskReturnData(alive)]);
 		})();
 
-		return () => { alive = false };
+		return () => {
+			alive = false;
+		};
 	}, [tabsData?.portfolio?.allocation?.length]);
 
 	// const loadAllData = async () => {
@@ -996,45 +820,45 @@ function AnalysisResultsContent() {
 
 	const loadPortfolioData = async (alive = true) => {
 		try {
-			updateLoadingState('portfolio', { isLoading: true, progress: 20 });
-			
+			updateLoadingState("portfolio", { isLoading: true, progress: 20 });
+
 			const req: PredictRequest = {
 				investment_amount: Number(investmentAmount),
 				risk_tolerance: riskTolerance as "conservative" | "moderate" | "aggressive",
 				investment_horizon: Number(investmentHorizon),
 			};
-			
-			const response = await apiCallWithRetry<PredictResponse>('/predict', {
-				method: 'POST',
+
+			const response = await apiCallWithRetry<PredictResponse>("/predict", {
+				method: "POST",
 				body: JSON.stringify(req),
 			});
 
 			if (!alive) return;
-			updateLoadingState('portfolio', { isLoading: true, progress: 80 });
+			updateLoadingState("portfolio", { isLoading: true, progress: 80 });
 
 			// 응답 데이터를 프론트엔드 형식으로 변환
 			const portfolioData = transformPortfolioData(response as any, investmentAmount);
-			
+
 			if (!alive) return;
-			setTabsData(prev => ({
+			setTabsData((prev) => ({
 				...prev!,
 				portfolio: portfolioData,
 			}));
 
-			updateLoadingState('portfolio', { isLoading: false, progress: 100 });
+			updateLoadingState("portfolio", { isLoading: false, progress: 100 });
 		} catch (error) {
 			if (!alive) return;
-			updateLoadingState('portfolio', { 
-				isLoading: false, 
-				progress: 0, 
-				error: (error as Error).message
+			updateLoadingState("portfolio", {
+				isLoading: false,
+				progress: 0,
+				error: (error as Error).message,
 			});
 		}
 	};
 
 	const loadXAIData = async (alive = true) => {
 		try {
-			updateLoadingState('xai', { isLoading: true, progress: 30 });
+			updateLoadingState("xai", { isLoading: true, progress: 30 });
 
 			const req: ExplainRequest = {
 				investment_amount: Number(investmentAmount),
@@ -1043,26 +867,26 @@ function AnalysisResultsContent() {
 				method: analysisMode,
 			};
 
-			const response = await apiCallWithRetry('/explain', {
-				method: 'POST',
+			const response = await apiCallWithRetry("/explain", {
+				method: "POST",
 				body: JSON.stringify(req),
 			});
 
 			if (!alive) return;
-			updateLoadingState('xai', { isLoading: true, progress: 90 });
+			updateLoadingState("xai", { isLoading: true, progress: 90 });
 
-			setTabsData(prev => ({
+			setTabsData((prev) => ({
 				...prev!,
 				xai: response as XAIData,
 			}));
 
-			updateLoadingState('xai', { isLoading: false, progress: 100 });
+			updateLoadingState("xai", { isLoading: false, progress: 100 });
 		} catch (error) {
 			if (!alive) return;
-			updateLoadingState('xai', { 
-				isLoading: false, 
-				progress: 0, 
-				error: (error as Error).message
+			updateLoadingState("xai", {
+				isLoading: false,
+				progress: 0,
+				error: (error as Error).message,
 			});
 		}
 	};
@@ -1071,34 +895,34 @@ function AnalysisResultsContent() {
 		if (!tabsData?.portfolio?.allocation?.length) return;
 
 		try {
-			updateLoadingState('performance', { isLoading: true, progress: 40 });
+			updateLoadingState("performance", { isLoading: true, progress: 40 });
 
 			const req: HistoricalPerformanceRequest = {
-				portfolio_allocation: tabsData.portfolio.allocation.map(item => ({
+				portfolio_allocation: tabsData.portfolio.allocation.map((item) => ({
 					symbol: item.stock,
 					weight: item.percentage / 100,
 				})),
 				period: "1y",
 			};
 
-			const response = await apiCallWithRetry('/historical-performance', {
-				method: 'POST',
+			const response = await apiCallWithRetry("/historical-performance", {
+				method: "POST",
 				body: JSON.stringify(req),
 			});
 
 			if (!alive) return;
-			setTabsData(prev => ({
+			setTabsData((prev) => ({
 				...prev!,
 				performance: { history: (response as any).performance_history },
 			}));
 
-			updateLoadingState('performance', { isLoading: false, progress: 100 });
+			updateLoadingState("performance", { isLoading: false, progress: 100 });
 		} catch (error) {
 			if (!alive) return;
-			updateLoadingState('performance', { 
-				isLoading: false, 
-				progress: 0, 
-				error: (error as Error).message
+			updateLoadingState("performance", {
+				isLoading: false,
+				progress: 0,
+				error: (error as Error).message,
 			});
 		}
 	};
@@ -1107,37 +931,35 @@ function AnalysisResultsContent() {
 		if (!tabsData?.portfolio?.allocation?.length) return;
 
 		try {
-			updateLoadingState('correlation', { isLoading: true, progress: 50 });
+			updateLoadingState("correlation", { isLoading: true, progress: 50 });
 
-			const tickers = tabsData.portfolio.allocation
-				.filter(item => item.stock !== '현금' && item.stock)
-				.map(item => item.stock);
+			const tickers = tabsData.portfolio.allocation.filter((item) => item.stock !== "현금" && item.stock).map((item) => item.stock);
 
 			if (tickers.length === 0) return;
 
 			const req: CorrelationRequest = {
 				tickers,
-				period: '1y',
+				period: "1y",
 			};
 
-			const response = await apiCallWithRetry('/correlation-analysis', {
-				method: 'POST',
+			const response = await apiCallWithRetry("/correlation-analysis", {
+				method: "POST",
 				body: JSON.stringify(req),
 			});
 
 			if (!alive) return;
-			setTabsData(prev => ({
+			setTabsData((prev) => ({
 				...prev!,
 				correlation: (response as any).correlation_data,
 			}));
 
-			updateLoadingState('correlation', { isLoading: false, progress: 100 });
+			updateLoadingState("correlation", { isLoading: false, progress: 100 });
 		} catch (error) {
 			if (!alive) return;
-			updateLoadingState('correlation', { 
-				isLoading: false, 
-				progress: 0, 
-				error: (error as Error).message
+			updateLoadingState("correlation", {
+				isLoading: false,
+				progress: 0,
+				error: (error as Error).message,
 			});
 		}
 	};
@@ -1146,40 +968,40 @@ function AnalysisResultsContent() {
 		if (!tabsData?.portfolio?.allocation?.length) return;
 
 		try {
-			updateLoadingState('riskReturn', { isLoading: true, progress: 60 });
+			updateLoadingState("riskReturn", { isLoading: true, progress: 60 });
 
 			const req: RiskReturnRequest = {
-				portfolio_allocation: tabsData.portfolio.allocation.map(item => ({
+				portfolio_allocation: tabsData.portfolio.allocation.map((item) => ({
 					symbol: item.stock,
 					weight: item.percentage / 100,
 				})),
 				period: "1y",
 			};
 
-			const response = await apiCallWithRetry('/risk-return-analysis', {
-				method: 'POST',
+			const response = await apiCallWithRetry("/risk-return-analysis", {
+				method: "POST",
 				body: JSON.stringify(req),
 			});
 
 			if (!alive) return;
-			setTabsData(prev => ({
+			setTabsData((prev) => ({
 				...prev!,
 				riskReturn: (response as any).risk_return_data,
 			}));
 
-			updateLoadingState('riskReturn', { isLoading: false, progress: 100 });
+			updateLoadingState("riskReturn", { isLoading: false, progress: 100 });
 		} catch (error) {
 			if (!alive) return;
-			updateLoadingState('riskReturn', { 
-				isLoading: false, 
-				progress: 0, 
-				error: (error as Error).message
+			updateLoadingState("riskReturn", {
+				isLoading: false,
+				progress: 0,
+				error: (error as Error).message,
 			});
 		}
 	};
 
 	const updateLoadingState = (key: keyof typeof loadingStates, update: Partial<LoadingState>) => {
-		setLoadingStates(prev => ({
+		setLoadingStates((prev) => ({
 			...prev,
 			[key]: { ...prev[key], ...update },
 		}));
@@ -1188,19 +1010,19 @@ function AnalysisResultsContent() {
 	const transformPortfolioData = (backendData: any, investmentAmount: string) => {
 		try {
 			const amount = Number(investmentAmount);
-			
+
 			// 데이터 검증
-			if (!backendData || typeof backendData !== 'object') {
-				throw new Error('Invalid backend data format');
+			if (!backendData || typeof backendData !== "object") {
+				throw new Error("Invalid backend data format");
 			}
 
 			if (!backendData.allocation || !Array.isArray(backendData.allocation)) {
-				console.warn('Missing or invalid allocation data, using empty array');
+				console.warn("Missing or invalid allocation data, using empty array");
 				backendData.allocation = [];
 			}
 
-			if (!backendData.metrics || typeof backendData.metrics !== 'object') {
-				console.warn('Missing or invalid metrics data, using defaults');
+			if (!backendData.metrics || typeof backendData.metrics !== "object") {
+				console.warn("Missing or invalid metrics data, using defaults");
 				backendData.metrics = {
 					total_return: 0,
 					annual_return: 0,
@@ -1213,46 +1035,46 @@ function AnalysisResultsContent() {
 
 			return {
 				allocation: backendData.allocation.map((item: any) => ({
-					stock: item?.symbol || 'Unknown',
+					stock: item?.symbol || "Unknown",
 					percentage: (item?.weight || 0) * 100,
 					amount: amount * (item?.weight || 0),
 				})),
 				metrics: [
-					{ 
-						label: "총 수익률", 
-						portfolio: `${(backendData.metrics.total_return || 0).toFixed(2)}%`, 
-						spy: "0.00%", 
-						qqq: "0.00%" 
+					{
+						label: "총 수익률",
+						portfolio: `${(backendData.metrics.total_return || 0).toFixed(2)}%`,
+						spy: "0.00%",
+						qqq: "0.00%",
 					},
-					{ 
-						label: "연간 수익률", 
-						portfolio: `${(backendData.metrics.annual_return || 0).toFixed(2)}%`, 
-						spy: "0.00%", 
-						qqq: "0.00%" 
+					{
+						label: "연간 수익률",
+						portfolio: `${(backendData.metrics.annual_return || 0).toFixed(2)}%`,
+						spy: "0.00%",
+						qqq: "0.00%",
 					},
-					{ 
-						label: "샤프 비율", 
-						portfolio: (backendData.metrics.sharpe_ratio || 0).toFixed(4), 
-						spy: "0.0000", 
-						qqq: "0.0000" 
+					{
+						label: "샤프 비율",
+						portfolio: (backendData.metrics.sharpe_ratio || 0).toFixed(4),
+						spy: "0.0000",
+						qqq: "0.0000",
 					},
-					{ 
-						label: "소르티노 비율", 
-						portfolio: (backendData.metrics.sortino_ratio || 0).toFixed(4), 
-						spy: "0.0000", 
-						qqq: "0.0000" 
+					{
+						label: "소르티노 비율",
+						portfolio: (backendData.metrics.sortino_ratio || 0).toFixed(4),
+						spy: "0.0000",
+						qqq: "0.0000",
 					},
-					{ 
-						label: "최대 낙폭", 
-						portfolio: `${(backendData.metrics.max_drawdown || 0).toFixed(2)}%`, 
-						spy: "0.00%", 
-						qqq: "0.00%" 
+					{
+						label: "최대 낙폭",
+						portfolio: `${(backendData.metrics.max_drawdown || 0).toFixed(2)}%`,
+						spy: "0.00%",
+						qqq: "0.00%",
 					},
-					{ 
-						label: "변동성", 
-						portfolio: `${(backendData.metrics.volatility || 0).toFixed(2)}%`, 
-						spy: "0.00%", 
-						qqq: "0.00%" 
+					{
+						label: "변동성",
+						portfolio: `${(backendData.metrics.volatility || 0).toFixed(2)}%`,
+						spy: "0.00%",
+						qqq: "0.00%",
 					},
 				],
 				quickMetrics: {
@@ -1263,8 +1085,8 @@ function AnalysisResultsContent() {
 				},
 			};
 		} catch (error) {
-			console.error('Portfolio data transformation error:', error);
-			
+			console.error("Portfolio data transformation error:", error);
+
 			// 완전히 실패한 경우 기본값 반환
 			return {
 				allocation: [],
@@ -1289,7 +1111,7 @@ function AnalysisResultsContent() {
 	const handleXAIModeChange = async (mode: AnalysisMode) => {
 		setAnalysisMode(mode);
 		setIsRegeneratingXAI(true);
-		
+
 		try {
 			const req: ExplainRequest = {
 				investment_amount: Number(investmentAmount),
@@ -1298,17 +1120,17 @@ function AnalysisResultsContent() {
 				method: mode,
 			};
 
-			const response = await apiCallWithRetry('/explain', {
-				method: 'POST',
+			const response = await apiCallWithRetry("/explain", {
+				method: "POST",
 				body: JSON.stringify(req),
 			});
 
-			setTabsData(prev => ({
+			setTabsData((prev) => ({
 				...prev!,
 				xai: response as XAIData,
 			}));
 		} catch (error) {
-			console.error('XAI 재생성 실패', error);
+			console.error("XAI 재생성 실패", error);
 		} finally {
 			setIsRegeneratingXAI(false);
 		}
@@ -1316,19 +1138,19 @@ function AnalysisResultsContent() {
 
 	const handleRetry = (dataType: keyof typeof loadingStates) => {
 		switch (dataType) {
-			case 'portfolio':
+			case "portfolio":
 				loadPortfolioData(true);
 				break;
-			case 'xai':
+			case "xai":
 				loadXAIData(true);
 				break;
-			case 'performance':
+			case "performance":
 				loadPerformanceData(true);
 				break;
-			case 'correlation':
+			case "correlation":
 				loadCorrelationData(true);
 				break;
-			case 'riskReturn':
+			case "riskReturn":
 				loadRiskReturnData(true);
 				break;
 		}
@@ -1351,10 +1173,12 @@ function AnalysisResultsContent() {
 	}
 
 	return (
-		<div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 dark:from-gray-900 dark:to-blue-900">
-			{/* 배경 패턴 */}
-			<div className="absolute inset-0 bg-white dark:bg-black bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,#1f1f1f_1px,transparent_1px),linear-gradient(to_bottom,#1f1f1f_1px,transparent_1px)] bg-[size:4rem_4rem] opacity-30"></div>
-			
+		<div className="min-h-screen">
+			{/* 격자 패턴 배경 - 스크롤 시에도 유지 */}
+			<div className="fixed inset-0 bg-[linear-gradient(to_right,#d0d0d0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,#1f1f1f_1px,transparent_1px),linear-gradient(to_bottom,#1f1f1f_1px,transparent_1px)] bg-[size:4rem_4rem] -z-20"></div>
+			{/* 그라데이션 오버레이 */}
+			<div className="fixed inset-0 bg-gradient-to-br from-gray-50/80 to-blue-50/80 dark:from-gray-900/80 dark:to-blue-900/20 -z-10"></div>
+
 			{/* 상단 헤더 */}
 			<div className="relative backdrop-blur-sm bg-white/90 dark:bg-gray-900/90 border-b border-gray-200/50 dark:border-gray-700/50 sticky top-0 z-10">
 				<div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -1371,18 +1195,11 @@ function AnalysisResultsContent() {
 									<Activity className="w-4 h-4 text-white" />
 								</div>
 								<h1 className="text-xl font-bold">AI 포트폴리오 분석 결과</h1>
-								<Badge className="bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-400 border-0 rounded-2xl">
-									분석 완료
-								</Badge>
+								<Badge className="bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-400 border-0 rounded-2xl">분석 완료</Badge>
 							</div>
 						</div>
 						<div className="flex items-center space-x-2">
-							<Button 
-								variant="ghost" 
-								size="sm" 
-								onClick={() => setTheme(theme === "dark" ? "light" : "dark")} 
-								className="text-muted-foreground hover:text-foreground rounded-2xl"
-							>
+							<Button variant="ghost" size="sm" onClick={() => setTheme(theme === "dark" ? "light" : "dark")} className="text-muted-foreground hover:text-foreground rounded-2xl">
 								{mounted && theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
 							</Button>
 							<Button
@@ -1410,13 +1227,15 @@ function AnalysisResultsContent() {
 							</div>
 						</div>
 						<h2 className="text-3xl font-bold">포트폴리오 분석이 완료되었습니다</h2>
-						<p className="text-muted-foreground text-lg">
-							투자 금액 {formatCurrency(Number(investmentAmount))}에 대한 AI 최적화 포트폴리오를 제안합니다
-						</p>
+						<p className="text-muted-foreground text-lg">투자 금액 {formatCurrency(Number(investmentAmount))}에 대한 AI 최적화 포트폴리오를 제안합니다</p>
 						<div className="flex items-center justify-center space-x-4 text-sm text-muted-foreground">
-							<div>투자 성향: <span className="font-medium">{getRiskLabel(riskTolerance)}</span></div>
+							<div>
+								투자 성향: <span className="font-medium">{getRiskLabel(riskTolerance)}</span>
+							</div>
 							<div>•</div>
-							<div>투자 기간: <span className="font-medium">{getHorizonLabel(investmentHorizon)}</span></div>
+							<div>
+								투자 기간: <span className="font-medium">{getHorizonLabel(investmentHorizon)}</span>
+							</div>
 						</div>
 					</div>
 
@@ -1447,37 +1266,19 @@ function AnalysisResultsContent() {
 
 						<TabsContent value="portfolio" className="space-y-6 mt-8">
 							{loadingStates.portfolio.isLoading ? (
-								<LoadingCard 
-									title="포트폴리오 생성 중..." 
-									description="AI가 최적의 자산 배분을 계산하고 있습니다" 
-								/>
+								<LoadingCard title="포트폴리오 생성 중..." description="AI가 최적의 자산 배분을 계산하고 있습니다" />
 							) : loadingStates.portfolio.error ? (
-								<ErrorCard 
-									title="포트폴리오 생성 실패"
-									error={loadingStates.portfolio.error}
-									onRetry={() => handleRetry('portfolio')}
-								/>
+								<ErrorCard title="포트폴리오 생성 실패" error={loadingStates.portfolio.error} onRetry={() => handleRetry("portfolio")} />
 							) : (
-								<PortfolioTab 
-									allocation={tabsData.portfolio.allocation}
-									metrics={tabsData.portfolio.metrics}
-									quickMetrics={tabsData.portfolio.quickMetrics}
-								/>
+								<PortfolioTab allocation={tabsData.portfolio.allocation} metrics={tabsData.portfolio.metrics} quickMetrics={tabsData.portfolio.quickMetrics} />
 							)}
 						</TabsContent>
 
 						<TabsContent value="performance" className="space-y-6 mt-8">
 							{loadingStates.performance.isLoading ? (
-								<LoadingCard 
-									title="성과 데이터 분석 중..." 
-									description="백테스트 기반 성과 히스토리를 생성하고 있습니다" 
-								/>
+								<LoadingCard title="성과 데이터 분석 중..." description="백테스트 기반 성과 히스토리를 생성하고 있습니다" />
 							) : loadingStates.performance.error ? (
-								<ErrorCard 
-									title="성과 분석 실패"
-									error={loadingStates.performance.error}
-									onRetry={() => handleRetry('performance')}
-								/>
+								<ErrorCard title="성과 분석 실패" error={loadingStates.performance.error} onRetry={() => handleRetry("performance")} />
 							) : (
 								<PerformanceTab history={tabsData.performance.history} />
 							)}
@@ -1485,18 +1286,11 @@ function AnalysisResultsContent() {
 
 						<TabsContent value="xai" className="space-y-6 mt-8">
 							{loadingStates.xai.isLoading ? (
-								<LoadingCard 
-									title="AI 설명 생성 중..." 
-									description={`${analysisMode === 'fast' ? '빠른' : '정밀'} 모드로 투자 결정 근거를 분석하고 있습니다`}
-								/>
+								<LoadingCard title="AI 설명 생성 중..." description={`${analysisMode === "fast" ? "빠른" : "정밀"} 모드로 투자 결정 근거를 분석하고 있습니다`} />
 							) : loadingStates.xai.error ? (
-								<ErrorCard 
-									title="AI 설명 생성 실패"
-									error={loadingStates.xai.error}
-									onRetry={() => handleRetry('xai')}
-								/>
+								<ErrorCard title="AI 설명 생성 실패" error={loadingStates.xai.error} onRetry={() => handleRetry("xai")} />
 							) : (
-								<XAITab 
+								<XAITab
 									xaiData={tabsData.xai}
 									analysisMode={analysisMode}
 									onModeChange={handleXAIModeChange}
@@ -1508,16 +1302,9 @@ function AnalysisResultsContent() {
 
 						<TabsContent value="correlation" className="space-y-6 mt-8">
 							{loadingStates.correlation.isLoading ? (
-								<LoadingCard 
-									title="상관관계 분석 중..." 
-									description="종목 간 상관관계를 실시간으로 계산하고 있습니다" 
-								/>
+								<LoadingCard title="상관관계 분석 중..." description="종목 간 상관관계를 실시간으로 계산하고 있습니다" />
 							) : loadingStates.correlation.error ? (
-								<ErrorCard 
-									title="상관관계 분석 실패"
-									error={loadingStates.correlation.error}
-									onRetry={() => handleRetry('correlation')}
-								/>
+								<ErrorCard title="상관관계 분석 실패" error={loadingStates.correlation.error} onRetry={() => handleRetry("correlation")} />
 							) : (
 								<CorrelationTab correlationData={tabsData.correlation} />
 							)}
@@ -1525,16 +1312,9 @@ function AnalysisResultsContent() {
 
 						<TabsContent value="risk" className="space-y-6 mt-8">
 							{loadingStates.riskReturn.isLoading ? (
-								<LoadingCard 
-									title="위험 분석 중..." 
-									description="종목별 위험-수익률 특성을 분석하고 있습니다" 
-								/>
+								<LoadingCard title="위험 분석 중..." description="종목별 위험-수익률 특성을 분석하고 있습니다" />
 							) : loadingStates.riskReturn.error ? (
-								<ErrorCard 
-									title="위험 분석 실패"
-									error={loadingStates.riskReturn.error}
-									onRetry={() => handleRetry('riskReturn')}
-								/>
+								<ErrorCard title="위험 분석 실패" error={loadingStates.riskReturn.error} onRetry={() => handleRetry("riskReturn")} />
 							) : (
 								<RiskAnalysisTab riskReturnData={tabsData.riskReturn} />
 							)}
@@ -1543,18 +1323,11 @@ function AnalysisResultsContent() {
 
 					{/* 액션 버튼 */}
 					<div className="flex flex-col sm:flex-row gap-4 justify-center pt-8">
-						<Button 
-							onClick={() => router.push("/onboarding")}
-							variant="outline" 
-							className="rounded-2xl h-12 px-8 border-gray-300 dark:border-gray-600"
-						>
+						<Button onClick={() => router.push("/onboarding")} variant="outline" className="rounded-2xl h-12 px-8 border-gray-300 dark:border-gray-600">
 							<Settings className="h-4 w-4 mr-2" />
 							다른 조건으로 분석
 						</Button>
-						<Button 
-							onClick={() => window.print()}
-							className="rounded-2xl h-12 px-8 bg-blue-600 hover:bg-blue-700"
-						>
+						<Button onClick={() => window.print()} className="rounded-2xl h-12 px-8 bg-blue-600 hover:bg-blue-700">
 							<Download className="h-4 w-4 mr-2" />
 							결과 저장하기
 						</Button>

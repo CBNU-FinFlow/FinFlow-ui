@@ -26,7 +26,7 @@ const analysisSteps = [
 		title: "AI 포트폴리오 생성",
 		description: "강화학습 모델이 최적의 자산 배분을 계산하고 있습니다",
 		icon: Brain,
-		apiCall: 'portfolio',
+		apiCall: "portfolio",
 		duration: 2000,
 		progress: 35,
 	},
@@ -35,7 +35,7 @@ const analysisSteps = [
 		title: "성과 지표 계산",
 		description: "백테스트 기반 성과 히스토리를 생성하고 있습니다",
 		icon: TrendingUp,
-		apiCall: 'performance',
+		apiCall: "performance",
 		duration: 2000,
 		progress: 55,
 	},
@@ -44,7 +44,7 @@ const analysisSteps = [
 		title: "상관관계 분석",
 		description: "종목 간 상관관계를 실시간으로 계산하고 있습니다",
 		icon: Activity,
-		apiCall: 'correlation',
+		apiCall: "correlation",
 		duration: 2000,
 		progress: 70,
 	},
@@ -53,7 +53,7 @@ const analysisSteps = [
 		title: "위험도 분석",
 		description: "각 종목의 위험-수익률 특성을 분석하고 있습니다",
 		icon: Shield,
-		apiCall: 'riskReturn',
+		apiCall: "riskReturn",
 		duration: 2000,
 		progress: 85,
 	},
@@ -62,7 +62,7 @@ const analysisSteps = [
 		title: "AI 설명 생성",
 		description: "투자 결정 근거와 해석 가능한 설명을 생성하고 있습니다",
 		icon: BarChart3,
-		apiCall: 'xai',
+		apiCall: "xai",
 		duration: 2000,
 		progress: 100,
 	},
@@ -96,8 +96,8 @@ function AnalysisLoadingContent() {
 	// 실제 API 호출을 수행하는 함수들
 	const apiCalls = {
 		portfolio: async () => {
-			return await apiCallWithRetry('/predict', {
-				method: 'POST',
+			return await apiCallWithRetry("/predict", {
+				method: "POST",
 				body: JSON.stringify({
 					investment_amount: Number(investmentAmount),
 					risk_tolerance: riskTolerance,
@@ -107,9 +107,9 @@ function AnalysisLoadingContent() {
 		},
 		performance: async (portfolioData: any) => {
 			if (!portfolioData?.allocation) return null;
-			
-			return await apiCallWithRetry('/historical-performance', {
-				method: 'POST',
+
+			return await apiCallWithRetry("/historical-performance", {
+				method: "POST",
 				body: JSON.stringify({
 					portfolio_allocation: portfolioData.allocation.map((item: any) => ({
 						symbol: item.symbol,
@@ -121,23 +121,21 @@ function AnalysisLoadingContent() {
 		correlation: async (portfolioData: any) => {
 			if (!portfolioData?.allocation) return null;
 
-			const tickers = portfolioData.allocation
-				.filter((item: any) => item.symbol !== '현금')
-				.map((item: any) => item.symbol);
+			const tickers = portfolioData.allocation.filter((item: any) => item.symbol !== "현금").map((item: any) => item.symbol);
 
-			return await apiCallWithRetry('/correlation-analysis', {
-				method: 'POST',
+			return await apiCallWithRetry("/correlation-analysis", {
+				method: "POST",
 				body: JSON.stringify({
 					tickers,
-					period: '1y',
+					period: "1y",
 				}),
 			});
 		},
 		riskReturn: async (portfolioData: any) => {
 			if (!portfolioData?.allocation) return null;
 
-			return await apiCallWithRetry('/risk-return-analysis', {
-				method: 'POST',
+			return await apiCallWithRetry("/risk-return-analysis", {
+				method: "POST",
 				body: JSON.stringify({
 					portfolio_allocation: portfolioData.allocation.map((item: any) => ({
 						symbol: item.symbol,
@@ -147,8 +145,8 @@ function AnalysisLoadingContent() {
 			});
 		},
 		xai: async () => {
-			return await apiCallWithRetry('/explain', {
-				method: 'POST',
+			return await apiCallWithRetry("/explain", {
+				method: "POST",
 				body: JSON.stringify({
 					investment_amount: Number(investmentAmount),
 					risk_tolerance: riskTolerance,
@@ -171,60 +169,59 @@ function AnalysisLoadingContent() {
 		try {
 			for (const step of analysisSteps) {
 				setCurrentStep(stepIndex);
-				
+
 				// 프로그레스 바 애니메이션
 				const startProgress = stepIndex === 0 ? 0 : analysisSteps[stepIndex - 1].progress;
 				const endProgress = step.progress;
-				
+
 				// 모든 단계에서 최소 지연 시간 보장
 				const stepStartTime = Date.now();
-				
+
 				// 실제 API 호출이 있는 경우
 				if (step.apiCall && apiCalls[step.apiCall as keyof typeof apiCalls]) {
 					try {
 						console.log(`API 호출 시작: ${step.apiCall}`);
-						
+
 						// 프로그레스 중간값으로 설정
 						setProgress(startProgress + (endProgress - startProgress) * 0.3);
-						
+
 						const apiCallFn = apiCalls[step.apiCall as keyof typeof apiCalls];
 						let result;
-						
+
 						// 포트폴리오 데이터가 필요한 API들
-						if (['performance', 'correlation', 'riskReturn'].includes(step.apiCall)) {
+						if (["performance", "correlation", "riskReturn"].includes(step.apiCall)) {
 							result = await apiCallFn(portfolioData);
 						} else {
 							result = await apiCallFn();
 						}
-						
+
 						results[step.apiCall] = result;
-						
+
 						// 포트폴리오 데이터는 다른 API 호출에서 필요하므로 저장
-						if (step.apiCall === 'portfolio') {
+						if (step.apiCall === "portfolio") {
 							portfolioData = result;
 						}
-						
+
 						console.log(`API 호출 완료: ${step.apiCall}`);
-						
+
 						// 프로그레스 80%로 설정
 						setProgress(startProgress + (endProgress - startProgress) * 0.8);
-						
 					} catch (apiError) {
 						console.error(`API 호출 실패: ${step.apiCall}`, apiError);
-						
+
 						// API 실패 시에도 계속 진행 (폴백 데이터 사용)
 						results[step.apiCall] = null;
 					}
 				}
-				
+
 				// 각 단계마다 최소 지연 시간 보장
 				const elapsedTime = Date.now() - stepStartTime;
 				const remainingTime = Math.max(0, step.duration - elapsedTime);
-				
+
 				if (remainingTime > 0) {
-					await new Promise(resolve => setTimeout(resolve, remainingTime));
+					await new Promise((resolve) => setTimeout(resolve, remainingTime));
 				}
-				
+
 				// 최종 프로그레스로 설정
 				setProgress(endProgress);
 				stepIndex++;
@@ -234,21 +231,20 @@ function AnalysisLoadingContent() {
 
 			// URL 파라미터 구성 (결과 페이지로 전달)
 			const params = new URLSearchParams();
-			params.set('amount', investmentAmount);
-			params.set('risk', riskToleranceNum);
-			params.set('horizon', investmentHorizon);
-			
+			params.set("amount", investmentAmount);
+			params.set("risk", riskToleranceNum);
+			params.set("horizon", investmentHorizon);
+
 			// XAI 모드도 전달
-			params.set('xaiMode', analysisMode);
+			params.set("xaiMode", analysisMode);
 
 			// 2초 후 결과 페이지로 이동
 			setTimeout(() => {
 				router.push(`/analysis/results?${params.toString()}`);
 			}, 2000);
-
 		} catch (error) {
-			console.error('분석 실행 중 오류:', error);
-			setError('분석 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+			console.error("분석 실행 중 오류:", error);
+			setError("분석 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
 			setIsCompleted(false);
 		}
 	};
@@ -260,7 +256,7 @@ function AnalysisLoadingContent() {
 		setAnalysisMode(mode);
 		// 현재 XAI 단계가 아직 시작되지 않았다면 모드 변경 반영
 		if (currentStep < 5) {
-			console.log(`XAI 모드 변경: ${mode} (${mode === 'fast' ? '빠른 분석' : '정밀 분석'})`);
+			console.log(`XAI 모드 변경: ${mode} (${mode === "fast" ? "빠른 분석" : "정밀 분석"})`);
 		}
 	};
 
@@ -276,7 +272,7 @@ function AnalysisLoadingContent() {
 		<div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 dark:from-gray-900 dark:to-blue-900 flex items-center justify-center p-4">
 			{/* 배경 패턴 */}
 			<div className="absolute inset-0 bg-white dark:bg-black bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,#1f1f1f_1px,transparent_1px),linear-gradient(to_bottom,#1f1f1f_1px,transparent_1px)] bg-[size:4rem_4rem] opacity-30"></div>
-			
+
 			<div className="relative max-w-2xl w-full space-y-8">
 				{/* 헤더 */}
 				<div className="text-center space-y-4">
@@ -311,9 +307,7 @@ function AnalysisLoadingContent() {
 								<div className="flex items-center justify-between bg-white/50 dark:bg-gray-800/50 rounded-2xl p-4">
 									<div className="flex items-center space-x-2">
 										<span className="text-sm font-medium text-purple-600 dark:text-purple-400">현재 선택:</span>
-										<span className="text-sm font-bold">
-											{analysisMode === 'fast' ? '⚡ 빠른 분석' : '🔍 정밀 분석'}
-										</span>
+										<span className="text-sm font-bold">{analysisMode === "fast" ? "⚡ 빠른 분석" : "🔍 정밀 분석"}</span>
 									</div>
 									<Select value={analysisMode} onValueChange={handleAnalysisModeChange}>
 										<SelectTrigger className="w-44 rounded-2xl border-purple-200 dark:border-purple-700 bg-white dark:bg-gray-900">
@@ -377,14 +371,12 @@ function AnalysisLoadingContent() {
 							<div className="flex-1">
 								<h3 className="text-xl font-bold mb-2">{currentStepData.title}</h3>
 								<p className="text-muted-foreground">{currentStepData.description}</p>
-								
+
 								{/* API 호출 상태 표시 */}
 								{currentStepData.apiCall && (
 									<div className="mt-3 flex items-center space-x-2">
 										<div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
-										<span className="text-xs text-blue-600 font-medium">
-											실시간 데이터 처리 중...
-										</span>
+										<span className="text-xs text-blue-600 font-medium">실시간 데이터 처리 중...</span>
 									</div>
 								)}
 							</div>
@@ -401,7 +393,7 @@ function AnalysisLoadingContent() {
 							</div>
 							<h3 className="text-xl font-bold text-green-600 dark:text-green-400">분석 완료!</h3>
 							<p className="text-muted-foreground">결과 페이지로 이동하고 있습니다</p>
-							
+
 							{/* 완료 상태에서의 요약 정보 */}
 							<div className="mt-4 p-4 bg-green-50 dark:bg-green-950/20 rounded-2xl border border-green-200 dark:border-green-800/30">
 								<div className="grid grid-cols-2 gap-4 text-sm">
@@ -411,9 +403,7 @@ function AnalysisLoadingContent() {
 									</div>
 									<div>
 										<span className="text-muted-foreground">분석 모드:</span>
-										<span className="ml-2 font-medium">
-											{analysisMode === 'fast' ? '빠른 분석' : '정밀 분석'}
-										</span>
+										<span className="ml-2 font-medium">{analysisMode === "fast" ? "빠른 분석" : "정밀 분석"}</span>
 									</div>
 								</div>
 							</div>
@@ -432,33 +422,19 @@ function AnalysisLoadingContent() {
 							<div key={step.id} className="text-center space-y-2">
 								<div
 									className={`w-10 h-10 mx-auto rounded-2xl flex items-center justify-center transition-all duration-300 shadow-md ${
-										isActive 
-											? "bg-blue-500 text-white scale-110 shadow-blue-500/25" 
-											: isStepCompleted 
-											? "bg-green-500 text-white" 
+										isActive
+											? "bg-blue-500 text-white scale-110 shadow-blue-500/25"
+											: isStepCompleted
+											? "bg-green-500 text-white"
 											: isPending
 											? "bg-gray-200 dark:bg-gray-700 text-muted-foreground"
 											: "bg-gray-200 dark:bg-gray-700 text-muted-foreground"
 									}`}
 								>
-									{isStepCompleted && index < currentStep ? (
-										<CheckCircle className="w-5 h-5" />
-									) : (
-										<step.icon className="w-5 h-5" />
-									)}
+									{isStepCompleted && index < currentStep ? <CheckCircle className="w-5 h-5" /> : <step.icon className="w-5 h-5" />}
 								</div>
-								<div 
-									className={`text-xs font-medium transition-colors duration-300 ${
-										isActive 
-											? "text-blue-600" 
-											: isStepCompleted 
-											? "text-green-600" 
-											: "text-muted-foreground"
-									}`}
-								>
-									{step.title}
-								</div>
-								
+								<div className={`text-xs font-medium transition-colors duration-300 ${isActive ? "text-blue-600" : isStepCompleted ? "text-green-600" : "text-muted-foreground"}`}>{step.title}</div>
+
 								{/* API 호출 표시 */}
 								{step.apiCall && (
 									<div className="text-xs text-muted-foreground">
@@ -507,7 +483,7 @@ export default function AnalysisLoadingPage() {
 				<div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 dark:from-gray-900 dark:to-blue-900 flex items-center justify-center p-4">
 					{/* 배경 패턴 */}
 					<div className="absolute inset-0 bg-white dark:bg-black bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,#1f1f1f_1px,transparent_1px),linear-gradient(to_bottom,#1f1f1f_1px,transparent_1px)] bg-[size:4rem_4rem] opacity-30"></div>
-					
+
 					<div className="relative max-w-2xl w-full space-y-8">
 						<div className="text-center space-y-4">
 							<div className="w-20 h-20 mx-auto bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center shadow-2xl">
