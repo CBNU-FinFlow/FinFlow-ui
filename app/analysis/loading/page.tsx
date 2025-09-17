@@ -269,11 +269,11 @@ function AnalysisLoadingContent() {
 	};
 
 	return (
-		<div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 dark:from-gray-900 dark:to-blue-900 flex items-center justify-center p-4">
+		<div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 dark:from-gray-900 dark:to-blue-900 flex items-center justify-center p-4 overflow-hidden">
 			{/* 배경 패턴 */}
 			<div className="absolute inset-0 bg-white dark:bg-black bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,#1f1f1f_1px,transparent_1px),linear-gradient(to_bottom,#1f1f1f_1px,transparent_1px)] bg-[size:4rem_4rem] opacity-30"></div>
 
-			<div className="relative max-w-2xl w-full space-y-8">
+			<div className="relative max-w-2xl w-full space-y-8 mx-auto py-8 sm:py-12">
 				{/* 헤더 */}
 				<div className="text-center space-y-4">
 					<div className="w-20 h-20 mx-auto bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center relative overflow-hidden shadow-2xl">
@@ -286,34 +286,36 @@ function AnalysisLoadingContent() {
 							}}
 						/>
 					</div>
-					<h1 className="text-3xl font-bold">AI 포트폴리오 분석</h1>
-					<p className="text-muted-foreground">투자 금액 {Number(investmentAmount).toLocaleString()}원을 분석하고 있습니다</p>
+					<h1 className="text-xl sm:text-2xl lg:text-3xl font-bold">AI 포트폴리오 분석</h1>
+					<p className="text-xs sm:text-sm lg:text-base text-muted-foreground">투자 금액 {Number(investmentAmount).toLocaleString()}원을 분석하고 있습니다</p>
 				</div>
 
 				{/* XAI 모드 선택 (XAI 단계 이전에만 표시) */}
 				{currentStep < 5 && !error && (
-					<Card className="backdrop-blur-sm bg-gradient-to-r from-purple-50/90 to-blue-50/90 dark:from-purple-950/90 dark:to-blue-950/90 border border-purple-200/50 dark:border-purple-700/50 rounded-3xl shadow-lg">
-						<CardContent className="p-6">
+					<Card className="backdrop-blur-sm bg-gradient-to-r from-purple-50/90 to-blue-50/90 dark:from-purple-950/90 dark:to-blue-950/90 border border-purple-200/50 dark:border-purple-700/50 rounded-2xl sm:rounded-3xl shadow-lg">
+						<CardContent className="p-4 sm:p-6">
 							<div className="space-y-4">
 								<div className="flex items-center space-x-3">
 									<div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-blue-500 rounded-2xl flex items-center justify-center shadow-lg">
 										<Brain className="h-6 w-6 text-white" />
 									</div>
 									<div>
-										<h3 className="text-lg font-bold">AI 설명 모드 선택</h3>
-										<p className="text-sm text-muted-foreground">분석이 시작되기 전에 원하시는 분석 방식을 선택해 주세요</p>
+										<h3 className="text-sm sm:text-base lg:text-lg font-bold">AI 설명 모드 선택</h3>
+										<p className="text-[11px] sm:text-xs lg:text-sm text-muted-foreground">분석이 시작되기 전에 원하시는 분석 방식을 선택해 주세요</p>
 									</div>
 								</div>
-								<div className="flex items-center justify-between bg-white/50 dark:bg-gray-800/50 rounded-2xl p-4">
-									<div className="flex items-center space-x-2">
-										<span className="text-sm font-medium text-purple-600 dark:text-purple-400">현재 선택:</span>
-										<span className="text-sm font-bold">{analysisMode === "fast" ? "⚡ 빠른 분석" : "🔍 정밀 분석"}</span>
+								<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between bg-white/50 dark:bg-gray-800/50 rounded-2xl p-4 gap-3 sm:gap-0">
+									<div className="hidden sm:flex items-center space-x-2">
+										<span className="text-xs sm:text-sm font-medium text-purple-600 dark:text-purple-400">현재 선택:</span>
+										<span className="text-xs sm:text-sm font-bold">{analysisMode === "fast" ? "⚡ 빠른 분석" : "🔍 정밀 분석"}</span>
 									</div>
-									<Select value={analysisMode} onValueChange={handleAnalysisModeChange}>
-										<SelectTrigger className="w-44 rounded-2xl border-purple-200 dark:border-purple-700 bg-white dark:bg-gray-900">
-											<SelectValue />
-										</SelectTrigger>
-										<SelectContent>
+									<div className="flex items-center justify-between sm:justify-end w-full sm:w-auto">
+										<span className="text-xs font-medium text-purple-600 dark:text-purple-400 mr-2 sm:hidden">모드:</span>
+										<Select value={analysisMode} onValueChange={handleAnalysisModeChange}>
+											<SelectTrigger className="flex-1 sm:flex-none max-w-[180px] sm:w-44 rounded-2xl border-purple-200 dark:border-purple-700 bg-white dark:bg-gray-900">
+												<SelectValue />
+											</SelectTrigger>
+										<SelectContent align="end" side="bottom" sideOffset={4}>
 											<SelectItem value="fast">
 												<div className="flex items-center space-x-2">
 													<Zap className="h-4 w-4 text-yellow-500" />
@@ -327,7 +329,8 @@ function AnalysisLoadingContent() {
 												</div>
 											</SelectItem>
 										</SelectContent>
-									</Select>
+										</Select>
+									</div>
 								</div>
 							</div>
 						</CardContent>
@@ -335,10 +338,10 @@ function AnalysisLoadingContent() {
 				)}
 
 				{/* 프로그레스 바 */}
-				<div className="space-y-4">
+				<div className="space-y-3 sm:space-y-4">
 					<div className="flex justify-between items-center">
-						<span className="text-sm font-medium">분석 진행률</span>
-						<span className="text-sm font-medium text-blue-600">{Math.round(progress)}%</span>
+						<span className="text-xs sm:text-sm font-medium">분석 진행률</span>
+						<span className="text-xs sm:text-sm font-medium text-blue-600">{Math.round(progress)}%</span>
 					</div>
 					<div className="w-full bg-gray-200 dark:bg-gray-700 rounded-2xl h-3 overflow-hidden">
 						<div className="h-full bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl transition-all duration-300 ease-out" style={{ width: `${progress}%` }} />
@@ -411,8 +414,8 @@ function AnalysisLoadingContent() {
 					</div>
 				)}
 
-				{/* 단계별 표시 */}
-				<div className="grid grid-cols-6 gap-2">
+				{/* 단계별 표시 - 모바일 최적화 */}
+				<div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
 					{analysisSteps.map((step, index) => {
 						const isActive = index === currentStep;
 						const isStepCompleted = index < currentStep || isCompleted;
@@ -421,7 +424,7 @@ function AnalysisLoadingContent() {
 						return (
 							<div key={step.id} className="text-center space-y-2">
 								<div
-									className={`w-10 h-10 mx-auto rounded-2xl flex items-center justify-center transition-all duration-300 shadow-md ${
+									className={`w-8 h-8 sm:w-10 sm:h-10 mx-auto rounded-xl sm:rounded-2xl flex items-center justify-center transition-all duration-300 shadow-md ${
 										isActive
 											? "bg-blue-500 text-white scale-110 shadow-blue-500/25"
 											: isStepCompleted
@@ -431,9 +434,9 @@ function AnalysisLoadingContent() {
 											: "bg-gray-200 dark:bg-gray-700 text-muted-foreground"
 									}`}
 								>
-									{isStepCompleted && index < currentStep ? <CheckCircle className="w-5 h-5" /> : <step.icon className="w-5 h-5" />}
+									{isStepCompleted && index < currentStep ? <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5" /> : <step.icon className="w-4 h-4 sm:w-5 sm:h-5" />}
 								</div>
-								<div className={`text-xs font-medium transition-colors duration-300 ${isActive ? "text-blue-600" : isStepCompleted ? "text-green-600" : "text-muted-foreground"}`}>{step.title}</div>
+								<div className={`text-[10px] sm:text-xs font-medium transition-colors duration-300 whitespace-nowrap ${isActive ? "text-blue-600" : isStepCompleted ? "text-green-600" : "text-muted-foreground"}`}>{step.title}</div>
 
 								{/* API 호출 표시 */}
 								{step.apiCall && (
@@ -489,8 +492,8 @@ export default function AnalysisLoadingPage() {
 							<div className="w-20 h-20 mx-auto bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center shadow-2xl">
 								<Brain className="w-10 h-10 text-white" />
 							</div>
-							<h1 className="text-3xl font-bold">AI 포트폴리오 분석</h1>
-							<p className="text-muted-foreground">분석을 준비하고 있습니다</p>
+							<h1 className="text-xl sm:text-2xl lg:text-3xl font-bold">AI 포트폴리오 분석</h1>
+							<p className="text-xs sm:text-sm lg:text-base text-muted-foreground">분석을 준비하고 있습니다</p>
 						</div>
 					</div>
 				</div>

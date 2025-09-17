@@ -56,7 +56,7 @@ export default function OnboardingPage() {
 	};
 
 	return (
-		<div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 dark:from-gray-900 dark:to-blue-900 flex items-center justify-center p-4">
+		<div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 dark:from-gray-900 dark:to-blue-900 flex items-center justify-center p-4 overflow-hidden">
 			{/* 배경 패턴 */}
 			<div className="absolute inset-0 bg-white dark:bg-black bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,#1f1f1f_1px,transparent_1px),linear-gradient(to_bottom,#1f1f1f_1px,transparent_1px)] bg-[size:4rem_4rem] opacity-30"></div>
 			
@@ -159,7 +159,7 @@ export default function OnboardingPage() {
 											<SelectTrigger className="h-12 rounded-2xl">
 												<SelectValue placeholder="투자 기간을 선택해주세요" />
 											</SelectTrigger>
-											<SelectContent>
+											<SelectContent align="end">
 												<SelectItem value="1year">1년</SelectItem>
 												<SelectItem value="3years">3년</SelectItem>
 												<SelectItem value="5years">5년</SelectItem>

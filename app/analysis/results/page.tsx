@@ -109,60 +109,60 @@ const ErrorCard = ({ title, error, onRetry }: { title: string; error: string; on
 // 포트폴리오 탭 컴포넌트
 const PortfolioTab = ({ allocation, metrics, quickMetrics }: { allocation: PortfolioAllocation[]; metrics: PerformanceMetrics[]; quickMetrics: QuickMetrics }) => (
 	<div className="space-y-4 sm:space-y-6">
-		{/* 퀵 메트릭 카드들 */}
-		<div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-			<Card className="backdrop-blur-sm bg-white/90 dark:bg-gray-900/90 border border-gray-200/50 dark:border-gray-700/50 rounded-2xl sm:rounded-3xl">
-				<CardContent className="p-3 sm:p-4">
-					<div className="flex items-center space-x-2">
-						<div className="w-7 h-7 sm:w-8 sm:h-8 bg-green-500 rounded-xl sm:rounded-2xl flex items-center justify-center">
-							<TrendingUp className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-white" />
+		{/* 퀵 메트릭 카드들 - 모바일 최적화 */}
+		<div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 lg:gap-4">
+			<Card className="backdrop-blur-sm bg-white/90 dark:bg-gray-900/90 border border-gray-200/50 dark:border-gray-700/50 rounded-xl sm:rounded-2xl lg:rounded-3xl">
+				<CardContent className="p-2.5 sm:p-3 lg:p-4">
+					<div className="flex flex-col space-y-1">
+						<div className="flex items-center space-x-1.5">
+							<div className="w-6 h-6 sm:w-7 sm:h-7 bg-green-500 rounded-lg sm:rounded-xl flex items-center justify-center flex-shrink-0">
+								<TrendingUp className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-white" />
+							</div>
+							<p className="text-[10px] sm:text-xs text-muted-foreground leading-tight">연간수익률</p>
 						</div>
-						<div>
-							<p className="text-[10px] sm:text-xs text-muted-foreground">연간 수익률</p>
-							<p className="text-sm sm:text-lg font-bold text-green-600">{quickMetrics.annualReturn}</p>
-						</div>
+						<p className="text-sm sm:text-base lg:text-lg font-bold text-green-600 pl-7 sm:pl-8">{quickMetrics.annualReturn}</p>
 					</div>
 				</CardContent>
 			</Card>
 
-			<Card className="backdrop-blur-sm bg-white/90 dark:bg-gray-900/90 border border-gray-200/50 dark:border-gray-700/50 rounded-3xl">
-				<CardContent className="p-4">
-					<div className="flex items-center space-x-2">
-						<div className="w-8 h-8 bg-blue-500 rounded-2xl flex items-center justify-center">
-							<Target className="h-4 w-4 text-white" />
+			<Card className="backdrop-blur-sm bg-white/90 dark:bg-gray-900/90 border border-gray-200/50 dark:border-gray-700/50 rounded-xl sm:rounded-2xl lg:rounded-3xl">
+				<CardContent className="p-2.5 sm:p-3 lg:p-4">
+					<div className="flex flex-col space-y-1">
+						<div className="flex items-center space-x-1.5">
+							<div className="w-6 h-6 sm:w-7 sm:h-7 bg-blue-500 rounded-lg sm:rounded-xl flex items-center justify-center flex-shrink-0">
+								<Target className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-white" />
+							</div>
+							<p className="text-[10px] sm:text-xs text-muted-foreground leading-tight">샤프비율</p>
 						</div>
-						<div>
-							<p className="text-xs text-muted-foreground">샤프 비율</p>
-							<p className="text-lg font-bold text-blue-600">{quickMetrics.sharpeRatio}</p>
-						</div>
+						<p className="text-sm sm:text-base lg:text-lg font-bold text-blue-600 pl-7 sm:pl-8">{quickMetrics.sharpeRatio}</p>
 					</div>
 				</CardContent>
 			</Card>
 
-			<Card className="backdrop-blur-sm bg-white/90 dark:bg-gray-900/90 border border-gray-200/50 dark:border-gray-700/50 rounded-3xl">
-				<CardContent className="p-4">
-					<div className="flex items-center space-x-2">
-						<div className="w-8 h-8 bg-red-500 rounded-2xl flex items-center justify-center">
-							<AlertTriangle className="h-4 w-4 text-white" />
+			<Card className="backdrop-blur-sm bg-white/90 dark:bg-gray-900/90 border border-gray-200/50 dark:border-gray-700/50 rounded-xl sm:rounded-2xl lg:rounded-3xl">
+				<CardContent className="p-2.5 sm:p-3 lg:p-4">
+					<div className="flex flex-col space-y-1">
+						<div className="flex items-center space-x-1.5">
+							<div className="w-6 h-6 sm:w-7 sm:h-7 bg-red-500 rounded-lg sm:rounded-xl flex items-center justify-center flex-shrink-0">
+								<AlertTriangle className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-white" />
+							</div>
+							<p className="text-[10px] sm:text-xs text-muted-foreground leading-tight">최대낙폭</p>
 						</div>
-						<div>
-							<p className="text-xs text-muted-foreground">최대 낙폭</p>
-							<p className="text-lg font-bold text-red-600">{quickMetrics.maxDrawdown}</p>
-						</div>
+						<p className="text-sm sm:text-base lg:text-lg font-bold text-red-600 pl-7 sm:pl-8">{quickMetrics.maxDrawdown}</p>
 					</div>
 				</CardContent>
 			</Card>
 
-			<Card className="backdrop-blur-sm bg-white/90 dark:bg-gray-900/90 border border-gray-200/50 dark:border-gray-700/50 rounded-3xl">
-				<CardContent className="p-4">
-					<div className="flex items-center space-x-2">
-						<div className="w-8 h-8 bg-purple-500 rounded-2xl flex items-center justify-center">
-							<BarChart3 className="h-4 w-4 text-white" />
+			<Card className="backdrop-blur-sm bg-white/90 dark:bg-gray-900/90 border border-gray-200/50 dark:border-gray-700/50 rounded-xl sm:rounded-2xl lg:rounded-3xl">
+				<CardContent className="p-2.5 sm:p-3 lg:p-4">
+					<div className="flex flex-col space-y-1">
+						<div className="flex items-center space-x-1.5">
+							<div className="w-6 h-6 sm:w-7 sm:h-7 bg-purple-500 rounded-lg sm:rounded-xl flex items-center justify-center flex-shrink-0">
+								<BarChart3 className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-white" />
+							</div>
+							<p className="text-[10px] sm:text-xs text-muted-foreground leading-tight">변동성</p>
 						</div>
-						<div>
-							<p className="text-xs text-muted-foreground">변동성</p>
-							<p className="text-lg font-bold text-orange-600">{quickMetrics.volatility}</p>
-						</div>
+						<p className="text-sm sm:text-base lg:text-lg font-bold text-orange-600 pl-7 sm:pl-8">{quickMetrics.volatility}</p>
 					</div>
 				</CardContent>
 			</Card>
@@ -326,34 +326,41 @@ const PerformanceTab = ({ history }: { history: PerformanceHistory[] }) => {
 					<CardDescription>포트폴리오 vs 벤치마크 성과 비교 (최근 1년)</CardDescription>
 				</CardHeader>
 				<CardContent>
-					<div className="h-[400px] sm:h-[500px] lg:h-[650px]">
+					<div className="h-[280px] sm:h-[400px] lg:h-[500px]">
 						<ResponsiveContainer width="100%" height="100%">
-							<LineChart data={chartData} margin={{ top: 30, right: 40, left: 60, bottom: 80 }}>
+							<LineChart data={chartData} margin={{ top: 10, right: 10, left: 0, bottom: 40 }}>
 								<CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
 								<XAxis
 									dataKey="date"
 									stroke="#888"
-									fontSize={12}
+									fontSize={10}
 									angle={-45}
 									textAnchor="end"
-									height={60}
-									interval={Math.floor(chartData.length / 8)}
-									tickFormatter={(value) => value.split(".").slice(1).join(".")}
+									height={40}
+									interval={Math.floor(chartData.length / 4)}
+									tickFormatter={(value) => {
+										const parts = value.split(".");
+										return `${parts[1]}.${parts[2]}`;
+									}}
 								/>
-								<YAxis stroke="#888" fontSize={12} width={60} domain={[yAxisMin, yAxisMax]} tickFormatter={(value) => `${value.toFixed(1)}%`} />
+								<YAxis stroke="#888" fontSize={10} width={45} domain={[yAxisMin, yAxisMax]} tickFormatter={(value) => `${value.toFixed(0)}%`} />
 								<Tooltip
 									contentStyle={{
 										backgroundColor: "rgba(255, 255, 255, 0.95)",
 										border: "none",
 										borderRadius: "12px",
 										boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+										fontSize: "12px",
 									}}
 									formatter={(value, name) => [`${(value as number).toFixed(2)}%`, name]}
 								/>
-								<Legend wrapperStyle={{ paddingTop: "20px" }} />
-								<Line type="monotone" dataKey="포트폴리오" stroke="#3B82F6" strokeWidth={3} dot={false} />
-								<Line type="monotone" dataKey="S&P 500" stroke="#10B981" strokeWidth={2} dot={false} strokeDasharray="5 5" />
-								<Line type="monotone" dataKey="NASDAQ" stroke="#8B5CF6" strokeWidth={2} dot={false} strokeDasharray="5 5" />
+								<Legend
+									wrapperStyle={{ paddingTop: "10px", fontSize: "12px" }}
+									iconSize={12}
+								/>
+								<Line type="monotone" dataKey="포트폴리오" stroke="#3B82F6" strokeWidth={2} dot={false} />
+								<Line type="monotone" dataKey="S&P 500" stroke="#10B981" strokeWidth={1.5} dot={false} strokeDasharray="5 5" />
+								<Line type="monotone" dataKey="NASDAQ" stroke="#8B5CF6" strokeWidth={1.5} dot={false} strokeDasharray="5 5" />
 							</LineChart>
 						</ResponsiveContainer>
 					</div>
@@ -388,20 +395,20 @@ const XAITab = ({
 
 	return (
 		<div className="space-y-6">
-			{/* XAI 모드 선택 */}
-			<Card className="backdrop-blur-sm bg-white/90 dark:bg-gray-900/90 border border-gray-200/50 dark:border-gray-700/50 rounded-3xl">
-				<CardContent className="p-6">
-					<div className="flex items-center justify-between">
-						<div className="flex items-center space-x-3">
-							<Brain className="h-5 w-5 text-purple-600" />
-							<div>
-								<h3 className="font-semibold">AI 설명 모드</h3>
-								<p className="text-sm text-muted-foreground">분석 방식을 선택하여 설명을 재생성할 수 있습니다</p>
+			{/* XAI 모드 선택 - 모바일 최적화 */}
+			<Card className="backdrop-blur-sm bg-white/90 dark:bg-gray-900/90 border border-gray-200/50 dark:border-gray-700/50 rounded-2xl sm:rounded-3xl">
+				<CardContent className="p-4 sm:p-6">
+					<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+						<div className="flex items-center space-x-2 sm:space-x-3">
+							<Brain className="h-4 w-4 sm:h-5 sm:w-5 text-purple-600 flex-shrink-0" />
+							<div className="min-w-0">
+								<h3 className="font-semibold text-sm sm:text-base">AI 설명 모드</h3>
+								<p className="text-xs sm:text-sm text-muted-foreground hidden sm:block">분석 방식을 선택하여 설명을 재생성할 수 있습니다</p>
 							</div>
 						</div>
-						<div className="flex items-center space-x-3">
+						<div className="flex items-center space-x-2 sm:space-x-3">
 							<Select value={analysisMode} onValueChange={onModeChange}>
-								<SelectTrigger className="w-40 rounded-2xl">
+								<SelectTrigger className="min-w-[8rem] max-w-[10rem] sm:w-40 rounded-xl sm:rounded-2xl">
 									<SelectValue />
 								</SelectTrigger>
 								<SelectContent>
@@ -419,9 +426,9 @@ const XAITab = ({
 									</SelectItem>
 								</SelectContent>
 							</Select>
-							<Button onClick={onRegenerate} disabled={isRegenerating} className="rounded-2xl">
-								{isRegenerating ? <RefreshCw className="h-4 w-4 mr-2 animate-spin" /> : <RefreshCw className="h-4 w-4 mr-2" />}
-								재생성
+							<Button onClick={onRegenerate} disabled={isRegenerating} className="rounded-xl sm:rounded-2xl px-3 sm:px-4" size="sm">
+								{isRegenerating ? <RefreshCw className="h-3.5 w-3.5 sm:h-4 sm:w-4 sm:mr-2 animate-spin" /> : <RefreshCw className="h-3.5 w-3.5 sm:h-4 sm:w-4 sm:mr-2" />}
+								<span className="hidden sm:inline">재생성</span>
 							</Button>
 						</div>
 					</div>
@@ -439,20 +446,36 @@ const XAITab = ({
 				</CardHeader>
 				<CardContent>
 					{hasFeatureData ? (
-						<div className="h-[500px]">
+						<div className="h-[300px] sm:h-[400px] lg:h-[500px]">
 							<ResponsiveContainer width="100%" height="100%">
-								<BarChart data={featureChartData} margin={{ top: 20, right: 30, left: 20, bottom: 120 }}>
+								<BarChart
+									data={featureChartData.slice(0, 8)}
+									margin={{ top: 10, right: 10, left: 10, bottom: 80 }}
+									layout="horizontal"
+								>
 									<CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-									<XAxis dataKey="name" stroke="#888" fontSize={10} angle={-45} textAnchor="end" height={100} interval={0} tick={{ fontSize: 9 }} />
-									<YAxis stroke="#888" fontSize={12} tickFormatter={(value) => value.toFixed(3)} domain={[0, "dataMax + 0.1"]} />
+									<XAxis type="number" stroke="#888" fontSize={10} tickFormatter={(value) => value.toFixed(2)} />
+									<YAxis
+										type="category"
+										dataKey="name"
+										stroke="#888"
+										fontSize={9}
+										width={80}
+										tick={{ fontSize: 8 }}
+										tickFormatter={(value) => {
+											const parts = value.split('-');
+											return parts[0].slice(0, 6);
+										}}
+									/>
 									<Tooltip
 										contentStyle={{
 											backgroundColor: "rgba(255, 255, 255, 0.95)",
 											border: "none",
 											borderRadius: "12px",
 											boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+											fontSize: "11px",
 										}}
-										formatter={(value: any, name: any) => [`${(value as number).toFixed(4)}`, "중요도 점수"]}
+										formatter={(value: any, name: any) => [`${(value as number).toFixed(4)}`, "중요도"]}
 										labelFormatter={(label: any, payload: any) => {
 											if (payload && payload[0] && payload[0].payload) {
 												const data = payload[0].payload;
@@ -461,7 +484,7 @@ const XAITab = ({
 											return label;
 										}}
 									/>
-									<Bar dataKey="importance" fill="#8B5CF6" radius={[6, 6, 0, 0]} />
+									<Bar dataKey="importance" fill="#8B5CF6" radius={[0, 6, 6, 0]} />
 								</BarChart>
 							</ResponsiveContainer>
 						</div>
@@ -493,9 +516,9 @@ const XAITab = ({
 					</CardTitle>
 					<CardDescription>포트폴리오 구성 근거와 투자 전략 해설</CardDescription>
 				</CardHeader>
-				<CardContent>
-					<div className="p-4 bg-gradient-to-r from-purple-50 to-blue-50 dark:from-purple-950/20 dark:to-blue-950/20 rounded-2xl border border-purple-200 dark:border-purple-800/30">
-						<pre className="whitespace-pre-wrap text-sm leading-relaxed font-sans text-purple-900 dark:text-purple-100">{xaiData.explanation_text}</pre>
+				<CardContent className="p-4 sm:p-6">
+					<div className="p-3 sm:p-4 bg-gradient-to-r from-purple-50 to-blue-50 dark:from-purple-950/20 dark:to-blue-950/20 rounded-xl sm:rounded-2xl border border-purple-200 dark:border-purple-800/30">
+						<div className="whitespace-normal break-words text-xs sm:text-sm leading-relaxed font-sans text-purple-900 dark:text-purple-100">{xaiData.explanation_text}</div>
 					</div>
 				</CardContent>
 			</Card>
@@ -1224,7 +1247,7 @@ function AnalysisResultsContent() {
 	}
 
 	return (
-		<div className="min-h-screen">
+		<div className="min-h-screen overflow-x-hidden">
 			{/* 격자 패턴 배경 - 스크롤 시에도 유지 */}
 			<div className="fixed inset-0 bg-[linear-gradient(to_right,#d0d0d0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,#1f1f1f_1px,transparent_1px),linear-gradient(to_bottom,#1f1f1f_1px,transparent_1px)] bg-[size:4rem_4rem] -z-20"></div>
 			{/* 그라데이션 오버레이 */}
@@ -1236,17 +1259,20 @@ function AnalysisResultsContent() {
 					<div className="flex items-center justify-between h-16">
 						<div className="flex items-center space-x-4">
 							<Link href="/" className="text-muted-foreground hover:text-foreground transition-colors">
-								<Button variant="ghost" size="sm">
-									<ArrowLeft className="w-4 h-4 mr-2" />
-									홈으로 돌아가기
+								<Button variant="ghost" size="sm" className="px-2 sm:px-4">
+									<ArrowLeft className="w-4 h-4 sm:mr-2" />
+									<span className="hidden sm:inline">홈으로 돌아가기</span>
 								</Button>
 							</Link>
-							<div className="flex items-center space-x-2">
-								<div className="w-8 h-8 bg-blue-600 rounded-2xl flex items-center justify-center">
-									<Activity className="w-4 h-4 text-white" />
+							<div className="flex items-center space-x-1.5 sm:space-x-2">
+								<div className="w-7 h-7 sm:w-8 sm:h-8 bg-blue-600 rounded-xl sm:rounded-2xl flex items-center justify-center">
+									<Activity className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white" />
 								</div>
-								<h1 className="text-xl font-bold">AI 포트폴리오 분석 결과</h1>
-								<Badge className="bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-400 border-0 rounded-2xl">분석 완료</Badge>
+								<h1 className="text-base sm:text-xl font-bold">
+									<span className="sm:hidden">AI 분석 결과</span>
+									<span className="hidden sm:inline">AI 포트폴리오 분석 결과</span>
+								</h1>
+								<Badge className="hidden sm:inline-flex bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-400 border-0 rounded-xl sm:rounded-2xl text-xs sm:text-sm px-2 py-0.5 sm:px-3 sm:py-1">분석 완료</Badge>
 							</div>
 						</div>
 						<div className="flex items-center space-x-2">
@@ -1277,8 +1303,8 @@ function AnalysisResultsContent() {
 								<CheckCircle className="w-6 h-6 text-white" />
 							</div>
 						</div>
-						<h2 className="text-3xl font-bold">포트폴리오 분석이 완료되었습니다</h2>
-						<p className="text-muted-foreground text-lg">투자 금액 {formatCurrency(Number(investmentAmount))}에 대한 AI 최적화 포트폴리오를 제안합니다</p>
+						<h2 className="text-xl sm:text-2xl lg:text-3xl font-bold">포트폴리오 분석이 완료되었습니다</h2>
+						<p className="text-muted-foreground text-sm sm:text-base lg:text-lg">투자 금액 {formatCurrency(Number(investmentAmount))}에 대한 AI 최적화 포트폴리오를 제안합니다</p>
 						<div className="flex items-center justify-center space-x-4 text-sm text-muted-foreground">
 							<div>
 								투자 성향: <span className="font-medium">{getRiskLabel(riskTolerance)}</span>
@@ -1290,30 +1316,33 @@ function AnalysisResultsContent() {
 						</div>
 					</div>
 
-					{/* 탭 콘텐츠 */}
+					{/* 탭 콘텐츠 - 모바일 최적화 */}
 					<Tabs defaultValue="portfolio" className="w-full">
-						<TabsList className="grid w-full grid-cols-5 rounded-3xl bg-white/50 dark:bg-gray-900/50 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50">
-							<TabsTrigger value="portfolio" className="rounded-2xl">
-								<PieChart className="w-4 h-4 mr-2" />
-								포트폴리오
-							</TabsTrigger>
-							<TabsTrigger value="performance" className="rounded-2xl">
-								<Activity className="w-4 h-4 mr-2" />
-								성과 분석
-							</TabsTrigger>
-							<TabsTrigger value="xai" className="rounded-2xl">
-								<Brain className="w-4 h-4 mr-2" />
-								AI 설명
-							</TabsTrigger>
-							<TabsTrigger value="correlation" className="rounded-2xl">
-								<BarChart3 className="w-4 h-4 mr-2" />
-								상관관계
-							</TabsTrigger>
-							<TabsTrigger value="risk" className="rounded-2xl">
-								<Shield className="w-4 h-4 mr-2" />
-								위험 분석
-							</TabsTrigger>
-						</TabsList>
+						{/* 모바일: 가로 스크롤, 데스크톱: 5열 그리드 */}
+						<div className="overflow-x-auto scrollbar-hide">
+							<TabsList className="flex sm:grid sm:w-full sm:grid-cols-5 w-max sm:w-full rounded-3xl bg-white/50 dark:bg-gray-900/50 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50">
+								<TabsTrigger value="portfolio" className="rounded-2xl whitespace-nowrap">
+									<PieChart className="w-4 h-4 mr-1 sm:mr-2" />
+									<span className="text-xs sm:text-sm">포트폴리오</span>
+								</TabsTrigger>
+								<TabsTrigger value="performance" className="rounded-2xl whitespace-nowrap">
+									<Activity className="w-4 h-4 mr-1 sm:mr-2" />
+									<span className="text-xs sm:text-sm">성과분석</span>
+								</TabsTrigger>
+								<TabsTrigger value="xai" className="rounded-2xl whitespace-nowrap">
+									<Brain className="w-4 h-4 mr-1 sm:mr-2" />
+									<span className="text-xs sm:text-sm">AI설명</span>
+								</TabsTrigger>
+								<TabsTrigger value="correlation" className="rounded-2xl whitespace-nowrap">
+									<BarChart3 className="w-4 h-4 mr-1 sm:mr-2" />
+									<span className="text-xs sm:text-sm">상관관계</span>
+								</TabsTrigger>
+								<TabsTrigger value="risk" className="rounded-2xl whitespace-nowrap">
+									<Shield className="w-4 h-4 mr-1 sm:mr-2" />
+									<span className="text-xs sm:text-sm">위험분석</span>
+								</TabsTrigger>
+							</TabsList>
+						</div>
 
 						<TabsContent value="portfolio" className="space-y-6 mt-8">
 							{loadingStates.portfolio.isLoading ? (
