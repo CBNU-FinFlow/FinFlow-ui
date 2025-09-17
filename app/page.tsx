@@ -161,31 +161,217 @@ export default function LandingPage() {
 					<div className="container px-4 md:px-6 relative">
 						<div className="absolute inset-0 -z-10 h-full w-full bg-white dark:bg-black bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,#1f1f1f_1px,transparent_1px),linear-gradient(to_bottom,#1f1f1f_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_110%)]"></div>
 
-						<motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="text-center max-w-4xl mx-auto mb-12">
-							<Badge className="mb-4 rounded-2xl px-4 py-1.5 text-sm font-medium" variant="secondary">
+						<motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="text-center max-w-4xl mx-auto mb-8 sm:mb-12">
+							<Badge className="mb-3 sm:mb-4 rounded-2xl px-3 py-1 sm:px-4 sm:py-1.5 text-xs sm:text-sm font-medium" variant="secondary">
 								AI 기반 리스크 관리
 							</Badge>
-							<h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6 text-balance">포트폴리오 관리, 이제 AI로 스마트하게</h1>
-							<p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-3xl mx-auto text-balance">
+							<h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-4 sm:mb-6 text-balance px-4 sm:px-0">포트폴리오 관리, 이제 AI로 스마트하게</h1>
+							<p className="text-base sm:text-lg md:text-xl text-muted-foreground mb-6 sm:mb-8 max-w-3xl mx-auto text-balance px-4 sm:px-0">
 								실시간 변동성 감지, 리밸런싱 제안, 스트레스 시각화.
-								<br />
-								강화학습 기반의 지능형 리스크 관리로 투자를 보호하세요.
+								<br className="hidden sm:block" />
+								<span className="sm:hidden"> </span>강화학습 기반의 지능형 리스크 관리로 투자를 보호하세요.
 							</p>
-							<div className="flex flex-col sm:flex-row gap-4 justify-center">
-								<Link href="/onboarding">
-									<Button size="lg" className="rounded-2xl h-12 px-8 text-base bg-blue-600 hover:bg-blue-700">
+							<div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center px-4 sm:px-0">
+								<Link href="/onboarding" className="w-full sm:w-auto">
+									<Button size="lg" className="rounded-2xl h-11 sm:h-12 px-6 sm:px-8 text-sm sm:text-base bg-blue-600 hover:bg-blue-700 w-full sm:w-auto">
 										시작하기
 									</Button>
 								</Link>
-								<Button size="lg" variant="outline" className="rounded-2xl h-12 px-8 text-base bg-transparent">
+								<Button size="lg" variant="outline" className="rounded-2xl h-11 sm:h-12 px-6 sm:px-8 text-sm sm:text-base bg-transparent w-full sm:w-auto">
 									데모 보기
 									<ExternalLink className="ml-2 size-4" />
 								</Button>
 							</div>
 						</motion.div>
 
-						<motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.2 }} className="relative mx-auto max-w-6xl">
-							<div className="flex justify-center items-center gap-4 md:gap-8 perspective-1000">
+						<motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.2 }} className="relative mx-auto max-w-6xl px-4 sm:px-6">
+							{/* 모바일: 스크롤 가능한 컨테이너 */}
+							<div className="lg:hidden overflow-x-auto pb-4">
+								<div className="flex gap-4 w-max px-2">
+									{/* 첫 번째 휴대폰 - 주식 차트 화면 */}
+									<div className="w-48 h-96 bg-black rounded-[2.5rem] border-4 border-gray-800 shadow-2xl flex-shrink-0">
+									<div className="w-full h-full rounded-[1.5rem] bg-gradient-to-b from-gray-900 to-black p-3 overflow-hidden">
+										{/* Status bar */}
+										<div className="flex items-center justify-between mb-3 text-white text-xs">
+											<div className="text-sm font-medium">9:41</div>
+											<div className="flex items-center gap-1">
+												<div className="w-4 h-2 border border-white/50 rounded-sm">
+													<div className="w-3 h-1 bg-green-500 rounded-sm"></div>
+												</div>
+											</div>
+										</div>
+
+										{/* Header */}
+										<div className="text-center mb-4">
+											<div className="text-white font-bold text-lg">AAPL</div>
+											<div className="text-green-400 text-sm font-semibold">$173.50 +2.15%</div>
+										</div>
+
+										{/* Chart */}
+										<div className="h-24 bg-gray-800/50 rounded-lg mb-3 relative overflow-hidden">
+											<svg className="w-full h-full" viewBox="0 0 100 50">
+												<path d="M5,45 L15,40 L25,35 L35,25 L45,30 L55,20 L65,15 L75,25 L85,20 L95,15" stroke="#10b981" strokeWidth="2" fill="none" />
+											</svg>
+										</div>
+
+										{/* Action buttons */}
+										<div className="grid grid-cols-2 gap-2 mb-3">
+											<div className="bg-green-600 text-white text-center py-2 rounded text-sm font-medium">매수</div>
+											<div className="bg-red-600 text-white text-center py-2 rounded text-sm font-medium">매도</div>
+										</div>
+
+										{/* Stats */}
+										<div className="grid grid-cols-2 gap-2 text-xs text-gray-400">
+											<div>
+												<div>고가</div>
+												<div className="text-white">$175.20</div>
+											</div>
+											<div>
+												<div>저가</div>
+												<div className="text-white">$171.80</div>
+											</div>
+										</div>
+									</div>
+								</div>
+
+									{/* 두 번째 휴대폰 (중앙) - 포트폴리오 화면 */}
+									<div className="w-52 h-[28rem] bg-black rounded-[2.5rem] border-4 border-gray-800 shadow-2xl flex-shrink-0">
+									<div className="w-full h-full rounded-[1.5rem] bg-gradient-to-b from-gray-900 to-black p-4 overflow-hidden">
+										{/* Status bar */}
+										<div className="flex items-center justify-between mb-4 text-white text-xs">
+											<div className="text-sm font-medium">9:41</div>
+											<div className="text-xs font-bold text-blue-400">FinFlow</div>
+										</div>
+
+										{/* Portfolio value */}
+										<div className="text-center mb-6">
+											<div className="text-2xl font-bold text-white">$142,850</div>
+											<div className="text-green-400 text-sm">+$3,240 (+2.32%) 오늘</div>
+										</div>
+
+										{/* Chart */}
+										<div className="h-32 bg-gray-800/30 rounded-xl mb-4 relative overflow-hidden p-2">
+											<svg className="w-full h-full" viewBox="0 0 100 60">
+												<defs>
+													<linearGradient id="portfolioGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+														<stop offset="0%" style={{ stopColor: "#10b981", stopOpacity: 0.3 }} />
+														<stop offset="100%" style={{ stopColor: "#10b981", stopOpacity: 0 }} />
+													</linearGradient>
+												</defs>
+												<path d="M5,50 L15,45 L25,40 L35,30 L45,35 L55,25 L65,20 L75,30 L85,25 L95,20 L95,60 L5,60 Z" fill="url(#portfolioGradient)" />
+												<path d="M5,50 L15,45 L25,40 L35,30 L45,35 L55,25 L65,20 L75,30 L85,25 L95,20" stroke="#10b981" strokeWidth="2" fill="none" />
+											</svg>
+										</div>
+
+										{/* Holdings */}
+										<div className="space-y-3">
+											<div className="flex justify-between items-center text-sm">
+												<div className="flex items-center gap-2">
+													<div className="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center text-white text-xs">A</div>
+													<div>
+														<div className="text-white font-medium">AAPL</div>
+														<div className="text-gray-400 text-xs">10 shares</div>
+													</div>
+												</div>
+												<div className="text-right">
+													<div className="text-white">$1,735</div>
+													<div className="text-green-400 text-xs">+2.1%</div>
+												</div>
+											</div>
+
+											<div className="flex justify-between items-center text-sm">
+												<div className="flex items-center gap-2">
+													<div className="w-6 h-6 bg-green-600 rounded-full flex items-center justify-center text-white text-xs">T</div>
+													<div>
+														<div className="text-white font-medium">TSLA</div>
+														<div className="text-gray-400 text-xs">5 shares</div>
+													</div>
+												</div>
+												<div className="text-right">
+													<div className="text-white">$1,240</div>
+													<div className="text-red-400 text-xs">-1.5%</div>
+												</div>
+											</div>
+
+											<div className="flex justify-between items-center text-sm">
+												<div className="flex items-center gap-2">
+													<div className="w-6 h-6 bg-purple-600 rounded-full flex items-center justify-center text-white text-xs">M</div>
+													<div>
+														<div className="text-white font-medium">MSFT</div>
+														<div className="text-gray-400 text-xs">8 shares</div>
+													</div>
+												</div>
+												<div className="text-right">
+													<div className="text-white">$2,680</div>
+													<div className="text-green-400 text-xs">+0.8%</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+
+									{/* 세 번째 휴대폰 - 리스크 분석 화면 */}
+									<div className="w-48 h-96 bg-black rounded-[2.5rem] border-4 border-gray-800 shadow-2xl flex-shrink-0">
+									<div className="w-full h-full rounded-[1.5rem] bg-gradient-to-b from-gray-900 to-black p-3 overflow-hidden">
+										{/* Status bar */}
+										<div className="flex items-center justify-between mb-3 text-white text-xs">
+											<div className="text-sm font-medium">9:41</div>
+											<div className="w-4 h-2 border border-white/50 rounded-sm">
+												<div className="w-2 h-1 bg-yellow-500 rounded-sm"></div>
+											</div>
+										</div>
+
+										{/* Header */}
+										<div className="text-center mb-4">
+											<div className="text-white font-bold">리스크 분석</div>
+											<div className="text-yellow-400 text-sm">중간 위험</div>
+										</div>
+
+										{/* Risk gauge */}
+										<div className="flex justify-center mb-4">
+											<div className="relative w-16 h-16">
+												<svg className="w-16 h-16 transform -rotate-90" viewBox="0 0 32 32">
+													<circle cx="16" cy="16" r="12" stroke="#374151" strokeWidth="4" fill="none" />
+													<circle cx="16" cy="16" r="12" stroke="#eab308" strokeWidth="4" fill="none" strokeDasharray="50.26" strokeDashoffset="12.56" strokeLinecap="round" />
+												</svg>
+												<div className="absolute inset-0 flex items-center justify-center">
+													<span className="text-yellow-400 text-xs font-bold">75%</span>
+												</div>
+											</div>
+										</div>
+
+										{/* Risk metrics */}
+										<div className="space-y-2 text-xs">
+											<div className="flex justify-between">
+												<span className="text-gray-400">VaR (1일)</span>
+												<span className="text-white">-$2,850</span>
+											</div>
+											<div className="flex justify-between">
+												<span className="text-gray-400">샤프 비율</span>
+												<span className="text-white">1.24</span>
+											</div>
+											<div className="flex justify-between">
+												<span className="text-gray-400">최대 손실</span>
+												<span className="text-red-400">-12.5%</span>
+											</div>
+											<div className="flex justify-between">
+												<span className="text-gray-400">베타</span>
+												<span className="text-white">0.89</span>
+											</div>
+										</div>
+
+										{/* Alert */}
+										<div className="mt-4 p-2 bg-yellow-500/10 border border-yellow-500/30 rounded text-xs">
+											<div className="text-yellow-400 font-medium">⚠️ 알림</div>
+											<div className="text-gray-300">테슬라 비중 재조정 필요</div>
+										</div>
+									</div>
+									</div>
+								</div>
+							</div>
+
+							{/* 데스크톱: 3개 휴대폰 나란히 배치 */}
+							<div className="hidden lg:flex justify-center items-center gap-4 md:gap-8 perspective-1000">
 								{/* 첫 번째 휴대폰 - 주식 차트 화면 */}
 								<div className="w-48 h-96 bg-black rounded-[2.5rem] border-4 border-gray-800 shadow-2xl transform -rotate-6 hover:rotate-0 transition-transform duration-300">
 									<div className="w-full h-full rounded-[1.5rem] bg-gradient-to-b from-gray-900 to-black p-3 overflow-hidden">
@@ -366,8 +552,9 @@ export default function LandingPage() {
 									</div>
 								</div>
 							</div>
-							<div className="absolute -bottom-10 -right-10 -z-10 h-[400px] w-[400px] rounded-full bg-gradient-to-br from-blue-400/20 to-purple-400/20 blur-3xl opacity-70"></div>
-							<div className="absolute -top-10 -left-10 -z-10 h-[400px] w-[400px] rounded-full bg-gradient-to-br from-purple-400/20 to-blue-400/20 blur-3xl opacity-70"></div>
+
+							<div className="absolute -bottom-10 -right-10 -z-10 h-[300px] w-[300px] sm:h-[400px] sm:w-[400px] rounded-full bg-gradient-to-br from-blue-400/20 to-purple-400/20 blur-3xl opacity-70"></div>
+							<div className="absolute -top-10 -left-10 -z-10 h-[300px] w-[300px] sm:h-[400px] sm:w-[400px] rounded-full bg-gradient-to-br from-purple-400/20 to-blue-400/20 blur-3xl opacity-70"></div>
 						</motion.div>
 					</div>
 				</section>
@@ -390,16 +577,16 @@ export default function LandingPage() {
 							<p className="max-w-[800px] text-muted-foreground md:text-lg text-balance">첨단 알고리즘과 실시간 분석을 통해 당신의 투자 포트폴리오를 보호하고 최적화합니다.</p>
 						</motion.div>
 
-						<motion.div variants={container} initial="hidden" whileInView="show" viewport={{ once: true }} className="grid gap-8 md:grid-cols-3 max-w-6xl mx-auto">
+						<motion.div variants={container} initial="hidden" whileInView="show" viewport={{ once: true }} className="grid gap-6 sm:gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto">
 							{features.map((feature, i) => (
 								<motion.div key={i} variants={item} whileHover={{ y: -5, transition: { duration: 0.2 } }} className="group">
 									<Card className="h-full overflow-hidden border-border/40 bg-white dark:bg-gray-800/50 backdrop-blur transition-all duration-300 hover:shadow-2xl hover:shadow-blue-500/10 rounded-3xl">
-										<CardContent className="p-8 flex flex-col h-full text-center">
-											<div className="size-16 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white mb-6 mx-auto group-hover:scale-110 transition-transform duration-300">
+										<CardContent className="p-6 sm:p-8 flex flex-col h-full text-center">
+											<div className="size-14 sm:size-16 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white mb-4 sm:mb-6 mx-auto group-hover:scale-110 transition-transform duration-300">
 												{feature.icon}
 											</div>
-											<h3 className="text-xl font-bold mb-4 text-gray-900 dark:text-gray-100 leading-tight">{feature.title}</h3>
-											<p className="text-gray-600 dark:text-gray-300 leading-relaxed flex-1 whitespace-pre-line">{feature.description}</p>
+											<h3 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4 text-gray-900 dark:text-gray-100 leading-tight">{feature.title}</h3>
+											<p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 leading-relaxed flex-1 whitespace-pre-line">{feature.description}</p>
 											<div className="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
 												<div className="w-8 h-1 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full mx-auto opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
 											</div>
@@ -475,7 +662,7 @@ export default function LandingPage() {
 							<p className="text-muted-foreground md:text-lg max-w-2xl mx-auto text-balance">전 세계 투자자들이 신뢰하는 FinFlow의 실제 성과를 확인하세요.</p>
 						</motion.div>
 
-						<div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 max-w-5xl mx-auto">
+						<div className="grid gap-4 sm:gap-6 md:gap-8 grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 max-w-5xl mx-auto">
 							{[
 								{ metric: "+50M", label: "Tasks & Scripts", caption: "다양한 투자 작업 처리" },
 								{ metric: "+10M", label: "Monthly Users", caption: "월간 활성 사용자" },
@@ -490,11 +677,11 @@ export default function LandingPage() {
 									whileInView={{ opacity: 1, y: 0 }}
 									viewport={{ once: true }}
 									transition={{ duration: 0.5, delay: i * 0.1 }}
-									className="text-center bg-white/50 dark:bg-gray-800/30 p-6 rounded-2xl backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50"
+									className="text-center bg-white/50 dark:bg-gray-800/30 p-4 sm:p-6 rounded-xl sm:rounded-2xl backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50"
 								>
-									<div className="text-4xl md:text-5xl font-bold text-blue-600 dark:text-blue-400 mb-2">{stat.metric}</div>
-									<div className="text-lg font-semibold mb-1 text-gray-900 dark:text-gray-100">{stat.label}</div>
-									<div className="text-sm text-muted-foreground">{stat.caption}</div>
+									<div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-blue-600 dark:text-blue-400 mb-1 sm:mb-2">{stat.metric}</div>
+									<div className="text-sm sm:text-base lg:text-lg font-semibold mb-0.5 sm:mb-1 text-gray-900 dark:text-gray-100">{stat.label}</div>
+									<div className="text-xs sm:text-sm text-muted-foreground">{stat.caption}</div>
 								</motion.div>
 							))}
 						</div>

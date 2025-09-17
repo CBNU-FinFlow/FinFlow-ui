@@ -60,23 +60,23 @@ export default function OnboardingPage() {
 			{/* 배경 패턴 */}
 			<div className="absolute inset-0 bg-white dark:bg-black bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,#1f1f1f_1px,transparent_1px),linear-gradient(to_bottom,#1f1f1f_1px,transparent_1px)] bg-[size:4rem_4rem] opacity-30"></div>
 			
-			<div className="relative w-full max-w-md">
+			<div className="relative w-full max-w-md px-4 sm:px-0">
 				{/* 헤더 */}
-				<div className="text-center mb-8">
-					<Link href="/" className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors mb-6">
-						<ArrowLeft className="size-4" />
+				<div className="text-center mb-6 sm:mb-8">
+					<Link href="/" className="inline-flex items-center gap-2 text-sm sm:text-base text-muted-foreground hover:text-foreground transition-colors mb-4 sm:mb-6">
+						<ArrowLeft className="size-3.5 sm:size-4" />
 						돌아가기
 					</Link>
-					<div className="font-bold text-2xl mb-2">FinFlow</div>
-					<p className="text-muted-foreground">투자 정보를 설정해주세요</p>
+					<div className="font-bold text-xl sm:text-2xl mb-2">FinFlow</div>
+					<p className="text-sm sm:text-base text-muted-foreground">투자 정보를 설정해주세요</p>
 				</div>
 
 				{/* 진행도 표시 */}
-				<div className="flex justify-center mb-8">
+				<div className="flex justify-center mb-6 sm:mb-8">
 					{[1, 2, 3].map((num) => (
 						<div key={num} className="flex items-center">
 							<div
-								className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium transition-colors ${
+								className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-xs sm:text-sm font-medium transition-colors ${
 									step >= num
 										? "bg-blue-600 text-white"
 										: "bg-gray-200 dark:bg-gray-700 text-gray-500"
@@ -86,7 +86,7 @@ export default function OnboardingPage() {
 							</div>
 							{num < 3 && (
 								<div
-									className={`w-12 h-1 mx-2 transition-colors ${
+									className={`w-8 sm:w-12 h-1 mx-1 sm:mx-2 transition-colors ${
 										step > num ? "bg-blue-600" : "bg-gray-200 dark:bg-gray-700"
 									}`}
 								/>

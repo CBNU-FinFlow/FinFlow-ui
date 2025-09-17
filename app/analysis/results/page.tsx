@@ -108,18 +108,18 @@ const ErrorCard = ({ title, error, onRetry }: { title: string; error: string; on
 
 // 포트폴리오 탭 컴포넌트
 const PortfolioTab = ({ allocation, metrics, quickMetrics }: { allocation: PortfolioAllocation[]; metrics: PerformanceMetrics[]; quickMetrics: QuickMetrics }) => (
-	<div className="space-y-6">
+	<div className="space-y-4 sm:space-y-6">
 		{/* 퀵 메트릭 카드들 */}
-		<div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-			<Card className="backdrop-blur-sm bg-white/90 dark:bg-gray-900/90 border border-gray-200/50 dark:border-gray-700/50 rounded-3xl">
-				<CardContent className="p-4">
+		<div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+			<Card className="backdrop-blur-sm bg-white/90 dark:bg-gray-900/90 border border-gray-200/50 dark:border-gray-700/50 rounded-2xl sm:rounded-3xl">
+				<CardContent className="p-3 sm:p-4">
 					<div className="flex items-center space-x-2">
-						<div className="w-8 h-8 bg-green-500 rounded-2xl flex items-center justify-center">
-							<TrendingUp className="h-4 w-4 text-white" />
+						<div className="w-7 h-7 sm:w-8 sm:h-8 bg-green-500 rounded-xl sm:rounded-2xl flex items-center justify-center">
+							<TrendingUp className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-white" />
 						</div>
 						<div>
-							<p className="text-xs text-muted-foreground">연간 수익률</p>
-							<p className="text-lg font-bold text-green-600">{quickMetrics.annualReturn}</p>
+							<p className="text-[10px] sm:text-xs text-muted-foreground">연간 수익률</p>
+							<p className="text-sm sm:text-lg font-bold text-green-600">{quickMetrics.annualReturn}</p>
 						</div>
 					</div>
 				</CardContent>
@@ -169,32 +169,32 @@ const PortfolioTab = ({ allocation, metrics, quickMetrics }: { allocation: Portf
 		</div>
 
 		{/* 포트폴리오 구성 */}
-		<Card className="backdrop-blur-sm bg-white/90 dark:bg-gray-900/90 border border-gray-200/50 dark:border-gray-700/50 rounded-3xl">
-			<CardHeader>
-				<CardTitle className="flex items-center space-x-2">
-					<PieChart className="h-5 w-5 text-blue-600" />
+		<Card className="backdrop-blur-sm bg-white/90 dark:bg-gray-900/90 border border-gray-200/50 dark:border-gray-700/50 rounded-2xl sm:rounded-3xl">
+			<CardHeader className="p-4 sm:p-6">
+				<CardTitle className="flex items-center space-x-2 text-base sm:text-xl">
+					<PieChart className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600" />
 					<span>포트폴리오 구성</span>
 				</CardTitle>
-				<CardDescription>AI가 제안한 최적의 자산 배분</CardDescription>
+				<CardDescription className="text-xs sm:text-sm">AI가 제안한 최적의 자산 배분</CardDescription>
 			</CardHeader>
-			<CardContent>
-				<div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+			<CardContent className="p-4 sm:p-6 pt-0 sm:pt-0">
+				<div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
 					{/* 자산 리스트 */}
-					<div className="space-y-3">
+					<div className="space-y-2 sm:space-y-3">
 						{allocation.map((asset, index) => (
-							<div key={asset.stock} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800/50 rounded-2xl">
-								<div className="flex items-center space-x-3">
-									<div className={`w-8 h-8 rounded-2xl flex items-center justify-center text-white font-bold text-sm`} style={{ backgroundColor: COLORS[index % COLORS.length] }}>
+							<div key={asset.stock} className="flex items-center justify-between p-2.5 sm:p-3 bg-gray-50 dark:bg-gray-800/50 rounded-xl sm:rounded-2xl">
+								<div className="flex items-center space-x-2 sm:space-x-3">
+									<div className={`w-7 h-7 sm:w-8 sm:h-8 rounded-xl sm:rounded-2xl flex items-center justify-center text-white font-bold text-xs sm:text-sm`} style={{ backgroundColor: COLORS[index % COLORS.length] }}>
 										{asset.stock === "현금" ? "$" : asset.stock.charAt(0)}
 									</div>
 									<div>
-										<div className="font-semibold">{asset.stock}</div>
-										<div className="text-xs text-muted-foreground">{formatCurrency(asset.amount)}</div>
+										<div className="font-semibold text-sm sm:text-base">{asset.stock}</div>
+										<div className="text-[10px] sm:text-xs text-muted-foreground">{formatCurrency(asset.amount)}</div>
 									</div>
 								</div>
 								<div className="text-right">
-									<div className="font-bold">{asset.percentage.toFixed(1)}%</div>
-									<Progress value={asset.percentage} className="w-16 h-2 mt-1" />
+									<div className="font-bold text-sm sm:text-base">{asset.percentage.toFixed(1)}%</div>
+									<Progress value={asset.percentage} className="w-12 sm:w-16 h-1.5 sm:h-2 mt-1" />
 								</div>
 							</div>
 						))}
@@ -202,7 +202,7 @@ const PortfolioTab = ({ allocation, metrics, quickMetrics }: { allocation: Portf
 
 					{/* 파이 차트 */}
 					<div className="flex items-center justify-center">
-						<ResponsiveContainer width="100%" height={300}>
+						<ResponsiveContainer width="100%" height={250} className="sm:h-[300px]">
 							<RechartsPieChart>
 								<Pie
 									data={allocation.map((item, index) => ({
@@ -238,17 +238,18 @@ const PortfolioTab = ({ allocation, metrics, quickMetrics }: { allocation: Portf
 			</CardContent>
 		</Card>
 
-		{/* 성과 지표 테이블 */}
-		<Card className="backdrop-blur-sm bg-white/90 dark:bg-gray-900/90 border border-gray-200/50 dark:border-gray-700/50 rounded-3xl">
-			<CardHeader>
-				<CardTitle className="flex items-center space-x-2">
-					<BarChart3 className="h-5 w-5 text-blue-600" />
+		{/* 성과 지표 테이블 - 모바일에서는 카드 형태로 변환 */}
+		<Card className="backdrop-blur-sm bg-white/90 dark:bg-gray-900/90 border border-gray-200/50 dark:border-gray-700/50 rounded-2xl sm:rounded-3xl">
+			<CardHeader className="p-4 sm:p-6">
+				<CardTitle className="flex items-center space-x-2 text-base sm:text-xl">
+					<BarChart3 className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600" />
 					<span>상세 성과 지표</span>
 				</CardTitle>
-				<CardDescription>포트폴리오와 벤치마크 비교</CardDescription>
+				<CardDescription className="text-xs sm:text-sm">포트폴리오와 벤치마크 비교</CardDescription>
 			</CardHeader>
-			<CardContent>
-				<div className="overflow-x-auto">
+			<CardContent className="p-4 sm:p-6 pt-0 sm:pt-0">
+				{/* 데스크톱 테이블 뷰 */}
+				<div className="hidden sm:block overflow-x-auto">
 					<table className="w-full text-sm">
 						<thead>
 							<tr className="border-b border-gray-200 dark:border-gray-700">
@@ -269,6 +270,28 @@ const PortfolioTab = ({ allocation, metrics, quickMetrics }: { allocation: Portf
 							))}
 						</tbody>
 					</table>
+				</div>
+				{/* 모바일 카드 뷰 */}
+				<div className="sm:hidden space-y-3">
+					{metrics.map((metric, index) => (
+						<div key={index} className="bg-gray-50 dark:bg-gray-800/50 rounded-xl p-3">
+							<div className="font-medium text-sm mb-2">{metric.label}</div>
+							<div className="grid grid-cols-3 gap-2 text-xs">
+								<div>
+									<div className="text-muted-foreground mb-1">포트폴리오</div>
+									<div className="font-semibold text-blue-600">{metric.portfolio}</div>
+								</div>
+								<div>
+									<div className="text-muted-foreground mb-1">S&P 500</div>
+									<div>{metric.spy}</div>
+								</div>
+								<div>
+									<div className="text-muted-foreground mb-1">NASDAQ</div>
+									<div>{metric.qqq}</div>
+								</div>
+							</div>
+					</div>
+				))}
 				</div>
 			</CardContent>
 		</Card>
@@ -303,7 +326,7 @@ const PerformanceTab = ({ history }: { history: PerformanceHistory[] }) => {
 					<CardDescription>포트폴리오 vs 벤치마크 성과 비교 (최근 1년)</CardDescription>
 				</CardHeader>
 				<CardContent>
-					<div className="h-[650px]">
+					<div className="h-[400px] sm:h-[500px] lg:h-[650px]">
 						<ResponsiveContainer width="100%" height="100%">
 							<LineChart data={chartData} margin={{ top: 30, right: 40, left: 60, bottom: 80 }}>
 								<CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
@@ -621,7 +644,8 @@ const CorrelationTab = ({ correlationData }: { correlationData: CorrelationData[
 					<CardDescription>포트폴리오 내 자산들의 상관관계 분석 (최근 1년 기준)</CardDescription>
 				</CardHeader>
 				<CardContent>
-					<div className="overflow-x-auto">
+					{/* 데스크톱 테이블 뷰 */}
+					<div className="hidden sm:block overflow-x-auto">
 						<table className="w-full text-sm">
 							<thead>
 								<tr>
@@ -648,6 +672,33 @@ const CorrelationTab = ({ correlationData }: { correlationData: CorrelationData[
 								})}
 							</tbody>
 						</table>
+					</div>
+					{/* 모바일 카드 뷰 */}
+					<div className="sm:hidden space-y-3">
+						{correlationData.map((item, index) => {
+							const absCorr = Math.abs(item.correlation);
+							const strength = absCorr > 0.7 ? "강함" : absCorr > 0.4 ? "보통" : "약함";
+							const strengthColor = absCorr > 0.7 ? "text-red-600" : absCorr > 0.4 ? "text-yellow-600" : "text-green-600";
+
+							return (
+								<div key={index} className="bg-gray-50 dark:bg-gray-800/50 rounded-xl p-3">
+									<div className="flex justify-between items-start mb-2">
+										<div className="flex items-center space-x-2">
+											<span className="font-semibold text-sm">{item.stock1}</span>
+											<span className="text-muted-foreground">↔</span>
+											<span className="font-semibold text-sm">{item.stock2}</span>
+										</div>
+									</div>
+									<div className="flex justify-between items-center text-xs">
+										<div>
+											<span className="text-muted-foreground">상관계수: </span>
+											<span className="font-mono font-medium">{item.correlation.toFixed(3)}</span>
+										</div>
+										<span className={`font-medium ${strengthColor}`}>{strength}</span>
+									</div>
+								</div>
+							);
+						})}
 					</div>
 				</CardContent>
 			</Card>
