@@ -178,9 +178,9 @@ const PortfolioTab = ({ allocation, metrics, quickMetrics }: { allocation: Portf
 				<CardDescription>AI가 제안한 최적의 자산 배분</CardDescription>
 			</CardHeader>
 			<CardContent>
-				<div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+				<div className="grid grid-cols-1 lg:grid-cols-2 gap-6 min-h-[420px]">
 					{/* 자산 리스트 */}
-					<div className="space-y-3">
+					<div className="space-y-3 max-h-[600px] overflow-y-auto pr-1 lg:pr-3">
 						{allocation.map((asset, index) => (
 							<div key={asset.stock} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800/50 rounded-2xl">
 								<div className="flex items-center space-x-3">

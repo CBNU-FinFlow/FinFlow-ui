@@ -53,3 +53,5 @@ logs
 **/__pycache__/
 
 build.tar.gz
+
+.venv
