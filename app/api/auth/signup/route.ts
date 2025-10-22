@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
-import { randomUUID } from "crypto"
 import { SignupRequest } from "@/types/auth"
 import { createToken, hashPassword } from "@/lib/server/authUtils"
-import { findUserByEmail, saveUser, StoredUser } from "@/lib/server/userStore"
+import { findUserByEmail, saveUser } from "@/lib/server/userStore"
 
 export async function POST(req: NextRequest) {
   let body: SignupRequest
@@ -30,17 +29,11 @@ export async function POST(req: NextRequest) {
   }
 
   const passwordHash = await hashPassword(password)
-  const now = new Date().toISOString()
-  const user: StoredUser = {
-    id: randomUUID(),
+  const user = await saveUser({
     email,
     name,
     passwordHash,
-    createdAt: now,
-    updatedAt: now,
-  }
-
-  await saveUser(user)
+  })
 
   const token = createToken(user.id)
 
