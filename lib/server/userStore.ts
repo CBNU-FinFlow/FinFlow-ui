@@ -1,5 +1,4 @@
-import { promises as fs } from "fs"
-import path from "path"
+import { getDb } from "./db"
 
 export interface StoredUser {
   id: string
@@ -7,60 +6,129 @@ export interface StoredUser {
   name: string
   passwordHash: string
   createdAt: string
-  updatedAt: string
+  updatedAt: string | null
 }
 
-const DATA_DIR = path.join(process.cwd(), "data")
-const DATA_FILE = path.join(DATA_DIR, "users.json")
-
-async function ensureDataFile() {
-  try {
-    await fs.access(DATA_FILE)
-  } catch {
-    await fs.mkdir(DATA_DIR, { recursive: true })
-    await fs.writeFile(DATA_FILE, "[]", "utf8")
-  }
+interface UserRow {
+  id: number
+  email: string
+  name: string
+  hashed_password: string
+  created_at: string
+  updated_at: string | null
 }
 
-export async function readUsers(): Promise<StoredUser[]> {
-  await ensureDataFile()
-  const raw = await fs.readFile(DATA_FILE, "utf8")
-  if (!raw.trim()) {
-    return []
-  }
-  try {
-    return JSON.parse(raw) as StoredUser[]
-  } catch (error) {
-    console.error("[userStore] Failed to parse users.json", error)
-    return []
-  }
+type SaveUserInput = {
+  id?: string
+  email: string
+  name: string
+  passwordHash: string
 }
 
-export async function writeUsers(users: StoredUser[]): Promise<void> {
-  await ensureDataFile()
-  await fs.writeFile(DATA_FILE, JSON.stringify(users, null, 2), "utf8")
+const SELECT_USER_COLUMNS = `
+  id,
+  email,
+  name,
+  hashed_password,
+  created_at,
+  updated_at
+`
+
+const db = getDb()
+
+const selectUserByEmailStmt = db.prepare<[string], UserRow>(
+  `SELECT ${SELECT_USER_COLUMNS}
+   FROM users
+   WHERE email = ?
+   COLLATE NOCASE`
+)
+
+const selectUserByIdStmt = db.prepare<[number], UserRow>(
+  `SELECT ${SELECT_USER_COLUMNS}
+   FROM users
+   WHERE id = ?`
+)
+
+const updateUserStmt = db.prepare<[string, string, string, string, number]>(
+  `UPDATE users
+   SET email = ?,
+       name = ?,
+       hashed_password = ?,
+       updated_at = ?
+   WHERE id = ?`
+)
+
+const insertUserStmt = db.prepare<[string, string, string, string, string]>(
+  `INSERT INTO users (email, name, hashed_password, created_at, updated_at)
+   VALUES (?, ?, ?, ?, ?)`
+)
+
+function mapRowToStoredUser(row: UserRow): StoredUser {
+  return {
+    id: row.id.toString(),
+    email: row.email,
+    name: row.name,
+    passwordHash: row.hashed_password,
+    createdAt: row.created_at,
+    updatedAt: row.updated_at,
+  }
 }
 
 export async function findUserByEmail(email: string): Promise<StoredUser | undefined> {
-  const users = await readUsers()
-  return users.find((user) => user.email.toLowerCase() === email.toLowerCase())
-}
+  const row = selectUserByEmailStmt.get(email)
 
-export async function saveUser(user: StoredUser): Promise<StoredUser> {
-  const users = await readUsers()
-  const existingIndex = users.findIndex((u) => u.email.toLowerCase() === user.email.toLowerCase())
-
-  if (existingIndex >= 0) {
-    users[existingIndex] = user
-  } else {
-    users.push(user)
+  if (!row) {
+    return undefined
   }
 
-  await writeUsers(users)
-  return user
+  return mapRowToStoredUser(row)
+}
+
+export async function saveUser(user: SaveUserInput): Promise<StoredUser> {
+  const now = new Date().toISOString()
+
+  if (user.id) {
+    const numericId = Number(user.id)
+    if (!Number.isInteger(numericId)) {
+      throw new Error("Invalid user id")
+    }
+
+    const result = updateUserStmt.run(user.email, user.name, user.passwordHash, now, numericId)
+
+    if (result.changes === 0) {
+      throw new Error("Failed to update user")
+    }
+
+    const updatedRow = selectUserByIdStmt.get(numericId)
+    if (!updatedRow) {
+      throw new Error("Failed to load updated user")
+    }
+    return mapRowToStoredUser(updatedRow)
+  }
+
+  const result = insertUserStmt.run(user.email, user.name, user.passwordHash, now, now)
+  const insertedId = Number(result.lastInsertRowid)
+
+  const insertedRow = selectUserByIdStmt.get(insertedId)
+  if (!insertedRow) {
+    throw new Error("Failed to load inserted user")
+  }
+
+  return mapRowToStoredUser(insertedRow)
 }
 
 export async function getUserById(id: string): Promise<StoredUser | undefined> {
-  const users = await readUsers()
-  return users.find((user) => user.id === id)
+  const numericId = Number(id)
+
+  if (!Number.isInteger(numericId) || numericId < 1) {
+    return undefined
+  }
+
+  const row = selectUserByIdStmt.get(numericId)
+
+  if (!row) {
+    return undefined
+  }
+
+  return mapRowToStoredUser(row)
 }
