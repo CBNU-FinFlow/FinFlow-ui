@@ -1,0 +1,10 @@
+[
+  {
+    "id": "83dc758e-950d-46a3-ac3f-2efd150d2ffd",
+    "email": "test@test.com",
+    "name": "테스트",
+    "passwordHash": "a1165224b4a51999e44232b9e2ec6093:a207cb4b41dedf9dd0dd9059c18f37d1f8195210ebb2519bb3edc0c7998fcab724ae4171832e9ef44be3cdcfaa3c83462129896db098626fff6609c400f1d2fb",
+    "createdAt": "2025-10-22T01:46:17.666Z",
+    "updatedAt": "2025-10-22T01:46:17.666Z"
+  }
+]

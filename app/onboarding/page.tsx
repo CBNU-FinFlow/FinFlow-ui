@@ -11,8 +11,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useRequireAuth } from "@/hooks/use-require-auth";
 
 export default function OnboardingPage() {
+	const { user, loading } = useRequireAuth();
 	const [step, setStep] = useState(1);
 	const [formData, setFormData] = useState({
 		investmentAmount: "",
@@ -20,6 +22,18 @@ export default function OnboardingPage() {
 		riskTolerance: "",
 	});
 	const router = useRouter();
+
+	if (loading) {
+		return (
+			<div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-blue-50 dark:from-gray-900 dark:to-blue-900">
+				<div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600" />
+			</div>
+		);
+	}
+
+	if (!user) {
+		return null;
+	}
 
 	const handleNext = () => {
 		if (step < 3) {

@@ -34,6 +34,7 @@ import {
 	RiskReturnRequest,
 } from "@/lib/types";
 import { apiCallWithRetry } from "@/lib/config";
+import { useRequireAuth } from "@/hooks/use-require-auth";
 
 // 색상 팔레트
 const COLORS = ["#3B82F6", "#10B981", "#8B5CF6", "#F59E0B", "#EF4444", "#06B6D4", "#84CC16", "#F97316", "#EC4899", "#6366F1"];
@@ -745,6 +746,7 @@ function AnalysisResultsContent() {
 	const searchParams = useSearchParams();
 	const router = useRouter();
 	const { theme, setTheme } = useTheme();
+	const { user, loading } = useRequireAuth();
 	const [mounted, setMounted] = useState(false);
 
 	// 상태 관리
@@ -775,6 +777,10 @@ function AnalysisResultsContent() {
 	const riskTolerance = mapRiskTolerance(riskToleranceNum);
 
 	useEffect(() => {
+		if (loading || !user) {
+			return;
+		}
+
 		let alive = true;
 		setMounted(true);
 
@@ -791,10 +797,15 @@ function AnalysisResultsContent() {
 		return () => {
 			alive = false;
 		};
-	}, []);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [loading, user]);
 
 	// portfolio 완료 후 의존 데이터 재로딩
 	useEffect(() => {
+		if (loading || !user) {
+			return;
+		}
+
 		if (!tabsData?.portfolio?.allocation?.length) return;
 
 		let alive = true;
@@ -805,7 +816,23 @@ function AnalysisResultsContent() {
 		return () => {
 			alive = false;
 		};
-	}, [tabsData?.portfolio?.allocation?.length]);
+		// eslint-disable-next-line react-hooks-exhaustive-deps
+	}, [loading, user, tabsData?.portfolio?.allocation?.length]);
+
+	if (loading) {
+		return (
+			<div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-blue-50 dark:from-gray-900 dark:to-blue-900">
+				<div className="text-center space-y-4">
+					<div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto"></div>
+					<p className="text-muted-foreground">인증 상태를 확인하는 중입니다</p>
+				</div>
+			</div>
+		);
+	}
+
+	if (!user) {
+		return null;
+	}
 
 	// const loadAllData = async () => {
 	// 	// 모든 API 호출을 병렬로 실행
