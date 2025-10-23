@@ -270,7 +270,7 @@ export default function OnboardingPage() {
 								<Button
 									onClick={handleNext}
 									disabled={!isStepValid()}
-									className="flex-1 h-12 rounded-2xl bg-blue-600 hover:bg-blue-700"
+									className="flex-1 h-12 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white"
 								>
 									{step === 3 ? "완료" : "다음"}
 									{step < 3 && <ArrowRight className="size-4 ml-2" />}

@@ -71,6 +71,178 @@ const getHorizonLabel = (horizon: string): string => {
 	return "장기 (5년 이상)";
 };
 
+const TRADING_DAYS_PER_YEAR = 252;
+
+const calculateStandardDeviation = (values: number[]): number => {
+	const filtered = values.filter((value) => Number.isFinite(value));
+	if (!filtered.length) return 0;
+	const mean = filtered.reduce((sum, value) => sum + value, 0) / filtered.length;
+	const variance = filtered.reduce((sum, value) => sum + (value - mean) ** 2, 0) / filtered.length;
+	return Math.sqrt(variance);
+};
+
+const calculateDailyReturns = (cumulativeSeries: number[]): number[] => {
+	const returns: number[] = [];
+	for (let i = 1; i < cumulativeSeries.length; i++) {
+		const prev = cumulativeSeries[i - 1];
+		const current = cumulativeSeries[i];
+		if (!Number.isFinite(prev) || !Number.isFinite(current) || prev === 0) {
+			continue;
+		}
+		returns.push(current / prev - 1);
+	}
+	return returns;
+};
+
+const calculateMaxDrawdown = (series: number[]): number => {
+	if (!series.length) return 0;
+	const cumulative = series.map((value) => 1 + value);
+	let peak = 1;
+	let maxDrawdown = 0;
+
+	for (const value of cumulative) {
+		if (!Number.isFinite(value)) {
+			continue;
+		}
+		if (value > peak) {
+			peak = value;
+		}
+		if (peak <= 0) {
+			continue;
+		}
+		const drawdown = value / peak - 1;
+		if (drawdown < maxDrawdown) {
+			maxDrawdown = drawdown;
+		}
+	}
+
+	return Math.abs(maxDrawdown) * 100;
+};
+
+type BenchmarkStats = {
+	totalReturn: number;
+	annualReturn: number;
+	sharpeRatio: number;
+	sortinoRatio: number;
+	maxDrawdown: number;
+	volatility: number;
+};
+
+const computeBenchmarkStats = (series: number[]): BenchmarkStats => {
+	if (!series.length) {
+		return {
+			totalReturn: 0,
+			annualReturn: 0,
+			sharpeRatio: 0,
+			sortinoRatio: 0,
+			maxDrawdown: 0,
+			volatility: 0,
+		};
+	}
+
+	const cumulative = series.map((value) => 1 + value);
+	const dailyReturns = calculateDailyReturns(cumulative);
+	const tradingDays = dailyReturns.length;
+	const meanDaily = tradingDays ? dailyReturns.reduce((sum, value) => sum + value, 0) / tradingDays : 0;
+	const stdDaily = calculateStandardDeviation(dailyReturns);
+	const downsideStd = calculateStandardDeviation(dailyReturns.filter((value) => value < 0));
+	const lastValue = cumulative[cumulative.length - 1] || 1;
+	const totalReturnPct = (lastValue - 1) * 100;
+	const annualizedReturnPct = tradingDays ? (Math.pow(lastValue, TRADING_DAYS_PER_YEAR / tradingDays) - 1) * 100 : totalReturnPct;
+	const sharpe = stdDaily > 0 ? (meanDaily / stdDaily) * Math.sqrt(TRADING_DAYS_PER_YEAR) : 0;
+	const sortino =
+		downsideStd > 0 ? (meanDaily * TRADING_DAYS_PER_YEAR) / (downsideStd * Math.sqrt(TRADING_DAYS_PER_YEAR)) : 0;
+	const volatilityPct = stdDaily * Math.sqrt(TRADING_DAYS_PER_YEAR) * 100;
+	const maxDrawdownPct = calculateMaxDrawdown(series);
+
+	const sanitize = (value: number) => {
+		if (!Number.isFinite(value)) return 0;
+		if (Math.abs(value) < 1e-8) return 0;
+		return value;
+	};
+
+	return {
+		totalReturn: sanitize(totalReturnPct),
+		annualReturn: sanitize(annualizedReturnPct),
+		sharpeRatio: sanitize(sharpe),
+		sortinoRatio: sanitize(sortino),
+		maxDrawdown: sanitize(maxDrawdownPct),
+		volatility: sanitize(volatilityPct),
+	};
+};
+
+const calculateBenchmarkMetrics = (history: PerformanceHistory[]) => {
+	if (!history?.length) return null;
+
+	const spySeries = history.map((item) => item.spy ?? 0);
+	const qqqSeries = history.map((item) => item.qqq ?? 0);
+
+	return {
+		spy: computeBenchmarkStats(spySeries),
+		qqq: computeBenchmarkStats(qqqSeries),
+	};
+};
+
+const mergeBenchmarkMetrics = (metrics: PerformanceMetrics[], history: PerformanceHistory[]): PerformanceMetrics[] => {
+	if (!metrics.length || !history.length) return metrics;
+
+	const benchmarkStats = calculateBenchmarkMetrics(history);
+	if (!benchmarkStats) return metrics;
+
+	const formatPercentage = (value: number, decimals = 2) => {
+		const normalized = Number.isFinite(value) ? (Math.abs(value) < 1e-6 ? 0 : value) : 0;
+		return `${normalized.toFixed(decimals)}%`;
+	};
+
+	const formatRatio = (value: number, decimals = 4) => {
+		const normalized = Number.isFinite(value) ? (Math.abs(value) < 1e-8 ? 0 : value) : 0;
+		return normalized.toFixed(decimals);
+	};
+
+	return metrics.map((metric) => {
+		switch (metric.label) {
+			case "총 수익률":
+				return {
+					...metric,
+					spy: formatPercentage(benchmarkStats.spy.totalReturn),
+					qqq: formatPercentage(benchmarkStats.qqq.totalReturn),
+				};
+			case "연간 수익률":
+				return {
+					...metric,
+					spy: formatPercentage(benchmarkStats.spy.annualReturn),
+					qqq: formatPercentage(benchmarkStats.qqq.annualReturn),
+				};
+			case "샤프 비율":
+				return {
+					...metric,
+					spy: formatRatio(benchmarkStats.spy.sharpeRatio),
+					qqq: formatRatio(benchmarkStats.qqq.sharpeRatio),
+				};
+			case "소르티노 비율":
+				return {
+					...metric,
+					spy: formatRatio(benchmarkStats.spy.sortinoRatio),
+					qqq: formatRatio(benchmarkStats.qqq.sortinoRatio),
+				};
+			case "최대 낙폭":
+				return {
+					...metric,
+					spy: formatPercentage(benchmarkStats.spy.maxDrawdown),
+					qqq: formatPercentage(benchmarkStats.qqq.maxDrawdown),
+				};
+			case "변동성":
+				return {
+					...metric,
+					spy: formatPercentage(benchmarkStats.spy.volatility),
+					qqq: formatPercentage(benchmarkStats.qqq.volatility),
+				};
+			default:
+				return metric;
+		}
+	});
+};
+
 // 로딩 컴포넌트
 const LoadingCard = ({ title, description }: { title: string; description: string }) => (
 	<Card className="backdrop-blur-sm bg-white/90 dark:bg-gray-900/90 border border-gray-200/50 dark:border-gray-700/50 rounded-3xl">
@@ -868,8 +1040,14 @@ function AnalysisResultsContent() {
 
 			if (!alive) return;
 			setTabsData((prev) => ({
-				...prev!,
-				portfolio: portfolioData,
+				portfolio: {
+					...portfolioData,
+					metrics: mergeBenchmarkMetrics(portfolioData.metrics, prev?.performance?.history || []),
+				},
+				performance: prev?.performance ?? { history: [] },
+				xai: prev?.xai ?? { feature_importance: [], attention_weights: [], explanation_text: "" },
+				correlation: prev?.correlation ?? [],
+				riskReturn: prev?.riskReturn ?? [],
 			}));
 
 			updateLoadingState("portfolio", { isLoading: false, progress: 100 });
@@ -937,11 +1115,20 @@ function AnalysisResultsContent() {
 				body: JSON.stringify(req),
 			});
 
+			const performanceHistory = ((response as any).performance_history || []) as PerformanceHistory[];
+
 			if (!alive) return;
-			setTabsData((prev) => ({
-				...prev!,
-				performance: { history: (response as any).performance_history },
-			}));
+			setTabsData((prev) => {
+				if (!prev) return prev;
+				return {
+					...prev,
+					portfolio: {
+						...prev.portfolio,
+						metrics: mergeBenchmarkMetrics(prev.portfolio.metrics, performanceHistory),
+					},
+					performance: { history: performanceHistory },
+				};
+			});
 
 			updateLoadingState("performance", { isLoading: false, progress: 100 });
 		} catch (error) {
@@ -1354,7 +1541,7 @@ function AnalysisResultsContent() {
 							<Settings className="h-4 w-4 mr-2" />
 							다른 조건으로 분석
 						</Button>
-						<Button onClick={() => window.print()} className="rounded-2xl h-12 px-8 bg-blue-600 hover:bg-blue-700">
+						<Button onClick={() => window.print()} className="rounded-2xl h-12 px-8 bg-blue-600 hover:bg-blue-700 text-white">
 							<Download className="h-4 w-4 mr-2" />
 							결과 저장하기
 						</Button>
